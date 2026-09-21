@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const TelegramBot = require('node-telegram-bot-api');
 
-// আপনার বটের আসল টোকেন এখানে বসানো হলো
+// আপনার বটের আসল টোকেন
 const token = '8857813970:AAGvLZHZ5zBYeEr9r5THt5qTNP62TnC3tOU';
 const bot = new TelegramBot(token, { polling: true });
 
@@ -28,7 +28,7 @@ bot.on('message', (msg) => {
           [
             {
               text: '🚀 অ্যাপ খুলুন (Open App)',
-              web_app: { url: 'https://your-frontend-url.com' }
+              web_app: { url: 'https://telegramminiapp-45v1.onrender.com' }
             }
           ]
         ]
