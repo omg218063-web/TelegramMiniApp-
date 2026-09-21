@@ -1,9 +1,7 @@
-
 const express = require('express');
 const cors = require('cors');
 const TelegramBot = require('node-telegram-bot-api');
 
-// আপনার বটের আসল টোকেন
 const token = '8857813970:AAGvLZHZ5zBYeEr9r5THt5qTNP62TnC3tOU';
 const bot = new TelegramBot(token, { polling: true });
 
@@ -11,12 +9,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// বেসিক রুট
 app.get('/', (req, res) => {
   res.send('RS Tap to Earn Backend is running successfully!');
 });
 
-// বটের মেসেজ হ্যান্ডলার
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
   const text = msg.text;
