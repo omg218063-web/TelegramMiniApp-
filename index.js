@@ -18,7 +18,7 @@ bot.on('message', (msg) => {
   const text = msg.text;
 
   if (text === '/start') {
-    bot.sendMessage(chatId, 'হ্যালো! RS Tap to Earn এ আপনাকে স্বাগতম। ট্যাপ করে কয়েন আর্ন করতে নিচের বাটনে ক্লিক করুন:', {
+    bot.sendMessage(chatId, 'স্বাগতম! RS Tap to Earn-এ আপনাকে স্বাগতম। ট্যাপ করে কয়েন আর্ন করুন এবং উপভোগ করুন এক্সক্লুসিভ টেলিগ্রাম মিনি অ্যাপ। এখনই অ্যাপটি ওপেন করুন!', {
       reply_markup: {
         inline_keyboard: [
           [
@@ -37,3 +37,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
