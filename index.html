@@ -3,402 +3,276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini App</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #f4f6f9;
-            color: #333;
-            padding-bottom: 70px;
-        }
-        .header {
-            background: linear-gradient(135deg, #6200ee, #3700b3);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-        }
-        .profile-section {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        .profile-img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 2px solid #fff;
-            object-fit: cover;
-        }
-        .balance-card {
-            background: white;
-            margin: 15px;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-        .logo-container {
-            margin: 20px 0;
-            text-align: center;
-        }
-        .animated-ring {
-            width: 100px;
-            height: 100px;
-            border: 4px solid #6200ee;
-            border-top: 4px solid transparent;
-            border-radius: 50%;
-            animation: spin 2s linear infinite;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .nav-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-        .nav-item {
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-            cursor: pointer;
-            flex: 1;
-        }
-        .nav-item.active {
-            color: #6200ee;
-            font-weight: bold;
-        }
-        .tab-content {
-            display: none;
-            padding: 15px;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .btn {
-            background: #6200ee;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            width: 100%;
-            margin-top: 10px;
-        }
-        .btn:active {
-            transform: scale(0.98);
-        }
-        .input-field {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
-        .rank-top3 {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            align-items: flex-end;
-        }
-        .rank-card {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            flex: 1;
-        }
-        .rank-card.first {
-            transform: scale(1.1);
-            border: 2px solid gold;
-        }
-        .error-msg {
-            color: red;
-            font-size: 12px;
-            margin-top: 5px;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Header -->
-    <div class="header">
-        <div class="profile-section">
-            <img src="https://via.placeholder.com/60" alt="Profile" class="profile-img" id="headerProfileImg">
-            <div>
-                <h3 id="headerUserName">Rakib</h3>
-                <p style="font-size: 12px; opacity: 0.8;">Active Member</p>
-            </div>
-        </div>
-        <h2><span id="totalToken">1200</span> RS Token</h2>
-        <p style="font-size: 14px;">BDT <span id="totalBdt">1200.00</span> TK</p>
-    </div>
-
-    <!-- Home Tab -->
-    <div id="home" class="tab-content active">
-        <div class="logo-container">
-            <div class="animated-ring" onclick="tapLogo()">
-                <span style="font-weight: bold; color: #6200ee;">RS</span>
-            </div>
-            <p style="font-size: 12px; color: #666; margin-top: 5px;">Tap the logo</p>
-        </div>
-
-        <div class="balance-card">
-            <h4>Daily Task (500 RS)</h4>
-            <p style="font-size: 12px; color: #666;">Claim your 24-hour reward</p>
-            <button class="btn" onclick="claimDaily()">Claim 500 Token</button>
-        </div>
-
-        <div class="balance-card">
-            <h4>Hourly Reward (200 RS)</h4>
-            <p style="font-size: 12px; color: #666;">Timer: <span id="timer">02:00:00</span></p>
-            <button class="btn" onclick="claimHourly()">Claim 200 Token</button>
-        </div>
-
-        <div class="balance-card">
-            <h4>Premium Ads</h4>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px;">
-                <button class="btn" style="margin:0;" onclick="watchAd(1)">Ad 1</button>
-                <button class="btn" style="margin:0;" onclick="watchAd(2)">Ad 2</button>
-                <button class="btn" style="margin:0;" onclick="watchAd(3)">Ad 3</button>
-                <button class="btn" style="margin:0;" onclick="watchAd(4)">Ad 4</button>
-                <button class="btn" style="margin:0;" onclick="watchAd(5)">Ad 5</button>
-                <button class="btn" style="margin:0;" onclick="watchAd(6)">Ad 6</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Ranking Tab -->
-    <div id="ranking" class="tab-content">
-        <h3 style="text-align: center; margin-bottom: 15px;">Top Leaders</h3>
-        <div class="rank-top3">
-            <div class="rank-card">
-                <p><b>2</b></p>
-                <p>User B</p>
-                <p style="font-size: 12px; color: #666;">Grand Master</p>
-                <p style="font-size: 12px; color: #007bff;">35M RS</p>
-            </div>
-            <div class="rank-card first">
-                <p><b>1</b></p>
-                <p>User A</p>
-                <p style="font-size: 12px; color: #666;">Region Top 1</p>
-                <p style="font-size: 12px; color: #007bff;">50M RS</p>
-            </div>
-            <div class="rank-card">
-                <p><b>3</b></p>
-                <p>User C</p>
-                <p style="font-size: 12px; color: #666;">Heroic</p>
-                <p style="font-size: 12px; color: #007bff;">15M RS</p>
-            </div>
-        </div>
-
-        <div class="balance-card" style="text-align: left;">
-            <h4>Leaderboard List</h4>
-            <div id="leaderboardList" style="margin-top: 10px; font-size: 14px;">
-                <!-- Demo 100 items can be simulated -->
-                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
-                    <span>4. Rakib (Platinum)</span>
-                    <span>10M RS (10,000 TK)</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
-                    <span>5. Tanvir (Gold)</span>
-                    <span>1M RS (1,000 TK)</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Referral Tab -->
-    <div id="referral" class="tab-content">
-        <div class="balance-card">
-            <h4>Referral Program</h4>
-            <p style="font-size: 12px; color: #666; margin: 10px 0;">Share your unique link with friends.</p>
-            <input type="text" class="input-field" id="refLink" value="https://t.me/Rakib_Bot?start=ref_12345" readonly>
-            <button class="btn" onclick="copyRef()">Copy Link</button>
-        </div>
-        <div class="balance-card" style="text-align: left;">
-            <h4>Live Referral Bonus List</h4>
-            <div style="margin-top: 10px; font-size: 13px;" id="refList">
-                <div style="display: flex; justify-content: space-between; padding: 5px 0;">
-                    <span>User X joined via your link</span>
-                    <span style="color: green;">+1000 Token</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Support Tab -->
-    <div id="support" class="tab-content">
-        <div class="balance-card">
-            <h4>AI Support Center</h4>
-            <div style="height: 150px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; margin: 10px 0; padding: 10px; overflow-y: auto;" id="chatBox">
-                <p style="font-size: 12px; color: #666;">AI Bot: Hello! How can I help you today?</p>
-            </div>
-            <input type="text" class="input-field" id="chatInput" placeholder="Type a message...">
-            <button class="btn" onclick="sendSupport()">Send</button>
-        </div>
-    </div>
-
-    <!-- Account Tab -->
-    <div id="account" class="tab-content">
-        <div class="balance-card">
-            <h4>Account Settings</h4>
-            <input type="text" class="input-field" id="userNameInput" value="Rakib">
-            <input type="text" class="input-field" placeholder="Profile Image URL" value="https://via.placeholder.com/60">
-            <button class="btn" onclick="updateProfile()">Update Profile</button>
-        </div>
-
-        <div class="balance-card">
-            <h4>Wallet Management</h4>
-            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                <button class="btn" style="background:#ccc; color:#333;" onclick="toggleWallet('deposit')">Deposit</button>
-                <button class="btn" onclick="toggleWallet('withdraw')">Withdraw</button>
-            </div>
-
-            <!-- Deposit Box -->
-            <div id="depositBox" style="display: none; text-align: center; color: red; font-size: 14px; padding: 10px;">
-                Deposit is temporarily disabled.
-            </div>
-
-            <!-- Withdraw Box -->
-            <div id="withdrawBox">
-                <label style="font-size: 13px; display: block; text-align: left;">Select Method:</label>
-                <select class="input-field" id="withdrawMethod">
-                    <option value="bkash">Bkash</option>
-                    <option value="nagad">Nagad</option>
-                </select>
-                <input type="number" class="input-field" id="withdrawAmount" placeholder="Enter Amount (400 - 5000)">
-                <p class="error-msg" id="withdrawError"></p>
-                <button class="btn" onclick="processWithdraw()">Submit Withdrawal</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Fixed Navigation Bar -->
-    <div class="nav-bar">
-        <div class="nav-item active" onclick="switchTab('home', this)">Home</div>
-        <div class="nav-item" onclick="switchTab('ranking', this)">Ranking</div>
-        <div class="nav-item" onclick="switchTab('referral', this)">Referral</div>
-        <div class="nav-item" onclick="switchTab('support', this)">Support</div>
-        <div class="nav-item" onclick="switchTab('account', this)">Account</div>
-    </div>
-
+    <title>প্রিমিয়াম অ্যাপ ইন্টারফেস</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        let balance = 1200;
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#121212',
+                        cardBg: '#1E1E1E',
+                        accentGold: '#D4AF37',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-darkBg text-gray-200 font-sans antialiased min-h-screen flex flex-col justify-between">
 
-        function switchTab(tabId, element) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            element.classList.add('active');
+    <!-- Top Header -->
+    <header class="bg-cardBg border-b border-gray-800 p-4 text-center sticky top-0 z-50">
+        <h1 class="text-xl font-bold text-accentGold">প্রিমিয়াম ড্যাশবোর্ড</h1>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow p-4 space-y-6 max-w-md mx-auto w-full">
+
+        <!-- ১. একাউন্ট সেকশন -->
+        <section class="bg-cardBg p-5 rounded-2xl border border-gray-800 shadow-lg space-y-4">
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <img id="profileImage" src="https://via.placeholder.com/80" alt="প্রোফাইল ছবি" class="w-16 h-16 rounded-full border-2 border-accentGold object-cover">
+                    <label for="imageUpload" class="absolute bottom-0 right-0 bg-accentGold text-darkBg p-1 rounded-full cursor-pointer text-xs">
+                        <i class="fa-solid fa-camera"></i>
+                    </label>
+                    <input type="file" id="imageUpload" class="hidden" accept="image/*" onchange="updateProfileImage(event)">
+                </div>
+                <div>
+                    <h2 id="profileName" class="text-lg font-semibold text-white focus:outline-none" contenteditable="true">রাকিব হোসেন</h2>
+                    <p class="text-xs text-gray-400">একাউন্ট আইডি: #৭৮৯৪৫৬</p>
+                </div>
+            </div>
+
+            <!-- ব্যালেন্স ও টোকেন তথ্য -->
+            <div class="grid grid-cols-2 gap-3 pt-2 border-t border-gray-800 text-center">
+                <div class="bg-darkBg p-3 rounded-xl border border-gray-800">
+                    <p class="text-xs text-gray-400">টোকেন</p>
+                    <p class="text-md font-bold text-accentGold">১,০০০ আরএস</p>
+                </div>
+                <div class="bg-darkBg p-3 rounded-xl border border-gray-800">
+                    <p class="text-xs text-gray-400">টাকা</p>
+                    <p class="text-md font-bold text-green-400">৳ ১,০০০</p>
+                </div>
+            </div>
+
+            <!-- ডিপোজিট ও উইথড্র অপশন -->
+            <div class="space-y-3 pt-2">
+                <!-- ডিপোজিট (সাময়িক বন্ধ) -->
+                <div class="bg-red-950/30 border border-red-900/50 p-3 rounded-xl text-center">
+                    <p class="text-xs text-red-400 font-medium"><i class="fa-solid fa-triangle-exclamation mr-1"></i> ডিপোজিট সাময়িক সময়ের জন্য বন্ধ রয়েছে</p>
+                </div>
+
+                <!-- উত্তোলন ফর্ম -->
+                <div class="bg-darkBg p-4 rounded-xl border border-gray-800 space-y-3">
+                    <p class="text-sm font-medium text-gray-300">টাকা উত্তোলন করুন</p>
+                    <div class="flex space-x-2">
+                        <button onclick="selectMethod('নগদ')" id="nagadBtn" class="flex-1 py-2 text-xs font-semibold rounded-lg border border-gray-700 bg-cardBg text-gray-300 transition">নগদ</button>
+                        <button onclick="selectMethod('বিকাশ')" id="bkashBtn" class="flex-1 py-2 text-xs font-semibold rounded-lg border border-gray-700 bg-cardBg text-gray-300 transition">বিকাশ</button>
+                    </div>
+                    <input type="text" id="withdrawNumber" placeholder="একাউন্ট নম্বর দিন" class="w-full bg-cardBg border border-gray-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-accentGold">
+                    <input type="number" id="withdrawAmount" placeholder="পরিমাণ (৳ ৪০০ - ৳ ৫০০০)" class="w-full bg-cardBg border border-gray-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-accentGold">
+                    <button onclick="handleWithdraw()" class="w-full bg-accentGold text-darkBg font-bold py-2 rounded-lg text-sm hover:opacity-90 transition">উত্তোলন নিশ্চিত করুন</button>
+                    <p id="withdrawMessage" class="text-xs text-center mt-1"></p>
+                </div>
+            </div>
+
+            <!-- মেনু অপশনসমূহ -->
+            <div class="grid grid-cols-2 gap-2 pt-2">
+                <button class="bg-darkBg p-3 rounded-xl border border-gray-800 text-left flex items-center space-x-2 text-sm hover:border-gray-700 transition">
+                    <i class="fa-solid fa-shield-halved text-accentGold"></i>
+                    <span>সিকিউরিটি সেন্টার</span>
+                </button>
+                <button class="bg-darkBg p-3 rounded-xl border border-gray-800 text-left flex items-center space-x-2 text-sm hover:border-gray-700 transition">
+                    <i class="fa-solid fa-clock-rotate-left text-accentGold"></i>
+                    <span>হিস্ট্রি মেনু</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ২. রেফারেল ও সোশ্যাল শেয়ার সেকশন -->
+        <section class="bg-cardBg p-5 rounded-2xl border border-gray-800 shadow-lg space-y-4">
+            <div class="text-center space-y-1">
+                <h3 class="text-md font-bold text-white">আপনার বন্ধুদেরকে আমন্ত্রণ করুন এবং বেশি বেশি আয় করুন!</h3>
+                <p class="text-xs text-accentGold font-medium">২% আজীবন আয়ের সুযোগ নিন এবং ১টি শেয়ার করুন, ১,০০০ আরএস টোকেন ইনকাম করুন।</p>
+            </div>
+
+            <!-- টেলিগ্রাম বট ও লিংক কপি -->
+            <div class="space-y-2">
+                <div class="flex items-center bg-darkBg border border-gray-700 rounded-xl overflow-hidden p-1">
+                    <input type="text" id="referralLink" value="https://t.me/your_bot_link?start=ref123" readonly class="bg-transparent px-3 text-xs w-full text-gray-300 focus:outline-none">
+                    <button onclick="copyReferralLink()" class="bg-accentGold text-darkBg px-4 py-2 rounded-lg text-xs font-bold hover:opacity-90 transition">কপি</button>
+                </div>
+                <p id="copyAlert" class="text-xs text-green-400 text-center hidden">লিংক সফলভাবে কপি হয়েছে!</p>
+            </div>
+
+            <!-- সোশ্যাল শেয়ার লোগোসমূহ -->
+            <div class="flex justify-around pt-2">
+                <a href="#" class="text-xl text-blue-500 hover:scale-110 transition"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" class="text-xl text-red-500 hover:scale-110 transition"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" class="text-xl text-pink-500 hover:scale-110 transition"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="text-xl text-white hover:scale-110 transition"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="#" class="text-xl text-green-500 hover:scale-110 transition"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="#" class="text-xl text-blue-400 hover:scale-110 transition"><i class="fa-brands fa-telegram"></i></a>
+            </div>
+
+            <!-- ডেমো রেফারেল হিস্ট্রি (৭০ জন) ও র‍্যাংকিং -->
+            <div class="space-y-2 pt-2 border-t border-gray-800">
+                <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider text-center">রেফারেল ও র্যাংকিং প্রমাণ (ডেমো)</h4>
+                <div id="demoReferralList" class="space-y-2 max-h-40 overflow-y-auto pr-1 text-xs">
+                    <!-- JavaScript দিয়ে ৭০টি আইটেম লোড করা হবে -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ৩. কাস্টমার কেয়ার / এআই সাপোর্ট সেকশন -->
+        <section class="bg-cardBg p-5 rounded-2xl border border-gray-800 shadow-lg space-y-4 text-center">
+            <div class="relative w-20 h-20 mx-auto">
+                <!-- এআই এজেন্টের ছবি (হেডফোন পরা কম্পিউটার ইউজার) -->
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="এআই সাপোর্ট" class="w-full h-full rounded-full border-2 border-accentGold object-cover">
+                <!-- অনলাইন থাকার গ্রিন সিগন্যাল -->
+                <span class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-cardBg rounded-full"></span>
+            </div>
+            <div>
+                <h3 class="text-sm font-bold text-white">২৪ ঘন্টা আপনার কাস্টমার কেয়ারের জন্য এআই লোক কথা বলার জন্য নিচে মেসেজ করুন</h3>
+                <p class="text-xs text-gray-400 mt-1">আপনার যেকোনো সমস্যার জন্য এআই-কে মেসেজ করুন</p>
+            </div>
+
+            <!-- চ্যাট ইনপুট বক্স -->
+            <div class="flex items-center bg-darkBg border border-gray-700 rounded-xl overflow-hidden p-1">
+                <input type="text" id="chatInput" placeholder="আপনার সমস্যা এখানে লিখুন..." class="bg-transparent px-3 text-xs w-full text-gray-300 focus:outline-none">
+                <button onclick="sendChatMessage()" class="bg-accentGold text-darkBg px-4 py-2 rounded-lg text-xs font-bold hover:opacity-90 transition"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+
+            <!-- প্রিমিয়াম সিগনেচার -->
+            <div class="pt-2 border-t border-gray-800">
+                <p class="text-[10px] text-accentGold tracking-widest uppercase font-semibold">✦ প্রিমিয়াম ভেরিফাইড সিস্টেম ✦</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-cardBg border-t border-gray-800 p-3 text-center text-xs text-gray-500">
+        &copy; ২০২৬ সকল অধিকার সংরক্ষিত।
+    </footer>
+
+    <!-- JavaScript লজিক -->
+    <script>
+        // প্রোফাইল ছবি পরিবর্তন ফাংশন
+        function updateProfileImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profileImage').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
         }
 
-        function tapLogo() {
-            balance += 10;
-            updateBalance();
+        // রেফারেল লিংক কপি ফাংশন
+        function copyReferralLink() {
+            const linkInput = document.getElementById('referralLink');
+            linkInput.select();
+            document.execCommand('copy');
+            const alertBox = document.getElementById('copyAlert');
+            alertBox.classList.remove('hidden');
+            setTimeout(() => alertBox.classList.add('hidden'), 2000);
         }
 
-        function claimDaily() {
-            balance += 500;
-            updateBalance();
-            alert('500 Token claimed successfully!');
-        }
-
-        function claimHourly() {
-            balance += 200;
-            updateBalance();
-            alert('200 Token claimed successfully!');
-        }
-
-        function watchAd(id) {
-            balance += 50;
-            updateBalance();
-            alert('Ad ' + id + ' watched! +50 tokens added.');
-        }
-
-        function updateBalance() {
-            document.getElementById('totalToken').innerText = balance;
-            document.getElementById('totalBdt').innerText = (balance * 1).toFixed(2);
-        }
-
-        function toggleWallet(type) {
-            if(type === 'deposit') {
-                document.getElementById('depositBox').style.display = 'block';
-                document.getElementById('withdrawBox').style.display = 'none';
+        // উত্তোলন মেথড সিলেক্ট
+        let selectedPaymentMethod = '';
+        function selectMethod(method) {
+            selectedPaymentMethod = method;
+            if(method === 'নগদ') {
+                document.getElementById('nagadBtn').classList.add('border-accentGold', 'text-accentGold');
+                document.getElementById('bkashBtn').classList.remove('border-accentGold', 'text-accentGold');
             } else {
-                document.getElementById('depositBox').style.display = 'none';
-                document.getElementById('withdrawBox').style.display = 'block';
+                document.getElementById('bkashBtn').classList.add('border-accentGold', 'text-accentGold');
+                document.getElementById('nagadBtn').classList.remove('border-accentGold', 'text-accentGold');
             }
         }
 
-        function processWithdraw() {
-            let amount = parseInt(document.getElementById('withdrawAmount').value);
-            let errorEl = document.getElementById('withdrawError');
-            errorEl.innerText = "";
+        // উত্তোলন হ্যান্ডেল (শর্ত সাপেক্ষে)
+        function handleWithdraw() {
+            const number = document.getElementById('withdrawNumber').value;
+            const amount = parseFloat(document.getElementById('withdrawAmount').value);
+            const msg = document.getElementById('withdrawMessage');
+            const availableBalance = 1000; // বর্তমান ব্যালেন্স ডেমো
 
-            if (isNaN(amount) || amount < 400 || amount > 5000) {
-                errorEl.innerText = "Minimum amount is 400 and maximum is 5000.";
+            if (!selectedPaymentMethod) {
+                msg.textContent = "অনুগ্রহ করে নগদ অথবা বিকাশ সিলেক্ট করুন।";
+                msg.className = "text-xs text-center mt-1 text-red-400";
+                return;
+            }
+            if (!number || number.length < 11) {
+                msg.textContent = "সঠিক একাউন্ট নম্বর দিন।";
+                msg.className = "text-xs text-center mt-1 text-red-400";
+                return;
+            }
+            if (isNaN(amount) || amount < 400) {
+                msg.textContent = "সর্বনিম্ন ৪০০ টাকা উত্তোলন করতে হবে।";
+                msg.className = "text-xs text-center mt-1 text-red-400";
+                return;
+            }
+            if (amount > 5000) {
+                msg.textContent = "সর্বোচ্চ ৫০০০ টাকার বেশি উত্তোলন করা যাবে না।";
+                msg.className = "text-xs text-center mt-1 text-red-400";
+                return;
+            }
+            if (amount > availableBalance) {
+                msg.textContent = "আপনার একাউন্টে পর্যাপ্ত ব্যালেন্স নেই।";
+                msg.className = "text-xs text-center mt-1 text-red-400";
                 return;
             }
 
-            if (amount > balance) {
-                errorEl.innerText = "Insufficient balance! You cannot withdraw more than your current balance.";
-                return;
-            }
-
-            balance -= amount;
-            updateBalance();
-            alert('Withdrawal request submitted successfully for ' + amount + ' BDT.');
+            // সফল হলে
+            msg.textContent = "ধন্যবাদ! আপনার উত্তোলন অনুরোধ সফলভাবে জমা হয়েছে।";
+            msg.className = "text-xs text-center mt-1 text-green-400";
+            document.getElementById('withdrawNumber').value = '';
+            document.getElementById('withdrawAmount').value = '';
         }
 
-        function updateProfile() {
-            let name = document.getElementById('userNameInput').value;
-            document.getElementById('headerUserName').innerText = name;
-            alert('Profile updated successfully!');
+        // ৭০ জন ডেমো রেফারেল লিস্ট জেনারেট করা
+        const demoListContainer = document.getElementById('demoReferralList');
+        const names = ["রহিম উদ্দিন", "করিম খান", "শরিফুল ইসলাম", "মেহেদী হাসান", "তানভীর আহমেদ", "সাকিল হোসেন", "ফাহিম মিয়া", "নাজমুল হক", "আরিফ হোসেন", "জাকির হোসেন"];
+        
+        for (let i = 1; i <= 70; i++) {
+            const randomName = names[Math.floor(Math.random() * names.length)] + ' ' + i;
+            let rankBadge = '';
+            if(i === 1) rankBadge = '<span class="text-yellow-400 font-bold">#১ র‍্যাংক</span>';
+            else if(i === 2) rankBadge = '<span class="text-gray-300 font-bold">#২ র‍্যাংক</span>';
+            else if(i === 3) rankBadge = '<span class="text-amber-600 font-bold">#৩ র‍্যাংক</span>';
+            else rankBadge = `<span class="text-gray-500">#${i} র‍্যাংক</span>`;
+
+            const itemHTML = `
+                <div class="flex justify-between items-center bg-darkBg p-2 rounded-lg border border-gray-800">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-user-circle text-accentGold text-sm"></i>
+                        <span class="text-gray-300">${randomName}</span>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-green-400 font-semibold">৳ ১,০০০ কয়েন</p>
+                        <p class="text-[10px]">${rankBadge}</p>
+                    </div>
+                </div>
+            `;
+            demoListContainer.innerHTML += itemHTML;
         }
 
-        function copyRef() {
-            let copyText = document.getElementById("refLink");
-            copyText.select();
-            navigator.clipboard.writeText(copyText.value);
-            alert("Referral link copied to clipboard!");
-        }
-
-        function sendSupport() {
-            let input = document.getElementById('chatInput');
-            let chatBox = document.getElementById('chatBox');
-            if(input.value.trim() !== '') {
-                chatBox.innerHTML += `<p style="font-size: 12px; margin-top: 5px;"><b>You:</b> ${input.value}</p>`;
-                chatBox.innerHTML += `<p style="font-size: 12px; margin-top: 5px; color: #6200ee;"><b>AI Bot:</b> Thanks for your query. We will look into it.</p>`;
-                input.value = '';
-                chatBox.scrollTop = chatBox.scrollHeight;
+        // চ্যাট মেসেজ সিমুলেশন
+        function sendChatMessage() {
+            const chatInput = document.getElementById('chatInput');
+            if(chatInput.value.trim() !== "") {
+                alert("আপনার বার্তাটি এআই কাস্টমার কেয়ারের কাছে পাঠানো হয়েছে। খুব শীঘ্রই উত্তর দেওয়া হবে।");
+                chatInput.value = "";
             }
         }
     </script>
 </body>
-</html>
+                            </html>
