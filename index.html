@@ -1,197 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RS Tap to Earn</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>Casino Mini App</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background: linear-gradient(135deg, #0f172a, #1e1b4b, #311042);
-            color: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-            overflow: hidden;
-        }
-        .header {
-            text-align: center;
-            margin-top: 10px;
-        }
-        .header h1 {
-            font-size: 24px;
-            color: #facc15;
-            text-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
-            margin-bottom: 5px;
-        }
-        .header p {
-            font-size: 14px;
-            color: #94a3b8;
-        }
-        .score-board {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 15px 30px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-        .score-board h2 {
-            font-size: 38px;
-            color: #38bdf8;
-            font-weight: bold;
-        }
-        .score-board span {
-            font-size: 14px;
-            color: #cbd5e1;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .tap-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 20px 0;
-        }
-        .coin-btn {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #fbbf24, #d97706);
-            border: 6px solid #fef3c7;
-            box-shadow: 0 0 30px rgba(251, 191, 36, 0.6), inset 0 0 15px rgba(0, 0, 0, 0.3);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 60px;
-            transition: transform 0.1s ease, box-shadow 0.1s ease;
-            outline: none;
-            user-select: none;
-        }
-        .coin-btn:active {
-            transform: scale(0.92);
-            box-shadow: 0 0 15px rgba(251, 191, 36, 0.8);
-        }
-        .footer-stats {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            max-width: 350px;
-            background: rgba(15, 23, 42, 0.6);
-            padding: 12px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .stat-item {
-            text-align: center;
-        }
-        .stat-item .label {
-            font-size: 12px;
-            color: #64748b;
-        }
-        .stat-item .value {
-            font-size: 16px;
-            color: #f8fafc;
-            font-weight: 600;
-        }
-        .floating-text {
-            position: absolute;
-            color: #facc15;
-            font-weight: bold;
-            font-size: 20px;
-            animation: floatUp 0.8s ease-out forwards;
-            pointer-events: none;
-        }
-        @keyframes floatUp {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-80px) scale(1.3);
-            }
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background: #121212; color: #fff; }
+        .container { max-width: 480px; margin: auto; padding: 15px; }
+        
+        /* Unique Section Backgrounds */
+        .home-screen { background: #1a1a2e; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .ranking-screen { background: #16213e; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .referral-screen { background: #0f3460; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .customer-service { background: #533483; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .account-screen { background: #2b2d42; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+
+        /* Premium & Common Styles */
+        h2 { margin-bottom: 10px; font-size: 18px; }
+        .btn { background: #e94560; color: #fff; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; margin-top: 10px; }
+        .input-box { width: 100%; padding: 10px; margin-top: 5px; background: #333; border: 1px solid #555; color: #fff; border-radius: 5px; }
+        
+        /* Customer Service */
+        .cs-header { display: flex; align-items: center; gap: 10px; position: relative; margin-bottom: 10px; }
+        .avatar-container { position: relative; width: 50px; height: 50px; }
+        .avatar { width: 50px; height: 50px; border-radius: 50%; background: #ccc; }
+        .online-badge { position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background: #00ff00; border: 2px solid #fff; border-radius: 50%; }
+        .top-247 { position: absolute; right: 0; top: 0; background: #00ff00; color: #000; padding: 2px 6px; font-size: 10px; font-weight: bold; border-radius: 4px; }
+
+        /* Account Section Styles */
+        .account-header { display: flex; justify-content: space-between; align-items: center; background: #111; padding: 10px; border-radius: 8px; }
+        .popup-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .popup-item { background: #444; padding: 10px; text-align: center; border-radius: 5px; font-size: 14px; cursor: pointer; }
     </style>
 </head>
 <body>
+    <div class="container">
 
-    <div class="header">
-        <h1>RS Tap to Earn</h1>
-        <p>ট্যাপ করুন আর কয়েন জিতুন!</p>
-    </div>
-
-    <div class="score-board">
-        <span id="score">0</span>
-        <br>
-        <span>RS Coins</span>
-    </div>
-
-    <div class="tap-container" id="tapContainer">
-        <button class="coin-btn" id="coinBtn">🪙</button>
-    </div>
-
-    <div class="footer-stats">
-        <div class="stat-item">
-            <div class="label">Energy</div>
-            <div class="value" id="energy">1000/1000</div>
+        <!-- 1. HOME SCREEN -->
+        <div class="home-screen">
+            <h2>হোম স্ক্রিন (Home)</h2>
+            <p>স্বাগতম! আপনার গেমিং প্লাটফর্মে আপনাকে স্বাগতম।</p>
         </div>
-        <div class="stat-item">
-            <div class="label">Per Tap</div>
-            <div class="value">+1</div>
+
+        <!-- 2. RANKING SCREEN & DEMO LIST (70 Users) -->
+        <div class="ranking-screen">
+            <h2>র‍্যাংকিং ও লাইভ লিডারবোর্ড</h2>
+            <p>রিয়েল ও ডেমো ইউজারদের তালিকা:</p>
+            <div style="max-height: 150px; overflow-y: auto; margin-top: 10px; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 5px;" id="rankingList">
+                <!-- 70 Demo Users Loop Simulation -->
+                <script>
+                    for(let i=1; i<=70; i++) {
+                        document.write(`<div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #333; font-size: 13px;">
+                            <span>র‍্যাংক #${i} - User_${i}</span>
+                            <span>${10000 - (i*50)} RS</span>
+                        </div>`);
+                    }
+                </script>
+            </div>
         </div>
+
+        <!-- 3. REFERRAL SYSTEM -->
+        <div class="referral-screen">
+            <h2>আপনার বন্ধুদেরকে রেফার করুন এবং ১০০০ আরএস কয়েন নেন</h2>
+            <p style="font-size: 13px; margin-bottom: 8px; color: #00ffcc;">আপনার বন্ধুদের আমন্ত্রণ করুন এবং আজীবনের জন্য ৫% আপনার বন্ধুর ইনকাম গ্রহণ করুন।</p>
+            <input type="text" class="input-box" id="refLink" value="https://t.me/YourBot?start=ref_RAKIB_USER" readonly>
+            <button class="btn" onclick="alert('রেফারেল লিংক কপি করা হয়েছে!')">লিংক কপি করুন</button>
+            <div style="margin-top: 10px; font-size: 13px;">
+                লাইভ রেফারেল কাউন্ট: 1000 RS প্রতি রেফারেল
+            </div>
+        </div>
+
+        <!-- 4. CUSTOMER SERVICE -->
+        <div class="customer-service">
+            <div class="cs-header">
+                <div class="avatar-container">
+                    <div class="avatar"></div>
+                    <div class="online-badge"></div>
+                </div>
+                <div>
+                    <strong>மியா மியா (Miya Miya)</strong>
+                    <div style="font-size: 12px; color: #ddd;">২৪ ঘণ্টা কাস্টমার সার্ভিস</div>
+                </div>
+                <div class="top-247">24/7 Active</div>
+            </div>
+            <p style="font-size: 13px; margin-bottom: 8px;">সার্ভিসের সাথে কথা বলার জন্য ধন্যবাদ। আপনার কী সমস্যা, নিচে মেসেজ করুন:</p>
+            <input type="text" class="input-box" placeholder="আপনার সমস্যা লিখুন...">
+            <button class="btn">মেসেজ পাঠান</button>
+        </div>
+
+        <!-- 5. ACCOUNT SECTION -->
+        <div class="account-screen">
+            <h2>একাউন্ট সেকশন</h2>
+            <div class="account-header">
+                <div>
+                    <img src="" alt="Avatar" style="width: 40px; height: 40px; border-radius: 50%; background: #555; vertical-align: middle;">
+                    <span id="userName" style="font-weight: bold; margin-left: 5px;">RAKIB</span>
+                    <span style="background: gold; color: #000; padding: 2px 6px; font-size: 10px; border-radius: 3px; font-weight: bold; margin-left: 5px;">VIP</span>
+                </div>
+                <div>
+                    <div style="font-size: 14px; color: #00ffcc;">ব্যালেন্স: 5000 RS</div>
+                    <div style="font-size: 11px; color: #aaa;">(ক্যালকুলেটর: 5000 RS = 500 BDT)</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 15px;">
+                <button class="btn" style="background: #333; color: #aaa; cursor: not-allowed;" disabled>ডিপোজিট (সাময়িকভাবে বন্ধ)</button>
+                <button class="btn" onclick="openWithdrawModal()">উত্তোলন করুন (Withdraw)</button>
+            </div>
+
+            <!-- Popup Options (Casino Features) -->
+            <div class="popup-menu">
+                <div class="popup-item">কাস্টমার সার্ভিস</div>
+                <div class="popup-item">উইথড্র হিস্টরি</div>
+                <div class="popup-item">ডিপোজিট হিস্টরি</div>
+                <div class="popup-item">একাউন্ট সিকিউরিটি</div>
+            </div>
+        </div>
+
     </div>
 
+    <!-- Withdraw Validation Script & Modal Logic -->
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-
-        let score = 0;
-        let energy = 1000;
-        const scoreElement = document.getElementById('score');
-        const coinBtn = document.getElementById('coinBtn');
-        const tapContainer = document.getElementById('tapContainer');
-        const energyElement = document.getElementById('energy');
-
-        coinBtn.addEventListener('click', (e) => {
-            if (energy > 0) {
-                score += 1;
-                energy -= 1;
-                scoreElement.textContent = score;
-                energyElement.textContent = `${energy}/1000`;
-
-                const rect = coinBtn.getBoundingClientRect();
-                const x = e.clientX - rect.left - 20;
-                const y = e.clientY - rect.top - 20;
-
-                const floatText = document.createElement('div');
-                floatText.className = 'floating-text';
-                floatText.textContent = '+1';
-                floatText.style.left = `${x}px`;
-                floatText.style.top = `${y}px`;
-                tapContainer.appendChild(floatText);
-
-                setTimeout(() => {
-                    floatText.remove();
-                }, 800);
-
-                if (tg && tg.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('light');
+        function openWithdrawModal() {
+            let amount = prompt("উত্তোলনের জন্য পরিমাণ লিখুন (কমপক্ষে ৪০০ টাকা বা এর বেশি হতে হবে):");
+            if (amount !== null) {
+                amount = parseFloat(amount);
+                if (isNaN(amount) || amount < 400) {
+                    alert("উত্তোলন ব্যর্থ হয়েছে! সর্বনিম্ন ৪০০ টাকা বা তার বেশি হতে হবে।");
+                } else {
+                    let number = prompt("আপনার বিকাশ/নগদ নম্বরটি দিন:");
+                    if (number) {
+                        alert("সফল! আপনার " + amount + " টাকা উত্তোলনের আবেদন জমা হয়েছে। নম্বর: " + number);
+                    }
                 }
             }
-        });
+        }
     </script>
 </body>
-  </html>
+                        </html>
