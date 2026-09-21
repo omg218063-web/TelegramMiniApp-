@@ -1,226 +1,206 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RS Tap & Earn</title>
+    <title>RS Tap to Earn - Complete Mini App</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-        body { background: #121212; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .app-container { width: 100%; max-width: 420px; height: 100%; max-height: 850px; background: #181818; display: flex; flex-direction: column; position: relative; overflow: hidden; border-radius: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.8); }
+        body { background: #0f172a; color: #fff; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .container { max-width: 450px; margin: auto; background: #1e293b; padding: 20px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .btn { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px 0; width: 100%; }
+        .input-box { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #475569; background: #0f172a; color: #fff; }
         
-        /* Top Header */
-        .app-header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #181818; border-bottom: 1px solid #222; }
-        .app-header span { font-size: 18px; font-weight: bold; }
+        /* Tap Target & Rings */
+        #tap-target { position: relative; width: 180px; height: 180px; margin: 20px auto; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%; background: radial-gradient(circle, #3b82f6, #1e3a8a); }
+        .ring { position: absolute; border: 2px solid rgba(59, 130, 246, 0.6); border-radius: 50%; animation: pulse-ring 2s infinite; }
+        .ring-1 { width: 120%; height: 120%; animation-delay: 0s; }
+        .ring-2 { width: 140%; height: 140%; animation-delay: 0.6s; }
+        .ring-3 { width: 160%; height: 160%; animation-delay: 1.2s; }
+        @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(1.2); opacity: 0; } }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(0.8); opacity: 1; } 100% { transform: translateY(-70px) scale(1.2); opacity: 0; } }
+        .floating-text { position: absolute; font-weight: bold; font-size: 20px; animation: floatUp 0.8s ease-out forwards; pointer-events: none; }
 
-        /* Content Area */
-        .content-area { flex: 1; overflow-y: auto; padding: 15px; display: none; }
-        .content-area.active { display: block; }
-
-        /* Bottom Nav */
-        .bottom-nav { display: flex; justify-content: space-around; background: #121212; padding: 10px 0; border-top: 1px solid #222; }
-        .nav-item { text-align: center; color: #888; cursor: pointer; font-size: 11px; }
-        .nav-item img, .nav-item div { font-size: 18px; margin-bottom: 2px; }
-        .nav-item.active { color: #ff4757; }
-
-        /* Common Elements matching screenshots */
-        .balance-card { text-align: center; padding: 20px 0; }
-        .balance-card h1 { color: #ffcc00; font-size: 32px; font-weight: bold; }
-        .balance-card p { color: #2ed573; font-size: 16px; margin-top: 5px; font-weight: bold; }
-        .balance-card span { color: #aaa; font-size: 12px; }
-
-        .box-container { background: #222; border: 1px solid #333; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
-        .btn-primary { background: #ff4757; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .btn-green { background: #2ed573; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-
-        /* List Items */
-        .list-item { background: #222; padding: 12px 15px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
-        
-        /* Account Specific Styles */
-        .account-top { display: flex; align-items: center; background: #222; padding: 15px; border-radius: 10px; gap: 12px; margin-bottom: 15px; }
-        .avatar-circle { width: 50px; height: 50px; background: #444; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; }
-        .flex-row { display: flex; gap: 10px; }
+        /* Ranking Table */
+        .ranking-box { margin-top: 20px; background: #334155; padding: 15px; border-radius: 10px; max-height: 250px; overflow-y: auto; text-align: left; }
+        .rank-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #475569; font-size: 13px; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <!-- Header -->
-    <div class="app-header">
-        <span>❌</span>
-        <span style="font-size: 16px;">RS Tap & Earn</span>
-        <span>⌄ &nbsp; <b>⋮</b></span>
+<div class="container">
+    <h2>RS Tap to Earn</h2>
+    <p>Bot: @rs_tap_to_earn_2026_bot</p>
+    
+    <!-- Balance & Profile -->
+    <h3>Balance: <span id="user-balance">50000</span> RS</h3>
+    <p style="font-size: 13px; color: #38bdf8;">বাংলা মূল্যমান: <span id="bdt-value">৫০০</span> টাকা</p>
+
+    <!-- Profile Section -->
+    <div style="margin: 15px 0; background: #334155; padding: 10px; border-radius: 8px;">
+        <input type="text" id="username-input" class="input-box" placeholder="আপনার নাম লিখুন"><br>
+        <button class="btn" onclick="updateProfileName()">প্রোফাইল আপডেট</button>
     </div>
 
-    <!-- 1. HOME TAB -->
-    <div id="tab-home" class="content-area active">
-        <div class="balance-card">
-            <h1>1,001,452 RS</h1>
-            <p>৳ 150 BDT</p>
-            <span>(Rate: 1M RS Tokens = 150 BDT)</span>
-        </div>
-        <div style="width: 120px; height: 120px; border: 3px dashed #ffcc00; border-radius: 50%; margin: 20px auto; display: flex; justify-content: center; align-items: center; color: #ffcc00; font-weight: bold;">
-            RS Coin
-        </div>
-        <div class="box-container" style="border: 1px solid #ffcc00; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <h4 style="font-size: 14px; color: #ffcc00;">🎁 Daily Check-In & Signing Bonus</h4>
-                <p style="font-size: 12px; color: #aaa; margin-top: 4px;">Reward: 100 RS</p>
-            </div>
-            <button style="background: #ffcc00; border: none; padding: 8px 15px; font-weight: bold; border-radius: 5px; cursor: pointer;">Claim</button>
-        </div>
-        <div class="box-container">
-            <h4 style="color: #ff4757; margin-bottom: 10px; font-size: 14px;">🔥 Ad Earning Tasks</h4>
-            <div class="list-item"><span>1. Daily Video Ad Task</span> <span style="color: #2ed573;">+500 RS</span></div>
-            <div class="list-item"><span>2. Sponsored Visit Ad</span> <span style="color: #2ed573;">+700 RS</span></div>
-            <div class="list-item"><span>3. Premium Offerwall Ad</span> <span style="color: #2ed573;">+1,000 RS</span></div>
-            <div class="list-item"><span>4. Ultimate Reward Ad</span> <span style="color: #2ed573;">+1,200 RS</span></div>
-        </div>
+    <!-- Tap Section -->
+    <div id="tap-target">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+        <span style="font-size: 28px; font-weight: bold; z-index: 10; color: #ffd700;">RS</span>
+        <div id="floating-points-container" style="position: absolute; width: 100%; height: 100%;"></div>
     </div>
 
-    <!-- 2. RANKING TAB -->
-    <div id="tab-ranking" class="content-area">
-        <div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
-            <div style="background: #222; padding: 15px; border-radius: 10px; text-align: center; width: 30%;">
-                <p style="font-size: 12px; color: #aaa;">Master II</p>
-                <p style="font-size: 13px; font-weight: bold; color: #ffcc00; margin-top: 5px;">500,000 RS</p>
-            </div>
-            <div style="background: #222; border: 2px solid #ffcc00; padding: 15px; border-radius: 10px; text-align: center; width: 35%;">
-                👑 <p style="font-size: 12px; font-weight: bold;">Grand Master</p>
-                <p style="font-size: 13px; font-weight: bold; color: #ffcc00; margin-top: 5px;">1,000,000 RS</p>
-            </div>
-            <div style="background: #222; padding: 15px; border-radius: 10px; text-align: center; width: 30%;">
-                <p style="font-size: 12px; color: #aaa;">Master III</p>
-                <p style="font-size: 13px; font-weight: bold; color: #ffcc00; margin-top: 5px;">300,000 RS</p>
-            </div>
-        </div>
-        <p style="font-size: 13px; color: #aaa; margin-bottom: 10px;">Other Users List</p>
-        <div class="list-item"><span>4. User_Alex_4</span> <span style="color: #ffcc00;">286,000 RS</span></div>
-        <div class="list-item"><span>5. User_David_5</span> <span style="color: #ffcc00;">282,500 RS</span></div>
-        <div class="list-item"><span>6. User_John_6</span> <span style="color: #ffcc00;">279,000 RS</span></div>
-        <div class="list-item"><span>7. User_Michael_7</span> <span style="color: #ffcc00;">275,500 RS</span></div>
-        <div class="list-item"><span>8. User_Robert_8</span> <span style="color: #ffcc00;">272,000 RS</span></div>
+    <!-- Referral Link Section -->
+    <div style="margin-top: 15px; background: #334155; padding: 10px; border-radius: 8px;">
+        <h4>রেফারেল সিস্টেম (আজীবন ৫%)</h4>
+        <p style="font-size: 12px; color: #cbd5e1;">বন্ধুকে রেফার করলে ইনস্ট্যান্ট ১০০০ টোকেন পাবেন এবং তার আয়ের ৫% কমিশন আজীবন পাবেন।</p>
+        <input type="text" id="ref-link" class="input-box" value="https://t.me/rs_tap_to_earn_2026_bot?start=ref_user123" readonly>
     </div>
 
-    <!-- 3. REFERRAL TAB -->
-    <div id="tab-referral" class="content-area">
-        <div class="box-container" style="border: 1px solid #ff4757;">
-            <p style="font-size: 13px; margin-bottom: 10px; line-height: 1.4;">বন্ধুদেরকে আমন্ত্রণ জানান এবং 1,000 RS টোকেন কালেক্ট করুন ও বোনাস নিন!</p>
-            <div style="display: flex; gap: 5px; margin-bottom: 8px;">
-                <input type="text" id="myRefLink" value="https://t.me/rs_crypto_bot?start=RAKIB_USER" readonly style="flex: 1; background: #111; border: 1px solid #444; color: #fff; padding: 8px; border-radius: 5px; font-size: 12px;">
-                <button onclick="copyRef()" style="background: #ff4757; border: none; color: white; padding: 8px 12px; border-radius: 5px; font-weight: bold; cursor: pointer;">Copy</button>
-            </div>
-            <span style="font-size: 11px; color: #aaa;">Get 1,000 RS Tokens per referral via @rs_crypto_bot!</span>
-        </div>
-        <div class="box-container" style="border: 1px solid #ffcc00;">
-            <p style="color: #ff4757; font-weight: bold; font-size: 13px; margin-bottom: 10px;">🔥 Live Referral Rewards Activity</p>
-            <div class="list-item" style="font-size: 12px;"><span>1. Liam_Ref joined via invite</span> <span style="color: #2ed573;">+1,000 RS Received</span></div>
-            <div class="list-item" style="font-size: 12px;"><span>2. Noah_Ref joined via invite</span> <span style="color: #2ed573;">+1,000 RS Received</span></div>
-            <div class="list-item" style="font-size: 12px;"><span>3. Oliver_Ref joined via invite</span> <span style="color: #2ed573;">+1,000 RS Received</span></div>
-            <div class="list-item" style="font-size: 12px;"><span>4. Elijah_Ref joined via invite</span> <span style="color: #2ed573;">+1,000 RS Received</span></div>
-        </div>
+    <!-- Ranking Board (Top 100 with Tiers & BDT Calculation) -->
+    <div class="ranking-box">
+        <h4 style="text-align: center; margin-top: 0;">র‍্যাঙ্কিং লিডারবোর্ড (টপ ১০০)</h4>
+        <div id="leaderboard-list"></div>
     </div>
 
-    <!-- 4. SUPPORT TAB -->
-    <div id="tab-support" class="content-area">
-        <div class="box-container" style="text-align: center; padding: 30px 15px;">
-            <div style="width: 70px; height: 70px; border: 3px solid #ffcc00; border-radius: 50%; margin: 0 auto 15px; display: flex; justify-content: center; align-items: center; font-size: 28px; position: relative;">
-                👩‍💻
-                <div style="width: 14px; height: 14px; background: #2ed573; border-radius: 50%; position: absolute; bottom: 2px; right: 2px; border: 2px solid #222;"></div>
-            </div>
-            <h3 style="font-size: 16px; margin-bottom: 5px;">24/7 AI Customer Service</h3>
-            <p style="color: #2ed573; font-size: 12px; margin-bottom: 15px;">● Online & Active</p>
-            <p style="font-size: 12px; color: #aaa; margin-bottom: 20px; line-height: 1.5;">For any issues or questions, connect instantly with our dedicated AI support bot representative.</p>
-            <button class="btn-primary" onclick="alert('কাস্টমার সাপোর্ট বোট ওপেন হচ্ছে...')">Open AI Support Bot</button>
-        </div>
-    </div>
-
-    <!-- 5. ACCOUNT TAB -->
-    <div id="tab-account" class="content-area">
-        <div class="account-top">
-            <div class="avatar-circle">R</div>
-            <div>
-                <h4 style="font-size: 15px;">RAKIB_ADMIN</h4>
-                <span style="background: #ffcc00; color: #000; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold;">VIP 1 (Bronze)</span>
-                <p style="font-size: 11px; color: #aaa; margin-top: 4px;">Earn more coins to upgrade VIP!</p>
-            </div>
-        </div>
-        <div class="box-container" style="text-align: center;">
-            <span style="font-size: 12px; color: #aaa;">Total Token & BDT Balance</span>
-            <h2 style="color: #ffcc00; font-size: 22px; margin: 5px 0;">1,001,452 RS</h2>
-            <p style="color: #2ed573; font-size: 14px; font-weight: bold;">৳ 150 BDT <span style="font-size: 10px; color: #aaa;">(Rate: 1M RS = 150 BDT)</span></p>
-        </div>
-        <div class="flex-row">
-            <button class="btn-green" onclick="alert('ডিপোজিট সিস্টেম সাময়িকভাবে বন্ধ!')">Deposit (+30% Bonus)</button>
-            <button class="btn-primary" onclick="checkWithdraw()">Withdraw</button>
-        </div>
-        <div style="margin-top: 15px;">
-            <div class="list-item"><span>💳 My Card / Payment Method</span> <span>›</span></div>
-            <div class="list-item"><span>⭐ VIP Center & Perks</span> <span style="color: #ffcc00;">Level 1</span></div>
-            <div class="list-item"><span>📥 Deposit History</span> <span>›</span></div>
-            <div class="list-item"><span>📤 Withdrawal History</span> <span>›</span></div>
-            <div class="list-item"><span>🛡️ Security Center</span> <span style="color: #2ed573;">Secure</span></div>
-        </div>
-    </div>
-
-    <!-- Bottom Navigation Bar -->
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('home', this)">
-            <div>🏠</div> Home
-        </div>
-        <div class="nav-item" onclick="switchTab('ranking', this)">
-            <div>🏆</div> Ranking
-        </div>
-        <div class="nav-item" onclick="switchTab('referral', this)">
-            <div>👥</div> Referral
-        </div>
-        <div class="nav-item" onclick="switchTab('support', this)">
-            <div>🎧</div> Support
-        </div>
-        <div class="nav-item" onclick="switchTab('account', this)">
-            <div>👤</div> Account
-        </div>
+    <!-- Withdrawal Section -->
+    <div style="margin-top: 20px; background: #334155; padding: 15px; border-radius: 10px;">
+        <h4>উত্তোলন (Withdraw)</h4>
+        <select id="withdraw-method" class="input-box">
+            <option value="Bkash">বিকাশ (Bkash)</option>
+            <option value="Nagad">নগদ (Nagad)</option>
+        </select><br>
+        <input type="number" id="withdraw-amount" class="input-box" placeholder="টাকা (Min: 400, Max: 5000)"><br>
+        <input type="text" id="withdraw-number" class="input-box" placeholder="একাউন্ট নাম্বার"><br>
+        <button class="btn" onclick="requestWithdrawal()">উত্তোলন করুন</button>
+        <p id="withdraw-msg" style="font-size: 14px;"></p>
     </div>
 </div>
 
 <script>
-    function switchTab(tabName, element) {
-        // Hide all tabs
-        document.querySelectorAll('.content-area').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        // Remove active class from nav items
-        document.querySelectorAll('.nav-item').forEach(nav => {
-            nav.classList.remove('active');
-        });
-        // Show target tab
-        document.getElementById('tab-' + tabName).classList.add('active');
-        element.classList.add('active');
+    let balance = 50000; // Initial balance
+    const conversionRate = 100; // প্রতি ১০০ টোকেনে ১ টাকা (উদাহরণস্বরূপ)
+
+    const balanceDisplay = document.getElementById('user-balance');
+    const bdtDisplay = document.getElementById('bdt-value');
+    const tapTarget = document.getElementById('tap-target');
+    const floatingContainer = document.getElementById('floating-points-container');
+
+    const pointOptions = [
+        { points: 1, color: '#60a5fa' },
+        { points: 5, color: '#34d399' },
+        { points: 10, color: '#fbbf24' },
+        { points: 12, color: '#f43f5e' },
+        { points: 20, color: '#a855f7' }
+    ];
+
+    function updateDisplay() {
+        balanceDisplay.innerText = balance;
+        let bdt = (balance / 100).toFixed(2); // ক্যালকুলেশন করে বাংলা টাকায় রূপান্তর
+        bdtDisplay.innerText = bdt;
     }
 
-    function copyRef() {
-        var copyText = document.getElementById("myRefLink");
-        copyText.select();
-        document.execCommand("copy");
-        alert("রেফারেল লিংক কপি করা হয়েছে: " + copyText.value);
+    // Tap Animation & Random Points
+    tapTarget.addEventListener('click', (e) => {
+        let rand = Math.random();
+        let chosen = rand > 0.95 ? pointOptions[4] : rand > 0.8 ? pointOptions[3] : rand > 0.6 ? pointOptions[2] : rand > 0.3 ? pointOptions[1] : pointOptions[0];
+        
+        balance += chosen.points;
+        updateDisplay();
+
+        let floatEl = document.createElement('div');
+        floatEl.className = 'floating-text';
+        floatEl.innerText = `+${chosen.points}`;
+        floatEl.style.color = chosen.color;
+        
+        let rect = tapTarget.getBoundingClientRect();
+        floatEl.style.left = `${e.clientX - rect.left - 10}px`;
+        floatEl.style.top = `${e.clientY - rect.top - 10}px`;
+        
+        floatingContainer.appendChild(floatEl);
+        setTimeout(() => floatEl.remove(), 800);
+    });
+
+    // Profile Update
+    function updateProfileName() {
+        let name = document.getElementById('username-input').value;
+        if(name) alert(`প্রোফাইল নাম সফলভাবে পরিবর্তন হয়ে হয়েছে: ${name}`);
+        else alert('দয়া করে সঠিক নাম লিখুন।');
     }
 
-    function checkWithdraw() {
-        let amount = prompt("উত্তোলনের পরিমাণ লিখুন (সর্বনিম্ন ৪০০ টাকা বা তার বেশি হতে হবে):");
-        if (amount !== null) {
-            amount = parseFloat(amount);
-            if (isNaN(amount) || amount < 400) {
-                alert("উত্তোলন ব্যর্থ হয়েছে! সর্বনিম্ন ৪০০ টাকা বা তার বেশি হতে হবে।");
+    // Generate Demo Ranking (Top 100 with Region, Grandmaster, Heroic, Diamond & BDT Amount)
+    function generateLeaderboard() {
+        let listContainer = document.getElementById('leaderboard-list');
+        let html = '';
+        
+        for(let i = 1; i <= 100; i++) {
+            let rankTitle = "";
+            let tokens = 0;
+
+            if(i === 1) {
+                rankTitle = "🔥 Top 1 (Region)";
+                tokens = 50000000; // 50 Million
+            } else if(i === 2) {
+                rankTitle = "💎 Grand Master";
+                tokens = 30000000;
+            } else if(i === 3) {
+                rankTitle = "⭐ Heroic";
+                tokens = 15000000;
+            } else if(i <= 10) {
+                rankTitle = "⭐ Heroic (5 Star)";
+                tokens = 8000000 - (i * 500000);
+            } else if(i <= 30) {
+                rankTitle = "⭐ Heroic (2 Star)";
+                tokens = 4000000 - (i * 100000);
             } else {
-                let phone = prompt("আপনার বিকাশ/নগদ অ্যাকাউন্ট নম্বর দিন:");
-                if (phone) {
-                    alert("সফল! আপনার " + amount + " টাকা উত্তোলনের রিকোয়েস্ট জমা হয়েছে।");
-                }
+                rankTitle = "🔹 Diamond Rank";
+                tokens = 1000000 - (i * 5000);
             }
+
+            let bdtAmount = (tokens / 100).toLocaleString(); // টোকেন থেকে বাংলা টাকার হিসাব
+
+            html += `<div class="rank-item">
+                <span>#${i} Player ${i} (${rankTitle})</span>
+                <span><b>${tokens.toLocaleString()} RS</b> (${bdtAmount} ৳)</span>
+            </div>`;
         }
+        listContainer.innerHTML = html;
+    }
+    generateLeaderboard();
+
+    // Withdrawal Validation (Min 400, Max 5000)
+    function requestWithdrawal() {
+        let method = document.getElementById('withdraw-method').value;
+        let amount = parseFloat(document.getElementById('withdraw-amount').value);
+        let number = document.getElementById('withdraw-number').value;
+        let msg = document.getElementById('withdraw-msg');
+
+        if(isNaN(amount) || amount < 400) {
+            msg.style.color = '#f43f5e';
+            msg.innerText = "ত্রুটি: সর্বনিম্ন উত্তোলন ৪০০ টাকা হতে হবে!";
+            return;
+        }
+        if(amount > 5000) {
+            msg.style.color = '#f43f5e';
+            msg.innerText = "ত্রুটি: সর্বোচ্চ উত্তোলন ৫,০০০ টাকার বেশি হতে পারবে না!";
+            return;
+        }
+        if(balance < amount) {
+            msg.style.color = '#f43f5e';
+            msg.innerText = "ত্রুটি: আপনার অ্যাকাউন্টে পর্যাপ্ত পরিমাণ ব্যালেন্স নেই!";
+            return;
+        }
+        if(!number) {
+            msg.style.color = '#f43f5e';
+            msg.innerText = "ত্রুটি: সঠিক একাউন্ট নাম্বার দিন!";
+            return;
+        }
+
+        balance -= amount;
+        updateDisplay();
+        msg.style.color = '#34d399';
+        msg.innerText = `${method}-এর মাধ্যমে ${amount} টাকার উত্তোলনের অনুরোধ সফল হয়েছে!`;
     }
 </script>
 
 </body>
-                                                                                                                          </html>
+</html>
