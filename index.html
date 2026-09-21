@@ -2,205 +2,403 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <title>RS Tap to Earn - Complete Mini App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini App</title>
     <style>
-        body { background: #0f172a; color: #fff; font-family: sans-serif; text-align: center; margin: 0; padding: 20px; }
-        .container { max-width: 450px; margin: auto; background: #1e293b; padding: 20px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        .btn { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px 0; width: 100%; }
-        .input-box { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #475569; background: #0f172a; color: #fff; }
-        
-        /* Tap Target & Rings */
-        #tap-target { position: relative; width: 180px; height: 180px; margin: 20px auto; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%; background: radial-gradient(circle, #3b82f6, #1e3a8a); }
-        .ring { position: absolute; border: 2px solid rgba(59, 130, 246, 0.6); border-radius: 50%; animation: pulse-ring 2s infinite; }
-        .ring-1 { width: 120%; height: 120%; animation-delay: 0s; }
-        .ring-2 { width: 140%; height: 140%; animation-delay: 0.6s; }
-        .ring-3 { width: 160%; height: 160%; animation-delay: 1.2s; }
-        @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(1.2); opacity: 0; } }
-        @keyframes floatUp { 0% { transform: translateY(0) scale(0.8); opacity: 1; } 100% { transform: translateY(-70px) scale(1.2); opacity: 0; } }
-        .floating-text { position: absolute; font-weight: bold; font-size: 20px; animation: floatUp 0.8s ease-out forwards; pointer-events: none; }
-
-        /* Ranking Table */
-        .ranking-box { margin-top: 20px; background: #334155; padding: 15px; border-radius: 10px; max-height: 250px; overflow-y: auto; text-align: left; }
-        .rank-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #475569; font-size: 13px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            padding-bottom: 70px;
+        }
+        .header {
+            background: linear-gradient(135deg, #6200ee, #3700b3);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+        .profile-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .profile-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            object-fit: cover;
+        }
+        .balance-card {
+            background: white;
+            margin: 15px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .logo-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .animated-ring {
+            width: 100px;
+            height: 100px;
+            border: 4px solid #6200ee;
+            border-top: 4px solid transparent;
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .nav-item {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+            flex: 1;
+        }
+        .nav-item.active {
+            color: #6200ee;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+            padding: 15px;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .btn {
+            background: #6200ee;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .rank-top3 {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: flex-end;
+        }
+        .rank-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            flex: 1;
+        }
+        .rank-card.first {
+            transform: scale(1.1);
+            border: 2px solid gold;
+        }
+        .error-msg {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>RS Tap to Earn</h2>
-    <p>Bot: @rs_tap_to_earn_2026_bot</p>
-    
-    <!-- Balance & Profile -->
-    <h3>Balance: <span id="user-balance">50000</span> RS</h3>
-    <p style="font-size: 13px; color: #38bdf8;">বাংলা মূল্যমান: <span id="bdt-value">৫০০</span> টাকা</p>
-
-    <!-- Profile Section -->
-    <div style="margin: 15px 0; background: #334155; padding: 10px; border-radius: 8px;">
-        <input type="text" id="username-input" class="input-box" placeholder="আপনার নাম লিখুন"><br>
-        <button class="btn" onclick="updateProfileName()">প্রোফাইল আপডেট</button>
+    <!-- Header -->
+    <div class="header">
+        <div class="profile-section">
+            <img src="https://via.placeholder.com/60" alt="Profile" class="profile-img" id="headerProfileImg">
+            <div>
+                <h3 id="headerUserName">Rakib</h3>
+                <p style="font-size: 12px; opacity: 0.8;">Active Member</p>
+            </div>
+        </div>
+        <h2><span id="totalToken">1200</span> RS Token</h2>
+        <p style="font-size: 14px;">BDT <span id="totalBdt">1200.00</span> TK</p>
     </div>
 
-    <!-- Tap Section -->
-    <div id="tap-target">
-        <div class="ring ring-1"></div>
-        <div class="ring ring-2"></div>
-        <div class="ring ring-3"></div>
-        <span style="font-size: 28px; font-weight: bold; z-index: 10; color: #ffd700;">RS</span>
-        <div id="floating-points-container" style="position: absolute; width: 100%; height: 100%;"></div>
+    <!-- Home Tab -->
+    <div id="home" class="tab-content active">
+        <div class="logo-container">
+            <div class="animated-ring" onclick="tapLogo()">
+                <span style="font-weight: bold; color: #6200ee;">RS</span>
+            </div>
+            <p style="font-size: 12px; color: #666; margin-top: 5px;">Tap the logo</p>
+        </div>
+
+        <div class="balance-card">
+            <h4>Daily Task (500 RS)</h4>
+            <p style="font-size: 12px; color: #666;">Claim your 24-hour reward</p>
+            <button class="btn" onclick="claimDaily()">Claim 500 Token</button>
+        </div>
+
+        <div class="balance-card">
+            <h4>Hourly Reward (200 RS)</h4>
+            <p style="font-size: 12px; color: #666;">Timer: <span id="timer">02:00:00</span></p>
+            <button class="btn" onclick="claimHourly()">Claim 200 Token</button>
+        </div>
+
+        <div class="balance-card">
+            <h4>Premium Ads</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px;">
+                <button class="btn" style="margin:0;" onclick="watchAd(1)">Ad 1</button>
+                <button class="btn" style="margin:0;" onclick="watchAd(2)">Ad 2</button>
+                <button class="btn" style="margin:0;" onclick="watchAd(3)">Ad 3</button>
+                <button class="btn" style="margin:0;" onclick="watchAd(4)">Ad 4</button>
+                <button class="btn" style="margin:0;" onclick="watchAd(5)">Ad 5</button>
+                <button class="btn" style="margin:0;" onclick="watchAd(6)">Ad 6</button>
+            </div>
+        </div>
     </div>
 
-    <!-- Referral Link Section -->
-    <div style="margin-top: 15px; background: #334155; padding: 10px; border-radius: 8px;">
-        <h4>রেফারেল সিস্টেম (আজীবন ৫%)</h4>
-        <p style="font-size: 12px; color: #cbd5e1;">বন্ধুকে রেফার করলে ইনস্ট্যান্ট ১০০০ টোকেন পাবেন এবং তার আয়ের ৫% কমিশন আজীবন পাবেন।</p>
-        <input type="text" id="ref-link" class="input-box" value="https://t.me/rs_tap_to_earn_2026_bot?start=ref_user123" readonly>
+    <!-- Ranking Tab -->
+    <div id="ranking" class="tab-content">
+        <h3 style="text-align: center; margin-bottom: 15px;">Top Leaders</h3>
+        <div class="rank-top3">
+            <div class="rank-card">
+                <p><b>2</b></p>
+                <p>User B</p>
+                <p style="font-size: 12px; color: #666;">Grand Master</p>
+                <p style="font-size: 12px; color: #007bff;">35M RS</p>
+            </div>
+            <div class="rank-card first">
+                <p><b>1</b></p>
+                <p>User A</p>
+                <p style="font-size: 12px; color: #666;">Region Top 1</p>
+                <p style="font-size: 12px; color: #007bff;">50M RS</p>
+            </div>
+            <div class="rank-card">
+                <p><b>3</b></p>
+                <p>User C</p>
+                <p style="font-size: 12px; color: #666;">Heroic</p>
+                <p style="font-size: 12px; color: #007bff;">15M RS</p>
+            </div>
+        </div>
+
+        <div class="balance-card" style="text-align: left;">
+            <h4>Leaderboard List</h4>
+            <div id="leaderboardList" style="margin-top: 10px; font-size: 14px;">
+                <!-- Demo 100 items can be simulated -->
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                    <span>4. Rakib (Platinum)</span>
+                    <span>10M RS (10,000 TK)</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                    <span>5. Tanvir (Gold)</span>
+                    <span>1M RS (1,000 TK)</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Ranking Board (Top 100 with Tiers & BDT Calculation) -->
-    <div class="ranking-box">
-        <h4 style="text-align: center; margin-top: 0;">র‍্যাঙ্কিং লিডারবোর্ড (টপ ১০০)</h4>
-        <div id="leaderboard-list"></div>
+    <!-- Referral Tab -->
+    <div id="referral" class="tab-content">
+        <div class="balance-card">
+            <h4>Referral Program</h4>
+            <p style="font-size: 12px; color: #666; margin: 10px 0;">Share your unique link with friends.</p>
+            <input type="text" class="input-field" id="refLink" value="https://t.me/Rakib_Bot?start=ref_12345" readonly>
+            <button class="btn" onclick="copyRef()">Copy Link</button>
+        </div>
+        <div class="balance-card" style="text-align: left;">
+            <h4>Live Referral Bonus List</h4>
+            <div style="margin-top: 10px; font-size: 13px;" id="refList">
+                <div style="display: flex; justify-content: space-between; padding: 5px 0;">
+                    <span>User X joined via your link</span>
+                    <span style="color: green;">+1000 Token</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Withdrawal Section -->
-    <div style="margin-top: 20px; background: #334155; padding: 15px; border-radius: 10px;">
-        <h4>উত্তোলন (Withdraw)</h4>
-        <select id="withdraw-method" class="input-box">
-            <option value="Bkash">বিকাশ (Bkash)</option>
-            <option value="Nagad">নগদ (Nagad)</option>
-        </select><br>
-        <input type="number" id="withdraw-amount" class="input-box" placeholder="টাকা (Min: 400, Max: 5000)"><br>
-        <input type="text" id="withdraw-number" class="input-box" placeholder="একাউন্ট নাম্বার"><br>
-        <button class="btn" onclick="requestWithdrawal()">উত্তোলন করুন</button>
-        <p id="withdraw-msg" style="font-size: 14px;"></p>
+    <!-- Support Tab -->
+    <div id="support" class="tab-content">
+        <div class="balance-card">
+            <h4>AI Support Center</h4>
+            <div style="height: 150px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; margin: 10px 0; padding: 10px; overflow-y: auto;" id="chatBox">
+                <p style="font-size: 12px; color: #666;">AI Bot: Hello! How can I help you today?</p>
+            </div>
+            <input type="text" class="input-field" id="chatInput" placeholder="Type a message...">
+            <button class="btn" onclick="sendSupport()">Send</button>
+        </div>
     </div>
-</div>
 
-<script>
-    let balance = 50000; // Initial balance
-    const conversionRate = 100; // প্রতি ১০০ টোকেনে ১ টাকা (উদাহরণস্বরূপ)
+    <!-- Account Tab -->
+    <div id="account" class="tab-content">
+        <div class="balance-card">
+            <h4>Account Settings</h4>
+            <input type="text" class="input-field" id="userNameInput" value="Rakib">
+            <input type="text" class="input-field" placeholder="Profile Image URL" value="https://via.placeholder.com/60">
+            <button class="btn" onclick="updateProfile()">Update Profile</button>
+        </div>
 
-    const balanceDisplay = document.getElementById('user-balance');
-    const bdtDisplay = document.getElementById('bdt-value');
-    const tapTarget = document.getElementById('tap-target');
-    const floatingContainer = document.getElementById('floating-points-container');
+        <div class="balance-card">
+            <h4>Wallet Management</h4>
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <button class="btn" style="background:#ccc; color:#333;" onclick="toggleWallet('deposit')">Deposit</button>
+                <button class="btn" onclick="toggleWallet('withdraw')">Withdraw</button>
+            </div>
 
-    const pointOptions = [
-        { points: 1, color: '#60a5fa' },
-        { points: 5, color: '#34d399' },
-        { points: 10, color: '#fbbf24' },
-        { points: 12, color: '#f43f5e' },
-        { points: 20, color: '#a855f7' }
-    ];
+            <!-- Deposit Box -->
+            <div id="depositBox" style="display: none; text-align: center; color: red; font-size: 14px; padding: 10px;">
+                Deposit is temporarily disabled.
+            </div>
 
-    function updateDisplay() {
-        balanceDisplay.innerText = balance;
-        let bdt = (balance / 100).toFixed(2); // ক্যালকুলেশন করে বাংলা টাকায় রূপান্তর
-        bdtDisplay.innerText = bdt;
-    }
+            <!-- Withdraw Box -->
+            <div id="withdrawBox">
+                <label style="font-size: 13px; display: block; text-align: left;">Select Method:</label>
+                <select class="input-field" id="withdrawMethod">
+                    <option value="bkash">Bkash</option>
+                    <option value="nagad">Nagad</option>
+                </select>
+                <input type="number" class="input-field" id="withdrawAmount" placeholder="Enter Amount (400 - 5000)">
+                <p class="error-msg" id="withdrawError"></p>
+                <button class="btn" onclick="processWithdraw()">Submit Withdrawal</button>
+            </div>
+        </div>
+    </div>
 
-    // Tap Animation & Random Points
-    tapTarget.addEventListener('click', (e) => {
-        let rand = Math.random();
-        let chosen = rand > 0.95 ? pointOptions[4] : rand > 0.8 ? pointOptions[3] : rand > 0.6 ? pointOptions[2] : rand > 0.3 ? pointOptions[1] : pointOptions[0];
-        
-        balance += chosen.points;
-        updateDisplay();
+    <!-- Fixed Navigation Bar -->
+    <div class="nav-bar">
+        <div class="nav-item active" onclick="switchTab('home', this)">Home</div>
+        <div class="nav-item" onclick="switchTab('ranking', this)">Ranking</div>
+        <div class="nav-item" onclick="switchTab('referral', this)">Referral</div>
+        <div class="nav-item" onclick="switchTab('support', this)">Support</div>
+        <div class="nav-item" onclick="switchTab('account', this)">Account</div>
+    </div>
 
-        let floatEl = document.createElement('div');
-        floatEl.className = 'floating-text';
-        floatEl.innerText = `+${chosen.points}`;
-        floatEl.style.color = chosen.color;
-        
-        let rect = tapTarget.getBoundingClientRect();
-        floatEl.style.left = `${e.clientX - rect.left - 10}px`;
-        floatEl.style.top = `${e.clientY - rect.top - 10}px`;
-        
-        floatingContainer.appendChild(floatEl);
-        setTimeout(() => floatEl.remove(), 800);
-    });
+    <script>
+        let balance = 1200;
 
-    // Profile Update
-    function updateProfileName() {
-        let name = document.getElementById('username-input').value;
-        if(name) alert(`প্রোফাইল নাম সফলভাবে পরিবর্তন হয়ে হয়েছে: ${name}`);
-        else alert('দয়া করে সঠিক নাম লিখুন।');
-    }
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+        }
 
-    // Generate Demo Ranking (Top 100 with Region, Grandmaster, Heroic, Diamond & BDT Amount)
-    function generateLeaderboard() {
-        let listContainer = document.getElementById('leaderboard-list');
-        let html = '';
-        
-        for(let i = 1; i <= 100; i++) {
-            let rankTitle = "";
-            let tokens = 0;
+        function tapLogo() {
+            balance += 10;
+            updateBalance();
+        }
 
-            if(i === 1) {
-                rankTitle = "🔥 Top 1 (Region)";
-                tokens = 50000000; // 50 Million
-            } else if(i === 2) {
-                rankTitle = "💎 Grand Master";
-                tokens = 30000000;
-            } else if(i === 3) {
-                rankTitle = "⭐ Heroic";
-                tokens = 15000000;
-            } else if(i <= 10) {
-                rankTitle = "⭐ Heroic (5 Star)";
-                tokens = 8000000 - (i * 500000);
-            } else if(i <= 30) {
-                rankTitle = "⭐ Heroic (2 Star)";
-                tokens = 4000000 - (i * 100000);
+        function claimDaily() {
+            balance += 500;
+            updateBalance();
+            alert('500 Token claimed successfully!');
+        }
+
+        function claimHourly() {
+            balance += 200;
+            updateBalance();
+            alert('200 Token claimed successfully!');
+        }
+
+        function watchAd(id) {
+            balance += 50;
+            updateBalance();
+            alert('Ad ' + id + ' watched! +50 tokens added.');
+        }
+
+        function updateBalance() {
+            document.getElementById('totalToken').innerText = balance;
+            document.getElementById('totalBdt').innerText = (balance * 1).toFixed(2);
+        }
+
+        function toggleWallet(type) {
+            if(type === 'deposit') {
+                document.getElementById('depositBox').style.display = 'block';
+                document.getElementById('withdrawBox').style.display = 'none';
             } else {
-                rankTitle = "🔹 Diamond Rank";
-                tokens = 1000000 - (i * 5000);
+                document.getElementById('depositBox').style.display = 'none';
+                document.getElementById('withdrawBox').style.display = 'block';
+            }
+        }
+
+        function processWithdraw() {
+            let amount = parseInt(document.getElementById('withdrawAmount').value);
+            let errorEl = document.getElementById('withdrawError');
+            errorEl.innerText = "";
+
+            if (isNaN(amount) || amount < 400 || amount > 5000) {
+                errorEl.innerText = "Minimum amount is 400 and maximum is 5000.";
+                return;
             }
 
-            let bdtAmount = (tokens / 100).toLocaleString(); // টোকেন থেকে বাংলা টাকার হিসাব
+            if (amount > balance) {
+                errorEl.innerText = "Insufficient balance! You cannot withdraw more than your current balance.";
+                return;
+            }
 
-            html += `<div class="rank-item">
-                <span>#${i} Player ${i} (${rankTitle})</span>
-                <span><b>${tokens.toLocaleString()} RS</b> (${bdtAmount} ৳)</span>
-            </div>`;
-        }
-        listContainer.innerHTML = html;
-    }
-    generateLeaderboard();
-
-    // Withdrawal Validation (Min 400, Max 5000)
-    function requestWithdrawal() {
-        let method = document.getElementById('withdraw-method').value;
-        let amount = parseFloat(document.getElementById('withdraw-amount').value);
-        let number = document.getElementById('withdraw-number').value;
-        let msg = document.getElementById('withdraw-msg');
-
-        if(isNaN(amount) || amount < 400) {
-            msg.style.color = '#f43f5e';
-            msg.innerText = "ত্রুটি: সর্বনিম্ন উত্তোলন ৪০০ টাকা হতে হবে!";
-            return;
-        }
-        if(amount > 5000) {
-            msg.style.color = '#f43f5e';
-            msg.innerText = "ত্রুটি: সর্বোচ্চ উত্তোলন ৫,০০০ টাকার বেশি হতে পারবে না!";
-            return;
-        }
-        if(balance < amount) {
-            msg.style.color = '#f43f5e';
-            msg.innerText = "ত্রুটি: আপনার অ্যাকাউন্টে পর্যাপ্ত পরিমাণ ব্যালেন্স নেই!";
-            return;
-        }
-        if(!number) {
-            msg.style.color = '#f43f5e';
-            msg.innerText = "ত্রুটি: সঠিক একাউন্ট নাম্বার দিন!";
-            return;
+            balance -= amount;
+            updateBalance();
+            alert('Withdrawal request submitted successfully for ' + amount + ' BDT.');
         }
 
-        balance -= amount;
-        updateDisplay();
-        msg.style.color = '#34d399';
-        msg.innerText = `${method}-এর মাধ্যমে ${amount} টাকার উত্তোলনের অনুরোধ সফল হয়েছে!`;
-    }
-</script>
+        function updateProfile() {
+            let name = document.getElementById('userNameInput').value;
+            document.getElementById('headerUserName').innerText = name;
+            alert('Profile updated successfully!');
+        }
 
+        function copyRef() {
+            let copyText = document.getElementById("refLink");
+            copyText.select();
+            navigator.clipboard.writeText(copyText.value);
+            alert("Referral link copied to clipboard!");
+        }
+
+        function sendSupport() {
+            let input = document.getElementById('chatInput');
+            let chatBox = document.getElementById('chatBox');
+            if(input.value.trim() !== '') {
+                chatBox.innerHTML += `<p style="font-size: 12px; margin-top: 5px;"><b>You:</b> ${input.value}</p>`;
+                chatBox.innerHTML += `<p style="font-size: 12px; margin-top: 5px; color: #6200ee;"><b>AI Bot:</b> Thanks for your query. We will look into it.</p>`;
+                input.value = '';
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+    </script>
 </body>
 </html>
