@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>প্রিমিয়াম অ্যাপ ইন্টারফেস</title>
+    <title>RS Tap to Earn - প্রিমিয়াম অ্যাপ</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -11,8 +11,8 @@
             theme: {
                 extend: {
                     colors: {
-                        darkBg: '#121212',
-                        cardBg: '#1E1E1E',
+                        darkBg: '#0F0F0F',
+                        cardBg: '#1A1A1A',
                         accentGold: '#D4AF37',
                     }
                 }
@@ -22,148 +22,213 @@
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-darkBg text-gray-200 font-sans antialiased min-h-screen flex flex-col justify-between">
+<body class="bg-darkBg text-gray-200 font-sans antialiased min-h-screen flex flex-col justify-between pb-16">
 
     <!-- Top Header -->
-    <header class="bg-cardBg border-b border-gray-800 p-4 text-center sticky top-0 z-50">
-        <h1 class="text-xl font-bold text-accentGold">প্রিমিয়াম ড্যাশবোর্ড</h1>
+    <header class="bg-cardBg border-b border-gray-800 p-4 text-center sticky top-0 z-50 flex justify-between items-center px-6">
+        <h1 class="text-lg font-bold text-accentGold">RS Tap to Earn</h1>
+        <span class="text-xs bg-darkBg border border-gray-700 px-2 py-1 rounded text-accentGold">v2.0 Pro</span>
     </header>
 
-    <!-- Main Content Area -->
-    <main class="flex-grow p-4 space-y-6 max-w-md mx-auto w-full">
+    <!-- Main Content Container (Tabs) -->
+    <main class="flex-grow p-4 max-w-md mx-auto w-full">
 
-        <!-- ১. একাউন্ট সেকশন -->
-        <section class="bg-cardBg p-5 rounded-2xl border border-gray-800 shadow-lg space-y-4">
-            <div class="flex items-center space-x-4">
-                <div class="relative">
-                    <img id="profileImage" src="https://via.placeholder.com/80" alt="প্রোফাইল ছবি" class="w-16 h-16 rounded-full border-2 border-accentGold object-cover">
-                    <label for="imageUpload" class="absolute bottom-0 right-0 bg-accentGold text-darkBg p-1 rounded-full cursor-pointer text-xs">
-                        <i class="fa-solid fa-camera"></i>
-                    </label>
-                    <input type="file" id="imageUpload" class="hidden" accept="image/*" onchange="updateProfileImage(event)">
+        <!-- ১. হোম স্ক্রিন ট্যাব -->
+        <div id="tab-home" class="tab-content space-y-4">
+            <div class="bg-cardBg p-6 rounded-2xl border border-gray-800 shadow-lg text-center space-y-4">
+                <div class="inline-block p-4 bg-darkBg rounded-full border border-accentGold">
+                    <i class="fa-solid fa-bolt text-3xl text-accentGold animate-pulse"></i>
                 </div>
                 <div>
-                    <h2 id="profileName" class="text-lg font-semibold text-white focus:outline-none" contenteditable="true">রাকিব হোসেন</h2>
-                    <p class="text-xs text-gray-400">একাউন্ট আইডি: #৭৮৯৪৫৬</p>
+                    <h2 class="text-xl font-bold text-white">ট্যাপ করে আয় করুন</h2>
+                    <p class="text-xs text-gray-400 mt-1">প্রতিটি ট্যাপে জমা হবে আকর্ষণীয় আরএস টোকেন!</p>
+                </div>
+                <div class="bg-darkBg p-4 rounded-xl border border-gray-800">
+                    <p class="text-xs text-gray-400">আপনার বর্তমান টোকেন</p>
+                    <p class="text-2xl font-extrabold text-accentGold mt-1">১,০০০ আরএস</p>
+                </div>
+                <button onclick="alert('টোকেন সফলভাবে সংগ্রহ করা হয়েছে!')" class="w-full bg-accentGold text-darkBg font-bold py-3 rounded-xl text-sm hover:opacity-90 transition shadow-lg">
+                    ট্যাপ করুন (Tap Here)
+                </button>
+            </div>
+            
+            <!-- ডেইলি ও রেন্ডম রিওয়ার্ড সেকশন -->
+            <div class="bg-cardBg p-4 rounded-xl border border-gray-800 flex justify-between items-center">
+                <div>
+                    <h3 class="text-sm font-semibold text-white">ডেইলি রিওয়ার্ড</h3>
+                    <p class="text-xs text-gray-400">প্রতি ২৪ ঘণ্টায় একবার ফ্রি ক্লেইম করুন</p>
+                </div>
+                <button onclick="alert('ডেইলি রিওয়ার্ড সংগ্রহ করা হয়েছে!')" class="bg-darkBg border border-accentGold text-accentGold px-4 py-2 rounded-lg text-xs font-bold">ক্লেম করুন</button>
+            </div>
+        </div>
+
+        <!-- ২. র‍্যাংকিং ট্যাব -->
+        <div id="tab-ranking" class="tab-content space-y-4 hidden">
+            <div class="bg-cardBg p-5 rounded-2xl border border-gray-800 shadow-lg space-y-3">
+                <h3 class="text-sm font-bold text-white text-center border-b border-gray-800 pb-2">🏆 লিডারবোর্ড ও র‍্যাংকিং</h3>
+                <div class="space-y-2 max-h-96 overflow-y-auto pr-1 text-xs">
+                    <div class="flex justify-between items-center bg-darkBg p-3 rounded-xl border border-yellow-600/50">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-yellow-400 font-bold text-sm">#১</span>
+                            <span class="text-white font-medium">শরিফুল ইসলাম</span>
+                        </div>
+                        <span class="text-yellow-400 font-bold">৳ ৫,০০০ কয়েন</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-darkBg p-3 rounded-xl border border-gray-500/50">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-gray-300 font-bold text-sm">#২</span>
+                            <span class="text-white font-medium">ফাহিম মিয়া</span>
+                        </div>
+                        <span class="text-gray-300 font-bold">৳ ৪,৫০০ কয়েন</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-darkBg p-3 rounded-xl border border-amber-700/50">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-amber-600 font-bold text-sm">#৩</span>
+                            <span class="text-white font-medium">নাজমুল হক</span>
+                        </div>
+                        <span class="text-amber-600 font-bold">৳ ৪,০০০ কয়েন</span>
+                    </div>
+                    <!-- ডেমো তালিকা -->
+                    <div class="flex justify-between items-center bg-darkBg p-3 rounded-xl border border-gray-800">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-gray-500 font-bold text-sm">#৪</span>
+                            <span class="text-gray-300">আরিফ হোসেন</span>
+                        </div>
+                        <span class="text-green-400">৳ ৩,৮০০ কয়েন</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-darkBg p-3 rounded-xl border border-gray-800">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-gray-500 font-bold text-sm">#৫</span>
+                            <span class="text-gray-300">জাকির হোসেন</span>
+                        </div>
+                        <span class="text-green-400">৳ ৩,৫০০ কয়েন</span>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- ব্যালেন্স ও টোকেন তথ্য -->
-            <div class="grid grid-cols-2 gap-3 pt-2 border-t border-gray-800 text-center">
-                <div class="bg-darkBg p-3 rounded-xl border border-gray-800">
-                    <p class="text-xs text-gray-400">টোকেন</p>
-                    <p class="text-md font-bold text-accentGold">১,০০০ আরএস</p>
+        <!-- ৩. রেফারেল ট্যাব -->
+        <div id="tab-referral" class="tab-content space-y-4 hidden">
+            <div class="bg-cardBg p-5 rounded-2xl border border-gray-800 shadow-lg space-y-4">
+                <div class="text-center space-y-1">
+                    <h3 class="text-md font-bold text-white">বন্ধুদের আমন্ত্রণ জানান</h3>
+                    <p class="text-xs text-accentGold font-medium">২% আজীবন আয়ের সুযোগ ও প্রতিটি শেয়ারে ১,০০০ আরএস টোকেন!</p>
                 </div>
-                <div class="bg-darkBg p-3 rounded-xl border border-gray-800">
-                    <p class="text-xs text-gray-400">টাকা</p>
-                    <p class="text-md font-bold text-green-400">৳ ১,০০০</p>
+                <div class="flex items-center bg-darkBg border border-gray-700 rounded-xl overflow-hidden p-1">
+                    <input type="text" id="referralLink" value="https://t.me/your_bot_link?start=ref123" readonly class="bg-transparent px-3 text-xs w-full text-gray-300 focus:outline-none">
+                    <button onclick="copyReferralLink()" class="bg-accentGold text-darkBg px-4 py-2 rounded-lg text-xs font-bold">কপি</button>
+                </div>
+                <p id="copyAlert" class="text-xs text-green-400 text-center hidden">লিংক সফলভাবে কপি হয়েছে!</p>
+                
+                <!-- সোশ্যাল শেয়ার -->
+                <div class="flex justify-around pt-2">
+                    <a href="#" class="text-xl text-blue-500"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="text-xl text-red-500"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#" class="text-xl text-pink-500"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="text-xl text-white"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#" class="text-xl text-green-500"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="#" class="text-xl text-blue-400"><i class="fa-brands fa-telegram"></i></a>
                 </div>
             </div>
+        </div>
 
-            <!-- ডিপোজিট ও উইথড্র অপশন -->
-            <div class="space-y-3 pt-2">
-                <!-- ডিপোজিট (সাময়িক বন্ধ) -->
+        <!-- ৪. সাপোর্ট ট্যাব -->
+        <div id="tab-support" class="tab-content space-y-4 hidden">
+            <div class="bg-cardBg p-5 rounded-2xl border border-gray-800 shadow-lg space-y-4 text-center">
+                <div class="relative w-20 h-20 mx-auto">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="সাপোর্ট" class="w-full h-full rounded-full border-2 border-accentGold object-cover">
+                    <span class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-cardBg rounded-full"></span>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-white">২৪ ঘণ্টা এআই কাস্টমার কেয়ার</h3>
+                    <p class="text-xs text-gray-400 mt-1">আপনার যেকোনো সমস্যায় নিচে মেসেজ করুন</p>
+                </div>
+                <div class="flex items-center bg-darkBg border border-gray-700 rounded-xl overflow-hidden p-1">
+                    <input type="text" id="chatInput" placeholder="আপনার সমস্যা লিখুন..." class="bg-transparent px-3 text-xs w-full text-gray-300 focus:outline-none">
+                    <button onclick="sendChatMessage()" class="bg-accentGold text-darkBg px-4 py-2 rounded-lg text-xs font-bold"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ৫. একাউন্ট ট্যাব -->
+        <div id="tab-account" class="tab-content space-y-4 hidden">
+            <div class="bg-cardBg p-5 rounded-2xl border border-gray-800 shadow-lg space-y-4">
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <img id="profileImage" src="https://via.placeholder.com/80" alt="প্রোফাইল" class="w-16 h-16 rounded-full border-2 border-accentGold object-cover">
+                        <label for="imageUpload" class="absolute bottom-0 right-0 bg-accentGold text-darkBg p-1 rounded-full cursor-pointer text-xs">
+                            <i class="fa-solid fa-camera"></i>
+                        </label>
+                        <input type="file" id="imageUpload" class="hidden" accept="image/*" onchange="updateProfileImage(event)">
+                    </div>
+                    <div>
+                        <h2 id="profileName" class="text-lg font-semibold text-white focus:outline-none" contenteditable="true">রাকিব হোসেন</h2>
+                        <p class="text-xs text-gray-400">একাউন্ট আইডি: #৭৮৯৪৫৬</p>
+                    </div>
+                </div>
+
+                <!-- ডিপোজিট বন্ধের নোটিশ -->
                 <div class="bg-red-950/30 border border-red-900/50 p-3 rounded-xl text-center">
                     <p class="text-xs text-red-400 font-medium"><i class="fa-solid fa-triangle-exclamation mr-1"></i> ডিপোজিট সাময়িক সময়ের জন্য বন্ধ রয়েছে</p>
                 </div>
 
-                <!-- উত্তোলন ফর্ম -->
+                <!-- উইথড্রল ফর্ম -->
                 <div class="bg-darkBg p-4 rounded-xl border border-gray-800 space-y-3">
                     <p class="text-sm font-medium text-gray-300">টাকা উত্তোলন করুন</p>
                     <div class="flex space-x-2">
-                        <button onclick="selectMethod('নগদ')" id="nagadBtn" class="flex-1 py-2 text-xs font-semibold rounded-lg border border-gray-700 bg-cardBg text-gray-300 transition">নগদ</button>
-                        <button onclick="selectMethod('বিকাশ')" id="bkashBtn" class="flex-1 py-2 text-xs font-semibold rounded-lg border border-gray-700 bg-cardBg text-gray-300 transition">বিকাশ</button>
+                        <button onclick="selectMethod('নগদ')" id="nagadBtn" class="flex-1 py-2 text-xs font-semibold rounded-lg border border-gray-700 bg-cardBg text-gray-300">নগদ</button>
+                        <button onclick="selectMethod('বিকাশ')" id="bkashBtn" class="flex-1 py-2 text-xs font-semibold rounded-lg border border-gray-700 bg-cardBg text-gray-300">বিকাশ</button>
                     </div>
                     <input type="text" id="withdrawNumber" placeholder="একাউন্ট নম্বর দিন" class="w-full bg-cardBg border border-gray-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-accentGold">
                     <input type="number" id="withdrawAmount" placeholder="পরিমাণ (৳ ৪০০ - ৳ ৫০০০)" class="w-full bg-cardBg border border-gray-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-accentGold">
-                    <button onclick="handleWithdraw()" class="w-full bg-accentGold text-darkBg font-bold py-2 rounded-lg text-sm hover:opacity-90 transition">উত্তোলন নিশ্চিত করুন</button>
+                    <button onclick="handleWithdraw()" class="w-full bg-accentGold text-darkBg font-bold py-2 rounded-lg text-sm">উত্তোলন নিশ্চিত করুন</button>
                     <p id="withdrawMessage" class="text-xs text-center mt-1"></p>
                 </div>
             </div>
-
-            <!-- মেনু অপশনসমূহ -->
-            <div class="grid grid-cols-2 gap-2 pt-2">
-                <button class="bg-darkBg p-3 rounded-xl border border-gray-800 text-left flex items-center space-x-2 text-sm hover:border-gray-700 transition">
-                    <i class="fa-solid fa-shield-halved text-accentGold"></i>
-                    <span>সিকিউরিটি সেন্টার</span>
-                </button>
-                <button class="bg-darkBg p-3 rounded-xl border border-gray-800 text-left flex items-center space-x-2 text-sm hover:border-gray-700 transition">
-                    <i class="fa-solid fa-clock-rotate-left text-accentGold"></i>
-                    <span>হিস্ট্রি মেনু</span>
-                </button>
-            </div>
-        </section>
-
-        <!-- ২. রেফারেল ও সোশ্যাল শেয়ার সেকশন -->
-        <section class="bg-cardBg p-5 rounded-2xl border border-gray-800 shadow-lg space-y-4">
-            <div class="text-center space-y-1">
-                <h3 class="text-md font-bold text-white">আপনার বন্ধুদেরকে আমন্ত্রণ করুন এবং বেশি বেশি আয় করুন!</h3>
-                <p class="text-xs text-accentGold font-medium">২% আজীবন আয়ের সুযোগ নিন এবং ১টি শেয়ার করুন, ১,০০০ আরএস টোকেন ইনকাম করুন।</p>
-            </div>
-
-            <!-- টেলিগ্রাম বট ও লিংক কপি -->
-            <div class="space-y-2">
-                <div class="flex items-center bg-darkBg border border-gray-700 rounded-xl overflow-hidden p-1">
-                    <input type="text" id="referralLink" value="https://t.me/your_bot_link?start=ref123" readonly class="bg-transparent px-3 text-xs w-full text-gray-300 focus:outline-none">
-                    <button onclick="copyReferralLink()" class="bg-accentGold text-darkBg px-4 py-2 rounded-lg text-xs font-bold hover:opacity-90 transition">কপি</button>
-                </div>
-                <p id="copyAlert" class="text-xs text-green-400 text-center hidden">লিংক সফলভাবে কপি হয়েছে!</p>
-            </div>
-
-            <!-- সোশ্যাল শেয়ার লোগোসমূহ -->
-            <div class="flex justify-around pt-2">
-                <a href="#" class="text-xl text-blue-500 hover:scale-110 transition"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#" class="text-xl text-red-500 hover:scale-110 transition"><i class="fa-brands fa-youtube"></i></a>
-                <a href="#" class="text-xl text-pink-500 hover:scale-110 transition"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" class="text-xl text-white hover:scale-110 transition"><i class="fa-brands fa-tiktok"></i></a>
-                <a href="#" class="text-xl text-green-500 hover:scale-110 transition"><i class="fa-brands fa-whatsapp"></i></a>
-                <a href="#" class="text-xl text-blue-400 hover:scale-110 transition"><i class="fa-brands fa-telegram"></i></a>
-            </div>
-
-            <!-- ডেমো রেফারেল হিস্ট্রি (৭০ জন) ও র‍্যাংকিং -->
-            <div class="space-y-2 pt-2 border-t border-gray-800">
-                <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider text-center">রেফারেল ও র্যাংকিং প্রমাণ (ডেমো)</h4>
-                <div id="demoReferralList" class="space-y-2 max-h-40 overflow-y-auto pr-1 text-xs">
-                    <!-- JavaScript দিয়ে ৭০টি আইটেম লোড করা হবে -->
-                </div>
-            </div>
-        </section>
-
-        <!-- ৩. কাস্টমার কেয়ার / এআই সাপোর্ট সেকশন -->
-        <section class="bg-cardBg p-5 rounded-2xl border border-gray-800 shadow-lg space-y-4 text-center">
-            <div class="relative w-20 h-20 mx-auto">
-                <!-- এআই এজেন্টের ছবি (হেডফোন পরা কম্পিউটার ইউজার) -->
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="এআই সাপোর্ট" class="w-full h-full rounded-full border-2 border-accentGold object-cover">
-                <!-- অনলাইন থাকার গ্রিন সিগন্যাল -->
-                <span class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-cardBg rounded-full"></span>
-            </div>
-            <div>
-                <h3 class="text-sm font-bold text-white">২৪ ঘন্টা আপনার কাস্টমার কেয়ারের জন্য এআই লোক কথা বলার জন্য নিচে মেসেজ করুন</h3>
-                <p class="text-xs text-gray-400 mt-1">আপনার যেকোনো সমস্যার জন্য এআই-কে মেসেজ করুন</p>
-            </div>
-
-            <!-- চ্যাট ইনপুট বক্স -->
-            <div class="flex items-center bg-darkBg border border-gray-700 rounded-xl overflow-hidden p-1">
-                <input type="text" id="chatInput" placeholder="আপনার সমস্যা এখানে লিখুন..." class="bg-transparent px-3 text-xs w-full text-gray-300 focus:outline-none">
-                <button onclick="sendChatMessage()" class="bg-accentGold text-darkBg px-4 py-2 rounded-lg text-xs font-bold hover:opacity-90 transition"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
-
-            <!-- প্রিমিয়াম সিগনেচার -->
-            <div class="pt-2 border-t border-gray-800">
-                <p class="text-[10px] text-accentGold tracking-widest uppercase font-semibold">✦ প্রিমিয়াম ভেরিফাইড সিস্টেম ✦</p>
-            </div>
-        </section>
+        </div>
 
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-cardBg border-t border-gray-800 p-3 text-center text-xs text-gray-500">
-        &copy; ২০২৬ সকল অধিকার সংরক্ষিত।
-    </footer>
+    <!-- Bottom Navigation Bar (Telegram Mini App Style) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-cardBg border-t border-gray-800 flex justify-around py-3 z-50">
+        <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-accentGold transition">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-[10px] mt-1">হোম</span>
+        </button>
+        <button onclick="switchTab('ranking')" id="nav-ranking" class="flex flex-col items-center text-gray-400 hover:text-accentGold transition">
+            <i class="fa-solid fa-trophy text-lg"></i>
+            <span class="text-[10px] mt-1">র‍্যাংকিং</span>
+        </button>
+        <button onclick="switchTab('referral')" id="nav-referral" class="flex flex-col items-center text-gray-400 hover:text-accentGold transition">
+            <i class="fa-solid fa-users text-lg"></i>
+            <span class="text-[10px] mt-1">রেফারেল</span>
+        </button>
+        <button onclick="switchTab('support')" id="nav-support" class="flex flex-col items-center text-gray-400 hover:text-accentGold transition">
+            <i class="fa-solid fa-headset text-lg"></i>
+            <span class="text-[10px] mt-1">সাপোর্ট</span>
+        </button>
+        <button onclick="switchTab('account')" id="nav-account" class="flex flex-col items-center text-gray-400 hover:text-accentGold transition">
+            <i class="fa-solid fa-user text-lg"></i>
+            <span class="text-[10px] mt-1">একাউন্ট</span>
+        </button>
+    </nav>
 
     <!-- JavaScript লজিক -->
     <script>
-        // প্রোফাইল ছবি পরিবর্তন ফাংশন
+        // ট্যাব সুইচিং ফাংশন
+        function switchTab(tabName) {
+            const tabs = ['home', 'ranking', 'referral', 'support', 'account'];
+            tabs.forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`nav-${t}`).classList.remove('text-accentGold');
+                document.getElementById(`nav-${t}`).classList.add('text-gray-400');
+            });
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            document.getElementById(`nav-${tabName}`).classList.remove('text-gray-400');
+            document.getElementById(`nav-${tabName}`).classList.add('text-accentGold');
+        }
+
+        // প্রোফাইল ছবি পরিবর্তন
         function updateProfileImage(event) {
             const file = event.target.files[0];
             if (file) {
@@ -175,7 +240,7 @@
             }
         }
 
-        // রেফারেল লিংক কপি ফাংশন
+        // রেফারেল লিংক কপি
         function copyReferralLink() {
             const linkInput = document.getElementById('referralLink');
             linkInput.select();
@@ -185,7 +250,7 @@
             setTimeout(() => alertBox.classList.add('hidden'), 2000);
         }
 
-        // উত্তোলন মেথড সিলেক্ট
+        // পেমেন্ট মেথড সিলেক্ট
         let selectedPaymentMethod = '';
         function selectMethod(method) {
             selectedPaymentMethod = method;
@@ -198,12 +263,12 @@
             }
         }
 
-        // উত্তোলন হ্যান্ডেল (শর্ত সাপেক্ষে)
+        // উত্তোলন যাচাই ও লজিক
         function handleWithdraw() {
             const number = document.getElementById('withdrawNumber').value;
             const amount = parseFloat(document.getElementById('withdrawAmount').value);
             const msg = document.getElementById('withdrawMessage');
-            const availableBalance = 1000; // বর্তমান ব্যালেন্স ডেমো
+            const availableBalance = 1000;
 
             if (!selectedPaymentMethod) {
                 msg.textContent = "অনুগ্রহ করে নগদ অথবা বিকাশ সিলেক্ট করুন।";
@@ -231,48 +296,20 @@
                 return;
             }
 
-            // সফল হলে
             msg.textContent = "ধন্যবাদ! আপনার উত্তোলন অনুরোধ সফলভাবে জমা হয়েছে।";
             msg.className = "text-xs text-center mt-1 text-green-400";
             document.getElementById('withdrawNumber').value = '';
             document.getElementById('withdrawAmount').value = '';
         }
 
-        // ৭০ জন ডেমো রেফারেল লিস্ট জেনারেট করা
-        const demoListContainer = document.getElementById('demoReferralList');
-        const names = ["রহিম উদ্দিন", "করিম খান", "শরিফুল ইসলাম", "মেহেদী হাসান", "তানভীর আহমেদ", "সাকিল হোসেন", "ফাহিম মিয়া", "নাজমুল হক", "আরিফ হোসেন", "জাকির হোসেন"];
-        
-        for (let i = 1; i <= 70; i++) {
-            const randomName = names[Math.floor(Math.random() * names.length)] + ' ' + i;
-            let rankBadge = '';
-            if(i === 1) rankBadge = '<span class="text-yellow-400 font-bold">#১ র‍্যাংক</span>';
-            else if(i === 2) rankBadge = '<span class="text-gray-300 font-bold">#২ র‍্যাংক</span>';
-            else if(i === 3) rankBadge = '<span class="text-amber-600 font-bold">#৩ র‍্যাংক</span>';
-            else rankBadge = `<span class="text-gray-500">#${i} র‍্যাংক</span>`;
-
-            const itemHTML = `
-                <div class="flex justify-between items-center bg-darkBg p-2 rounded-lg border border-gray-800">
-                    <div class="flex items-center space-x-2">
-                        <i class="fa-solid fa-user-circle text-accentGold text-sm"></i>
-                        <span class="text-gray-300">${randomName}</span>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-green-400 font-semibold">৳ ১,০০০ কয়েন</p>
-                        <p class="text-[10px]">${rankBadge}</p>
-                    </div>
-                </div>
-            `;
-            demoListContainer.innerHTML += itemHTML;
-        }
-
         // চ্যাট মেসেজ সিমুলেশন
         function sendChatMessage() {
             const chatInput = document.getElementById('chatInput');
             if(chatInput.value.trim() !== "") {
-                alert("আপনার বার্তাটি এআই কাস্টমার কেয়ারের কাছে পাঠানো হয়েছে। খুব শীঘ্রই উত্তর দেওয়া হবে।");
+                alert("আপনার বার্তাটি এআই কাস্টমার কেয়ারের কাছে পাঠানো হয়েছে।");
                 chatInput.value = "";
             }
         }
     </script>
 </body>
-                            </html>
+</html>
