@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -276,11 +277,11 @@
             color: var(--text-muted);
         }
 
-        /* --- RANKING / LEADERBOARD STYLES (Updated Frames) --- */
         .section-view {
             display: none;
         }
 
+        /* --- RANKING / LEADERBOARD STYLES --- */
         .podium-section {
             display: flex;
             justify-content: center;
@@ -369,7 +370,6 @@
             filter: drop-shadow(0 0 5px #facc15);
         }
 
-        /* Leaderboard List */
         .leaderboard-list {
             display: flex;
             flex-direction: column;
@@ -433,11 +433,125 @@
             color: var(--text-muted);
         }
 
-        /* --- AI CUSTOMER SERVICE STYLES --- */
+        /* --- REFERRAL SYSTEM STYLES (Moving Animation UI) --- */
+        .referral-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 10px 5px;
+        }
+
+        .ref-hero-animation {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ref-ring-1 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px dashed #facc15;
+            border-radius: 50%;
+            animation: spin 10s linear infinite;
+        }
+
+        .ref-ring-2 {
+            position: absolute;
+            width: 78%;
+            height: 78%;
+            border: 3px solid #38bdf8;
+            border-radius: 50%;
+            animation: spin-reverse 7s linear infinite;
+        }
+
+        .ref-center-icon {
+            width: 75px;
+            height: 75px;
+            background: linear-gradient(135deg, #facc15, #ca8a04);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 32px;
+            box-shadow: 0 0 20px rgba(250, 204, 21, 0.6);
+            z-index: 2;
+            animation: bounceIcon 2s ease-in-out infinite;
+        }
+
+        @keyframes bounceIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .referral-box h3 {
+            font-size: 18px;
+            color: var(--gold-primary);
+            margin-bottom: 5px;
+        }
+
+        .referral-box p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .ref-link-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+            width: 100%;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .ref-link-card label {
+            font-size: 11px;
+            color: var(--gold-primary);
+            font-weight: bold;
+        }
+
+        .ref-input-group {
+            display: flex;
+            margin-top: 6px;
+            gap: 6px;
+        }
+
+        .ref-input-group input {
+            flex: 1;
+            background: #09090b;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 8px 10px;
+            color: #fff;
+            font-size: 11px;
+            outline: none;
+        }
+
+        .copy-btn {
+            background: var(--gold-primary);
+            border: none;
+            color: #000;
+            font-weight: bold;
+            padding: 0 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        /* --- PREMIUM AI CUSTOMER SERVICE STYLES --- */
         .support-box {
             display: flex;
             flex-direction: column;
-            height: 100%;
+            height: 480px;
             justify-content: space-between;
         }
 
@@ -445,26 +559,48 @@
             background: linear-gradient(145deg, #181926, #0f1017);
             border: 1px solid rgba(250, 204, 21, 0.3);
             border-radius: 14px;
-            padding: 15px;
-            text-align: center;
-            margin-bottom: 15px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
         }
 
-        .support-header-card i {
-            font-size: 32px;
+        .ai-avatar-container {
+            position: relative;
+            width: 45px;
+            height: 45px;
+        }
+
+        .ai-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-primary);
+            box-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
+        }
+
+        .ai-status-dot {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 10px;
+            height: 10px;
+            background: #22c55e;
+            border-radius: 50%;
+            border: 2px solid #0f1017;
+        }
+
+        .support-info h3 {
+            font-size: 14px;
             color: var(--gold-primary);
-            margin-bottom: 8px;
         }
 
-        .support-header-card h3 {
-            font-size: 16px;
-            color: var(--gold-primary);
-        }
-
-        .support-header-card p {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 4px;
+        .support-info p {
+            font-size: 11px;
+            color: #22c55e;
+            font-weight: 500;
         }
 
         .chat-messages {
@@ -477,8 +613,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-height: 380px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .chat-msg {
@@ -518,14 +653,18 @@
             font-size: 12px;
         }
 
-        .chat-input-row button {
-            background: var(--gold-gradient);
+        .send-btn {
+            background: var(--gold-primary);
             border: none;
             color: #000;
-            padding: 0 15px;
+            padding: 0 16px;
             border-radius: 10px;
             font-weight: bold;
             cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Bottom Navigation (5 Icons Only) */
@@ -622,7 +761,6 @@
 
                 <!-- Podium Top 3 with Premium Frames & Unique Images -->
                 <div class="podium-section">
-                    <!-- Rank 2 -->
                     <div class="podium-item rank-2">
                         <div class="podium-avatar-wrapper">
                             <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="podium-avatar" alt="Top 2" style="border-color: #cbd5e1;">
@@ -631,7 +769,6 @@
                         <div class="p-score">4,200,000 RS</div>
                         <div class="p-bdt">630.00 BDT</div>
                     </div>
-                    <!-- Rank 1 (Special Premium Glow Frame) -->
                     <div class="podium-item rank-1">
                         <i class="fas fa-crown crown"></i>
                         <div class="podium-avatar-wrapper">
@@ -641,7 +778,6 @@
                         <div class="p-score" style="font-size: 12px;">8,950,000 RS</div>
                         <div class="p-bdt">1,342.50 BDT</div>
                     </div>
-                    <!-- Rank 3 -->
                     <div class="podium-item rank-3">
                         <div class="podium-avatar-wrapper">
                             <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" class="podium-avatar" alt="Top 3" style="border-color: #b45309;">
@@ -652,26 +788,54 @@
                     </div>
                 </div>
 
-                <!-- Leaderboard List (100 Users with Unique Random Images) -->
                 <div class="leaderboard-list" id="leaderboard-container"></div>
             </div>
 
-            <!-- AI CUSTOMER SERVICE SCREEN VIEW -->
+            <!-- REFERRAL SCREEN VIEW (With Moving Rings Animation & Bot Username) -->
+            <div id="referral-view" class="section-view">
+                <div class="referral-box">
+                    <h3>Invite Friends & Earn</h3>
+                    <p>Share your referral link with friends and get 5,000 RS tokens for each active referral!</p>
+
+                    <div class="ref-hero-animation">
+                        <div class="ref-ring-1"></div>
+                        <div class="ref-ring-2"></div>
+                        <div class="ref-center-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                    </div>
+
+                    <div class="ref-link-card">
+                        <label>Your Telegram Bot Link</label>
+                        <div class="ref-input-group">
+                            <input type="text" id="ref-link-input" value="https://t.me/rs_tap_to_earn_2026_bot?start=ref_9845" readonly>
+                            <button class="copy-btn" onclick="copyRefLink()">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI CUSTOMER SERVICE SCREEN VIEW (Premium AI Avatar & Send Button) -->
             <div id="support-view" class="section-view">
                 <div class="support-box">
                     <div class="support-header-card">
-                        <i class="fas fa-robot"></i>
-                        <h3>RS AI Assistant</h3>
-                        <p>How can we help you with your mining or withdrawal today?</p>
+                        <div class="ai-avatar-container">
+                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100" class="ai-avatar" alt="AI Support">
+                            <div class="ai-status-dot"></div>
+                        </div>
+                        <div class="support-info">
+                            <h3>RS AI Assistant</h3>
+                            <p>Online • Ready to help</p>
+                        </div>
                     </div>
 
                     <div class="chat-messages" id="chat-container">
-                        <div class="chat-msg bot">Hello! I am your RS Support Assistant. Ask me anything about tapping, withdrawals, or rewards!</div>
+                        <div class="chat-msg bot">Hello! I am your RS AI Support Assistant. Ask me anything about tapping, withdrawals, or rewards!</div>
                     </div>
 
                     <div class="chat-input-row">
-                        <input type="text" id="user-input" placeholder="Type your message...">
-                        <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+                        <input type="text" id="user-input" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+                        <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
             </div>
@@ -746,6 +910,13 @@
             alert("Ads list refreshed successfully!");
         }
 
+        function copyRefLink() {
+            let inputElem = document.getElementById('ref-link-input');
+            inputElem.select();
+            navigator.clipboard.writeText(inputElem.value);
+            alert("Referral link copied to clipboard!");
+        }
+
         // Tab Navigation Switcher
         function switchTab(tabName, btnElement) {
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
@@ -757,6 +928,8 @@
                 document.getElementById('home-view').style.display = 'block';
             } else if (tabName === 'ranking') {
                 document.getElementById('ranking-view').style.display = 'block';
+            } else if (tabName === 'referral') {
+                document.getElementById('referral-view').style.display = 'block';
             } else if (tabName === 'support') {
                 document.getElementById('support-view').style.display = 'block';
             } else {
@@ -801,7 +974,7 @@
         }
         leaderboardContainer.innerHTML = htmlContent;
 
-        // AI Chat Functionality
+        // AI Chat Functionality with Send Button & Enter Key Support
         function sendMessage() {
             let inputField = document.getElementById('user-input');
             let text = inputField.value.trim();
@@ -818,11 +991,17 @@
             setTimeout(() => {
                 let botReply = "Thank you for reaching out! Our support team will review your query regarding RS tokens shortly.";
                 if(text.toLowerCase().includes('withdraw') || text.toLowerCase().includes('taka')) {
-                    botReply = "Withdrawals are processed automatically once you reach the minimum threshold of 1,000,000 RS.";
+                    botReply = "Withdrawals are processed automatically once you reach the minimum threshold of 1,000,000 RS via @rs_tap_to_earn_2026_bot.";
                 }
                 chatContainer.innerHTML += `<div class="chat-msg bot">${botReply}</div>`;
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }, 600);
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
         }
 
         updateUI();
