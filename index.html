@@ -1,21 +1,17 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RS Tap-to-Earn Mini App</title>
-    <!-- FontAwesome for Icons -->
+    <title>RS Tap-to-Earn - Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent-color: #38bdf8;
-            --text-main: #f8fafc;
+            --bg-color: #07070b;
+            --card-bg: #12131c;
+            --gold-primary: #facc15;
+            --text-main: #ffffff;
             --text-muted: #94a3b8;
-            --success-color: #22c55e;
-            --danger-color: #ef4444;
         }
 
         * {
@@ -37,53 +33,47 @@
         .app-container {
             flex: 1;
             overflow-y: auto;
-            padding-bottom: 70px;
+            padding: 16px;
+            padding-bottom: 85px;
         }
 
-        .screen {
-            display: none;
-            padding: 20px;
-        }
-
-        .screen.active {
-            display: block;
-        }
-
-        /* Header / Balance Section */
-        .header-balance {
-            background: linear-gradient(135deg, #1e293b, #334155);
-            padding: 20px;
-            border-radius: 16px;
+        /* Top Header Balance */
+        .balance-card {
+            background: linear-gradient(145deg, #181926, #0f1017);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            border-radius: 20px;
+            padding: 18px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
             margin-bottom: 20px;
         }
 
-        .header-balance h2 {
-            font-size: 26px;
-            color: var(--accent-color);
-            margin-bottom: 5px;
+        .balance-card h2 {
+            font-size: 30px;
+            color: var(--gold-primary);
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(250, 204, 21, 0.4);
         }
 
-        .header-balance p {
+        .balance-card p {
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 13px;
+            margin-top: 4px;
         }
 
-        /* Tap Section */
+        /* Tap Section & Logo */
         .tap-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin-top: 30px;
+            margin: 20px 0;
         }
 
-        .tap-circle-container {
+        .logo-container {
             position: relative;
-            width: 200px;
-            height: 200px;
+            width: 210px;
+            height: 210px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -91,42 +81,76 @@
             user-select: none;
         }
 
-        .ring {
+        .ring-gold {
             position: absolute;
             width: 100%;
             height: 100%;
-            border: 3px dashed var(--accent-color);
+            border: 4px solid #facc15;
             border-radius: 50%;
-            animation: spin 10s linear infinite;
-            opacity: 0.6;
+            box-shadow: 0 0 15px rgba(250, 204, 21, 0.6);
+            animation: spin 12s linear infinite;
         }
 
-        .tap-btn {
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, #38bdf8, #0284c7);
+        .ring-blue {
+            position: absolute;
+            width: 84%;
+            height: 84%;
+            border: 3px solid #38bdf8;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+            animation: spin-reverse 8s linear infinite;
+        }
+
+        .ring-purple {
+            position: absolute;
+            width: 68%;
+            height: 68%;
+            border: 3px solid #c084fc;
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+
+        .center-logo-btn {
+            width: 125px;
+            height: 125px;
+            background: radial-gradient(circle, #1e1b4b, #09090b);
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.5);
-            transition: transform 0.1s ease;
+            box-shadow: inset 0 0 15px rgba(56, 189, 248, 0.4), 0 0 20px rgba(0,0,0,0.9);
+            border: 2px solid rgba(255,255,255,0.15);
             z-index: 2;
+            transition: transform 0.08s ease;
         }
 
-        .tap-btn:active {
+        .center-logo-btn:active {
             transform: scale(0.92);
         }
 
-        .tap-btn h1 {
+        .center-logo-btn h1 {
             font-size: 28px;
-            color: #fff;
+            background: linear-gradient(to right, #cbd5e1, #facc15);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
         }
 
-        .tap-btn span {
-            font-size: 12px;
-            color: #e0f2fe;
+        /* Floating Score Animation (Larger & Multi-color with RS) */
+        .floating-score {
+            position: absolute;
+            font-weight: 900;
+            font-size: 26px;
+            animation: floatUp 0.8s ease-out forwards;
+            pointer-events: none;
+            z-index: 10;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-70px) scale(1.4); }
         }
 
         @keyframes spin {
@@ -134,81 +158,93 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Floating Animation for rewards */
-        .floating-reward {
-            position: absolute;
-            font-weight: bold;
-            font-size: 18px;
-            animation: floatUp 0.8s ease-out forwards;
-            pointer-events: none;
-            z-index: 10;
+        @keyframes spin-reverse {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
         }
 
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-60px) scale(1.3); }
-        }
-
-        /* Dashboard widgets */
-        .widgets-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .widget-card {
-            background-color: var(--card-bg);
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .widget-card h4 {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-        }
-
-        .widget-card p {
-            font-size: 16px;
-            font-weight: bold;
-            color: var(--text-main);
-        }
-
-        /* Lists (Ranking & Referral) */
-        .list-container {
+        /* Daily Task & Timer Section */
+        .task-timer-box {
             background: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .list-item {
+            border: 1px solid rgba(250, 204, 21, 0.2);
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .list-item:last-child {
-            border-bottom: none;
+        .task-info h4 {
+            font-size: 15px;
+            color: var(--gold-primary);
         }
 
-        /* Bottom Navigation (Icon Only) */
+        .task-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .timer-badge {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        /* Ads Section Banner */
+        .ads-section-title {
+            text-align: center;
+            color: var(--gold-primary);
+            font-size: 16px;
+            margin-bottom: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .ads-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .ad-card {
+            background: linear-gradient(135deg, #1e1b4b, #0f172a);
+            border: 2px solid var(--gold-primary);
+            border-radius: 14px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(250, 204, 21, 0.15);
+        }
+
+        .ad-card h3 {
+            font-size: 20px;
+            color: var(--gold-primary);
+            margin-bottom: 4px;
+        }
+
+        .ad-card span {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Bottom Navigation (5 Icons Only) */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 65px;
+            height: 70px;
             background-color: var(--card-bg);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(250, 204, 21, 0.2);
             z-index: 100;
         }
 
@@ -216,282 +252,117 @@
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 20px;
+            font-size: 22px;
             cursor: pointer;
             padding: 10px;
             transition: color 0.2s;
         }
 
         .nav-item.active {
-            color: var(--accent-color);
-        }
-
-        /* Forms & Inputs */
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 5px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            color: var(--text-main);
-            font-size: 14px;
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 12px;
-            background: var(--accent-color);
-            color: #0f172a;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 15px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .notice-box {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid var(--danger-color);
-            padding: 10px;
-            border-radius: 8px;
-            color: #fca5a5;
-            font-size: 13px;
-            margin-bottom: 15px;
-            text-align: center;
+            color: var(--gold-primary);
+            text-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
         }
     </style>
 </head>
 <body>
 
     <div class="app-container">
-        <!-- HOME SCREEN -->
-        <div id="home" class="screen active">
-            <div class="header-balance">
-                <h2 id="balance-display">50,000 RS</h2>
-                <p>≈ <span id="bdt-display">67</span> BDT (Rate: 1M = 150 BDT)</p>
-            </div>
+        <!-- Top Header Balance with RS -->
+        <div class="balance-card">
+            <h2 id="balance-display">50,000 RS</h2>
+            <p>≈ <span id="bdt-display">7,500.00</span> BDT (1M = 150 BDT)</p>
+        </div>
 
-            <div class="tap-section">
-                <div class="tap-circle-container" id="tap-container">
-                    <div class="ring" id="ring-element"></div>
-                    <div class="tap-btn">
-                        <h1>RS</h1>
-                        <span>TAP ME</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="widgets-grid">
-                <div class="widget-card">
-                    <h4>Daily Task</h4>
-                    <p>Available (2h)</p>
-                </div>
-                <div class="widget-card">
-                    <h4>Ad Rewards</h4>
-                    <p>6 Ads Ready</p>
+        <!-- Tap Logo Section -->
+        <div class="tap-section">
+            <div class="logo-container" id="tap-target">
+                <div class="ring-gold"></div>
+                <div class="ring-blue"></div>
+                <div class="ring-purple"></div>
+                <div class="center-logo-btn">
+                    <h1>RS</h1>
                 </div>
             </div>
         </div>
 
-        <!-- RANKING SCREEN -->
-        <div id="ranking" class="screen">
-            <h3 style="margin-bottom: 15px; color: var(--accent-color);">Leaderboard</h3>
-            <div class="list-container" id="ranking-list">
-                <!-- Dynamic 100 items will be loaded via JS -->
+        <!-- Daily Task & 2 Hours Timer Box with RS -->
+        <div class="task-timer-box">
+            <div class="task-info">
+                <h4>Daily Task Reward</h4>
+                <p>200 RS Token Bonus</p>
             </div>
+            <div class="timer-badge" id="countdown-timer">01:59:45</div>
         </div>
 
-        <!-- REFERRAL SCREEN -->
-        <div id="referral" class="screen">
-            <h3 style="margin-bottom: 15px; color: var(--accent-color);">Referral Program</h3>
-            <div class="widget-card" style="margin-bottom: 15px; text-align: left;">
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">Your Invite Link:</p>
-                <input type="text" class="form-control" readonly value="https://t.me/rs_tap_to_earn_2026_bot?start=ref12345" id="ref-link" style="margin-bottom: 8px;">
-                <button class="btn-primary" onclick="copyRefLink()" style="margin-top: 0; padding: 8px;">Copy Link</button>
+        <!-- Ads Section Banner with RS -->
+        <div class="ads-section-title">⭐ ADS REWARD SYSTEM ⭐</div>
+        <div class="ads-grid">
+            <div class="ad-card">
+                <h3>1,200 RS</h3>
+                <span>Watch Ad 1</span>
             </div>
-            <h4 style="font-size: 14px; margin-bottom: 10px; color: var(--text-muted);">Recent Referrals (100)</h4>
-            <div class="list-container" id="referral-list">
-                <!-- Dynamic referral list -->
+            <div class="ad-card">
+                <h3>600 RS</h3>
+                <span>Watch Ad 2</span>
             </div>
-        </div>
-
-        <!-- ACCOUNT SCREEN -->
-        <div id="account" class="screen">
-            <h3 style="margin-bottom: 15px; color: var(--accent-color);">My Account</h3>
-            <div class="widget-card" style="margin-bottom: 20px; text-align: left;">
-                <p><strong>User ID:</strong> #849204</p>
-                <p style="margin-top: 5px;"><strong>Status:</strong> Active</p>
+            <div class="ad-card">
+                <h3>900 RS</h3>
+                <span>Watch Ad 3</span>
             </div>
-
-            <div class="notice-box">
-                ⚠️ Deposit is temporarily closed. Withdrawals are active (Min: 400 BDT, Max: 5000 BDT).
-            </div>
-
-            <div class="widget-card" style="text-align: left;">
-                <h4 style="margin-bottom: 12px; color: var(--accent-color);">Withdraw Funds</h4>
-                <div class="form-group">
-                    <label>Select Method</label>
-                    <select class="form-control" id="withdraw-method">
-                        <option value="bkash">Bkash</option>
-                        <option value="nagad">Nagad</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Account Number</label>
-                    <input type="text" class="form-control" placeholder="01XXXXXXXXX" id="account-no">
-                </div>
-                <div class="form-group">
-                    <label>Amount (BDT)</label>
-                    <input type="number" class="form-control" placeholder="Min 400 BDT" id="withdraw-amount">
-                </div>
-                <button class="btn-primary" onclick="handleWithdraw()">Submit Withdrawal</button>
+            <div class="ad-card">
+                <h3>1,400 RS</h3>
+                <span>Watch Ad 4</span>
             </div>
         </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION (Icon Only) -->
+    <!-- Bottom Navigation (5 Icons Only) -->
     <div class="bottom-nav">
-        <button class="nav-item active" onclick="switchScreen('home', this)"><i class="fas fa-home"></i></button>
-        <button class="nav-item" onclick="switchScreen('ranking', this)"><i class="fas fa-trophy"></i></button>
-        <button class="nav-item" onclick="switchScreen('referral', this)"><i class="fas fa-users"></i></button>
-        <button class="nav-item" onclick="switchScreen('account', this)"><i class="fas fa-user"></i></button>
+        <button class="nav-item active"><i class="fas fa-home"></i></button>
+        <button class="nav-item"><i class="fas fa-trophy"></i></button>
+        <button class="nav-item"><i class="fas fa-users"></i></button>
+        <button class="nav-item"><i class="fas fa-headset"></i></button>
+        <button class="nav-item"><i class="fas fa-user-circle"></i></button>
     </div>
 
     <script>
-        // Balance & App State
-        let currentBalance = 50000; // Starting bonus
-        const conversionRate = 150 / 1000000; // 1M = 150 BDT
+        let balance = 50000;
+        const rate = 150 / 1000000;
+        const possibleRewards = [1, 2, 3, 5, 10]; // ট্যাপে ৩ বা ১০ সহ বিভিন্ন পয়েন্ট
+        const rewardColors = ['#facc15', '#38bdf8', '#c084fc', '#22c55e', '#ec4899'];
 
-        function updateDisplay() {
-            document.getElementById('balance-display').innerText = currentBalance.toLocaleString() + " RS";
-            let bdtValue = (currentBalance * conversionRate).toFixed(2);
-            document.getElementById('bdt-display').innerText = bdtValue;
+        function updateUI() {
+            document.getElementById('balance-display').innerText = balance.toLocaleString() + " RS";
+            document.getElementById('bdt-display').innerText = (balance * rate).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         }
 
-        // Screen Switcher
-        function switchScreen(screenId, btnElement) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
+        const tapTest = document.getElementById('tap-target');
+        tapTest.addEventListener('click', (e) => {
+            let reward = possibleRewards[Math.floor(Math.random() * possibleRewards.length)];
+            let color = rewardColors[Math.floor(Math.random() * rewardColors.length)];
 
-            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-            btnElement.classList.add('active');
-        }
+            balance += reward;
+            updateUI();
 
-        // Tap Animation & Rewards Handler
-        const tapContainer = document.getElementById('tap-container');
-        const ringElement = document.getElementById('ring-element');
-        const possibleRewards = [1, 2, 4, 5, 10];
-        const rewardColors = ['#38bdf8', '#22c55e', '#eab308', '#ec4899', '#a855f7'];
-
-        tapContainer.addEventListener('click', (e) => {
-            // Accelerate ring spin visually
-            ringElement.style.animationDuration = '2s';
-            setTimeout(() => {
-                ringElement.style.animationDuration = '10s';
-            }, 300);
-
-            // Pick random reward
-            let randomReward = possibleRewards[Math.floor(Math.random() * possibleRewards.length)];
-            let randomColor = rewardColors[Math.floor(Math.random() * rewardColors.length)];
-            
-            currentBalance += randomReward;
-            updateDisplay();
-
-            // Floating text effect
-            let rect = tapContainer.getBoundingClientRect();
+            // Floating score effect with RS
+            let rect = tapTest.getBoundingClientRect();
             let x = e.clientX - rect.left;
             let y = e.clientY - rect.top;
 
-            let floatingText = document.createElement('div');
-            floatingText.className = 'floating-reward';
-            floatingText.innerText = `+${randomReward}`;
-            floatingText.style.left = `${x}px`;
-            floatingText.style.top = `${y}px`;
-            floatingText.style.color = randomColor;
+            let floatText = document.createElement('div');
+            floatText.className = 'floating-score';
+            floatText.innerText = `+${reward} RS`;
+            floatText.style.left = `${x}px`;
+            floatText.style.top = `${y}px`;
+            floatText.style.color = color;
 
-            tapContainer.appendChild(floatingText);
+            tapTest.appendChild(floatText);
             setTimeout(() => {
-                floatingText.remove();
+                floatText.remove();
             }, 800);
         });
 
-        // Generate 100 Mock Ranking Items
-        const rankingList = document.getElementById('ranking-list');
-        let rankingHTML = '';
-        for (let i = 1; i <= 100; i++) {
-            let randomCoins = Math.floor(Math.random() * 5000000) + 100000;
-            let randomBdt = (randomCoins * conversionRate).toFixed(1);
-            rankingHTML += `
-                <div class="list-item">
-                    <span>#${i} User_${Math.floor(Math.random() * 89999 + 10000)}</span>
-                    <span style="color: var(--accent-color);">${randomCoins.toLocaleString()} RS (${randomBdt} BDT)</span>
-                </div>
-            `;
-        }
-        rankingList.innerHTML = rankingHTML;
-
-        // Generate 100 Mock Referral Items
-        const referralList = document.getElementById('referral-list');
-        let referralHTML = '';
-        for (let i = 1; i <= 100; i++) {
-            referralHTML += `
-                <div class="list-item">
-                    <span>Friend_${i} (@user_${Math.floor(Math.random() * 899 + 100)})</span>
-                    <span style="color: var(--success-color);">+50,000 RS</span>
-                </div>
-            `;
-        }
-        referralList.innerHTML = referralHTML;
-
-        // Copy Referral Link
-        function copyRefLink() {
-            let copyText = document.getElementById("ref-link");
-            copyText.select();
-            navigator.clipboard.writeText(copyText.value);
-            alert("Referral link copied!");
-        }
-
-        // Withdraw Handler
-        function handleWithdraw() {
-            let amount = parseFloat(document.getElementById('withdraw-amount').value);
-            let accountNo = document.getElementById('account-no').value;
-            let method = document.getElementById('withdraw-method').value;
-
-            if (!accountNo || !amount) {
-                alert("Please fill in all withdrawal fields.");
-                return;
-            }
-
-            if (amount < 400 || amount > 5000) {
-                alert("Withdrawal amount must be between 400 BDT and 5,000 BDT.");
-                return;
-            }
-
-            let requiredRs = amount / conversionRate;
-            if (currentBalance < requiredRs) {
-                alert("Insufficient balance for this withdrawal amount!");
-                return;
-            }
-
-            currentBalance -= requiredRs;
-            updateDisplay();
-            alert(`Withdrawal request of ${amount} BDT via ${method.toUpperCase()} submitted successfully!`);
-        }
-
-        // Initialize display on load
-        updateDisplay();
+        updateUI();
     </script>
 </body>
 </html>
