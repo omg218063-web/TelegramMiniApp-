@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RS Token Admin Panel PRO</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .loading {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>RS Token Admin Panel - User List</h2>
+        <div id="loading" class="loading">Loading users data...</div>
+        <table id="userTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Telegram ID</th>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Joined Date</th>
+                </tr>
+            Refrezh
+                <tbody id="userTableBody">
+                <!-- User rows will be added here dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function fetchUsers() {
+            try {
+                const response = await fetch('/api/admin/users');
+                const users = await response.json();
+                
+                const tableBody = document.getElementById('userTableBody');
+                const loading = document.getElementById('loading');
+                const userTable = document.getElementById('userTable');
+                
+                tableBody.innerHTML = '';
+                
+                if (users.length === 0) {
+                    loading.innerHTML = 'No users found in database.';
+                    return;
+                }
+
+                users.forEach((user, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${user.telegramId || 'N/A'}</td>
+                        <td>@${user.username || 'No Username'}</td>
+                        <td>${user.firstName || 'N/A'}</td>
+                        <td>${new Date(user.createdAt).toLocaleString() || 'N/A'}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                loading.style.display = 'none';
+                userTable.style.display = 'table';
+            } catch (error) {
+                console.error('Error fetching users:', error);
+                document.getElementById('loading').innerHTML = 'Failed to load users data.';
+            }
+        }
+
+        fetchUsers();
+    </script>
+</body>
+</html>
