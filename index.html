@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RS Tap-to-Earn - Final App</title>
+    <title>RS Tap-to-Earn - Complete App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -63,6 +63,10 @@
 
         .section-view {
             display: none;
+        }
+
+        .section-view.active-view {
+            display: block;
         }
 
         /* --- MY ACCOUNT STYLES --- */
@@ -150,7 +154,7 @@
         }
 
         .xp-fill {
-            width: 49%;
+            width: 20%;
             height: 100%;
             background: linear-gradient(90deg, #ca8a04, #facc15);
             border-radius: 4px;
@@ -234,6 +238,11 @@
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .action-card:active {
+            transform: scale(0.97);
         }
 
         .action-card.withdraw {
@@ -308,7 +317,7 @@
             cursor: pointer;
         }
 
-        /* Live Transaction Slider */
+        /* Live Transaction Box */
         .live-tx-container {
             background: var(--card-bg);
             border: 1px solid rgba(250, 204, 21, 0.2);
@@ -329,10 +338,6 @@
             position: absolute;
             width: calc(100% - 20px);
             animation: slideTransactions 12s linear infinite;
-        }
-
-        .tx-list-slider:hover {
-            animation-play-state: paused;
         }
 
         @keyframes slideTransactions {
@@ -370,32 +375,13 @@
         .tx-icon.expense { background: rgba(239, 68, 68, 0.2); color: #f87171; }
         .tx-icon.bonus { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
 
-        .tx-info h5 {
-            font-size: 11px;
-            color: #fff;
-        }
-
-        .tx-info p {
-            font-size: 9px;
-            color: var(--text-muted);
-        }
-
-        .tx-right {
-            text-align: right;
-        }
-
-        .tx-amt {
-            font-size: 11px;
-            font-weight: bold;
-        }
-
+        .tx-info h5 { font-size: 11px; color: #fff; }
+        .tx-info p { font-size: 9px; color: var(--text-muted); }
+        .tx-right { text-align: right; }
+        .tx-amt { font-size: 11px; font-weight: bold; }
         .tx-amt.plus { color: #4ade80; }
         .tx-amt.minus { color: #f87171; }
-
-        .tx-time {
-            font-size: 8px;
-            color: var(--text-muted);
-        }
+        .tx-time { font-size: 8px; color: var(--text-muted); }
 
         .security-grid {
             display: grid;
@@ -414,20 +400,64 @@
             cursor: pointer;
         }
 
-        .security-card i {
-            font-size: 18px;
-            color: var(--gold-primary);
-        }
+        .security-card i { font-size: 18px; color: var(--gold-primary); }
+        .security-info h5 { font-size: 11px; color: #fff; }
+        .security-info p { font-size: 9px; color: var(--text-muted); }
 
-        .security-info h5 {
-            font-size: 11px;
+        /* General styling for Home, Ranking, Referral, Support views */
+        .page-content-box {
+            background: var(--card-bg);
+            border: 1px solid rgba(250, 204, 21, 0.2);
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 12px;
+        }
+        .page-content-box h3 { color: var(--gold-primary); font-size: 16px; margin-bottom: 8px; }
+        .page-content-box p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+        /* Withdraw Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-box {
+            background: #12131c;
+            border: 2px solid #38bdf8;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 360px;
+            padding: 20px;
+            box-shadow: 0 0 25px rgba(56,189,248,0.3);
+        }
+        .modal-box h3 { color: #38bdf8; font-size: 18px; margin-bottom: 12px; text-align: center; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 5px; }
+        .form-control {
+            width: 100%;
+            background: #07070b;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 10px;
             color: #fff;
+            font-size: 13px;
         }
-
-        .security-info p {
-            font-size: 9px;
-            color: var(--text-muted);
+        .modal-btn-row { display: flex; gap: 10px; margin-top: 15px; }
+        .modal-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
         }
+        .btn-cancel { background: #334155; color: #fff; }
+        .btn-submit { background: #38bdf8; color: #000; }
 
         /* Bottom Navigation */
         .bottom-nav {
@@ -465,59 +495,62 @@
     <div class="app-frame">
         <div class="app-container">
             
-            <!-- HOME VIEW (অপরিবর্তিত রাখা হয়েছে) -->
-            <div id="home-view" class="section-view" style="display: none;">
-                <div style="padding: 20px; text-align: center;">
-                    <h2 style="color: var(--gold-primary);">🏠 Home Screen</h2>
-                    <p style="color: var(--text-muted); margin-top: 10px;">হোম সেকশনটি আপনার আগের ডিজাইনেই সুরক্ষিত রাখা হয়েছে।</p>
+            <!-- 1. HOME VIEW -->
+            <div id="home-view" class="section-view">
+                <div class="page-content-box" style="text-align: center; background: linear-gradient(135deg, #181926, #12131c);">
+                    <h3 style="color: var(--gold-primary); font-size: 20px;"><i class="fas fa-coins"></i> RS Tap-to-Earn</h3>
+                    <p style="margin-top: 5px;">ট্যাপ করে কয়েন আয় করুন এবং দারুণ সব পুরস্কার জিতুন!</p>
+                    <div style="font-size: 32px; font-weight: bold; color: var(--gold-primary); margin: 15px 0;" id="tap-coin-display">50,000 RS</div>
+                    <button onclick="handleTap()" style="background: linear-gradient(135deg, #ca8a04, #facc15); color: #000; border: none; padding: 12px 30px; font-weight: bold; font-size: 16px; border-radius: 25px; cursor: pointer; box-shadow: 0 0 15px rgba(250,204,21,0.4);">
+                        <i class="fas fa-hand-pointer"></i> TAP NOW
+                    </button>
+                </div>
+                <div class="page-content-box">
+                    <h3><i class="fas fa-bullhorn"></i> নোটিশ বোর্ড</h3>
+                    <p>আমাদের অ্যাপে স্বাগতম। নিয়ম মেনে কাজ করুন এবং প্রতিদিন বোনাস সংগ্রহ করুন। যেকোনো সমস্যায় কাস্টমার সার্ভিসে যোগাযোগ করুন।</p>
                 </div>
             </div>
 
-            <!-- RANKING VIEW (অপরিবর্তিত রাখা হয়েছে) -->
-            <div id="ranking-view" class="section-view" style="display: none;">
-                <div style="padding: 20px; text-align: center;">
-                    <h2 style="color: var(--gold-primary);">🏆 Ranking Screen</h2>
-                    <p style="color: var(--text-muted); margin-top: 10px;">র‍্যাংকিং লিস্ট অপরিবর্তিত আছে।</p>
+            <!-- 2. RANKING VIEW -->
+            <div id="ranking-view" class="section-view">
+                <div class="page-content-box">
+                    <h3><i class="fas fa-trophy"></i> লিডারবোর্ড ও র‍্যাংকিং</h3>
+                    <p>এ সপ্তাহের সেরা আর্নারদের তালিকা:</p>
+                    <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 8px; border-radius: 8px;">
+                            <span>🥇 1. Rifat_99</span> <strong style="color: var(--gold-primary);">1,250,000 RS</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 8px; border-radius: 8px;">
+                            <span>🥈 2. Tanvir_Pro</span> <strong style="color: var(--gold-primary);">980,000 RS</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 8px; border-radius: 8px;">
+                            <span>🥉 3. RS Sahebaliy (You)</span> <strong style="color: var(--gold-primary);">50,000 RS</strong>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- REFERRAL VIEW (অপরিবর্তিত রাখা হয়েছে) -->
-            <div id="referral-view" class="section-view" style="display: none;">
-                <div style="padding: 20px; text-align: center;">
-                    <h2 style="color: var(--gold-primary);">👥 Referral Screen</h2>
-                    <p style="color: var(--text-muted); margin-top: 10px;">রেফারেল প্রোগ্রাম আগের মতো বহাল আছে।</p>
-                </div>
-            </div>
-
-            <!-- CUSTOMER SERVICE VIEW (অপরিবর্তিত রাখা হয়েছে) -->
-            <div id="support-view" class="section-view" style="display: none;">
-                <div style="padding: 20px; text-align: center;">
-                    <h2 style="color: var(--gold-primary);">🎧 Customer Service</h2>
-                    <p style="color: var(--text-muted); margin-top: 10px;">সাপোর্ট ও কাস্টমার সার্ভিস অপশন অপরিবর্তিত রয়েছে।</p>
-                </div>
-            </div>
-
-            <!-- MY ACCOUNT VIEW (আপনার নতুন নির্দেশমতো আপডেটকৃত) -->
-            <div id="account-view" class="section-view" style="display: block;">
+            <!-- 3. MY ACCOUNT VIEW (Default active) -->
+            <div id="account-view" class="section-view active-view">
                 <div class="account-box">
                     
-                    <!-- Profile Card (নতুনদের জন্য VIP 1 থেকে শুরু) -->
+                    <!-- Profile Card -->
                     <div class="profile-card">
                         <div class="profile-top">
                             <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120" class="profile-avatar" alt="Profile">
                             <div class="profile-info">
-                                <h3>RS New User <i class="fas fa-check-circle"></i></h3>
-                                <p>ID: RS987654</p>
-                                <div class="vip-badge" id="vip-level-badge"><i class="fas fa-crown"></i> VIP 1</div>
+                                <h3>RS Sahebaliy <i class="fas fa-check-circle"></i></h3>
+                                <p>ID: RS123456</p>
+                                <div class="vip-badge"><i class="fas fa-crown"></i> VIP 1</div>
                             </div>
                         </div>
                         <div class="xp-container">
                             <div class="xp-bar-row">
-                                <span id="current-lv-text">Lv.1</span>
-                                <span id="xp-text">0 / 1,000 XP</span>
+                                <span>Lv.1</span>
+                                <span>250 / 1,000 XP</span>
                             </div>
                             <div class="xp-bar">
-                                <div class="xp-fill" id="xp-fill-bar" style="width: 0%;"></div>
+                                <div class="xp-fill"></div>
                             </div>
                             <div class="xp-footer">👑 Dream • Play • Earn • Grow</div>
                         </div>
@@ -533,11 +566,11 @@
                         </div>
                     </div>
 
-                    <!-- Total Balance Box (LocalStorage দ্বারা ব্যালেন্স সেভ থাকবে, রিফ্রেশ বা লগআউটে কাটবে না) -->
+                    <!-- Total Balance Box -->
                     <div class="total-bal-box">
                         <p><i class="fas fa-eye"></i> Total Balance</p>
-                        <h2 id="balance-display">0 <span style="font-size: 14px;">RS TOKEN</span></h2>
-                        <p style="color: #4ade80; font-weight: bold; margin-top: 4px;" id="bdt-display">≈ ৳0.00 BDT</p>
+                        <h2 id="account-balance-text">50,000 <span style="font-size: 14px;">RS TOKEN</span></h2>
+                        <p style="color: #4ade80; font-weight: bold; margin-top: 4px;" id="account-bdt-text">≈ ৳450.00 BDT</p>
                     </div>
 
                     <!-- Deposit & Withdraw Buttons -->
@@ -549,7 +582,7 @@
                             </div>
                             <i class="fas fa-wallet" style="font-size: 18px; color: var(--gold-primary);"></i>
                         </div>
-                        <div class="action-card withdraw" onclick="handleWithdraw()">
+                        <div class="action-card withdraw" onclick="openWithdrawModal()">
                             <div class="action-info">
                                 <h4>Withdraw</h4>
                                 <p>Get Your Earnings</p>
@@ -560,17 +593,17 @@
 
                     <!-- 5 Feature Grid -->
                     <div class="feature-grid">
-                        <div class="feature-item" onclick="switchTab('referral-view', document.querySelectorAll('.nav-item')[3])">
+                        <div class="feature-item" onclick="switchTabByAction('referral')">
                             <i class="fas fa-users"></i>
                             <h5>Referral</h5>
                             <p>Invite & Earn</p>
                         </div>
-                        <div class="feature-item" onclick="claimDailyBonus()">
+                        <div class="feature-item" onclick="alert('Claiming Daily Bonus: +500 RS added!')">
                             <i class="fas fa-gift"></i>
                             <h5>Daily Bonus</h5>
                             <p>Claim Now</p>
                         </div>
-                        <div class="feature-item" onclick="completeTask()">
+                        <div class="feature-item" onclick="alert('Opening Tasks: Watch & Earn')">
                             <i class="fas fa-tasks"></i>
                             <h5>Tasks</h5>
                             <p>Complete</p>
@@ -580,7 +613,7 @@
                             <h5>Shop</h5>
                             <p>Buy Items</p>
                         </div>
-                        <div class="feature-item" onclick="switchTab('ranking-view', document.querySelectorAll('.nav-item')[1])">
+                        <div class="feature-item" onclick="switchTabByAction('ranking')">
                             <i class="fas fa-trophy"></i>
                             <h5>Leaderboard</h5>
                             <p>Top Players</p>
@@ -625,11 +658,11 @@
                                 <p>2FA, Password</p>
                             </div>
                         </div>
-                        <div class="security-card" onclick="switchTab('support-view', document.querySelectorAll('.nav-item')[4])">
+                        <div class="security-card" onclick="switchTabByAction('support')">
                             <i class="fas fa-headset"></i>
                             <div class="security-info">
                                 <h5>Support</h5>
-                                <p>Live chat</p>
+                                <p>Customer Care</p>
                             </div>
                         </div>
                     </div>
@@ -637,104 +670,152 @@
                 </div>
             </div>
 
+            <!-- 4. REFERRAL VIEW -->
+            <div id="referral-view" class="section-view">
+                <div class="page-content-box">
+                    <h3><i class="fas fa-users"></i> রেফারেল সিস্টেম</h3>
+                    <p>আপনার বন্ধুদের আমন্ত্রণ জানান এবং প্রতি রেফারে ১,০০০ RS বোনাস পান!</p>
+                    <div style="background: #07070b; padding: 10px; border-radius: 8px; margin-top: 12px; border: 1px dashed var(--gold-primary); text-align: center;">
+                        <span style="font-size: 13px; color: #fff;">https://t.me/RSTapBot?start=RS123456</span>
+                    </div>
+                    <button onclick="alert('রেফারেল লিংক কপি করা হয়েছে!')" style="width: 100%; margin-top: 10px; background: var(--gold-primary); color: #000; border: none; padding: 10px; font-weight: bold; border-radius: 8px; cursor: pointer;">
+                        <i class="fas fa-copy"></i> লিংক কপি করুন
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5. SUPPORT VIEW -->
+            <div id="support-view" class="section-view">
+                <div class="page-content-box">
+                    <h3><i class="fas fa-headset"></i> কাস্টমার সার্ভিস ও সাপোর্ট</h3>
+                    <p>যেকোনো প্রয়োজনে আমাদের অফিসিয়াল সাপোর্ট টিমের সাথে যোগাযোগ করুন। আমরা ২৪/ঘণ্টা আপনার সেবায় নিয়োজিত আছি।</p>
+                    <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+                        <button onclick="alert('Telegram Support: @RSSupport_Admin')" style="background: #0ea5e9; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                            <i class="fab fa-telegram"></i> টেলিগ্রাম সাপোর্ট
+                        </button>
+                        <button onclick="alert('WhatsApp Support: +8801700000000')" style="background: #22c55e; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                            <i class="fab fa-whatsapp"></i> হোয়াটসঅ্যাপ সাপোর্ট
+                        </button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- Bottom Navigation (সবার জন্য আগের মতো ফিক্সড) -->
+        <!-- Withdraw Modal Popup -->
+        <div class="modal-overlay" id="withdraw-modal">
+            <div class="modal-box">
+                <h3><i class="fas fa-wallet"></i> উত্তোলন (Withdraw)</h3>
+                <div class="form-group">
+                    <label>পেমেন্ট মাধ্যম নির্বাচন করুন:</label>
+                    <select id="withdraw-method" class="form-control">
+                        <option value="bkash">বিকাশ (bKash)</option>
+                        <option value="nagad">নগদ (Nagad)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>টাকার পরিমাণ (টাকা / BDT): (মিনিমাম ৪০০ - সর্বোচ্চ ৫০০০)</label>
+                    <input type="number" id="withdraw-amount" class="form-control" placeholder="যেমন: ৫০০">
+                </div>
+                <div class="form-group">
+                    <label>অ্যাকাউন্ট নম্বর:</label>
+                    <input type="text" id="withdraw-number" class="form-control" placeholder="017XXXXXXXX">
+                </div>
+                <div class="modal-btn-row">
+                    <button class="modal-btn btn-cancel" onclick="closeWithdrawModal()">বাতিল</button>
+                    <button class="modal-btn btn-submit" onclick="submitWithdraw()">সাবমিট করুন</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
         <div class="bottom-nav">
-            <button class="nav-item" onclick="switchTab('home-view', this)"><i class="fas fa-home"></i></button>
-            <button class="nav-item" onclick="switchTab('ranking-view', this)"><i class="fas fa-trophy"></i></button>
-            <button class="nav-item active" onclick="switchTab('account-view', this)"><i class="fas fa-user-circle"></i></button>
-            <button class="nav-item" onclick="switchTab('referral-view', this)"><i class="fas fa-users"></i></button>
-            <button class="nav-item" onclick="switchTab('support-view', this)"><i class="fas fa-headset"></i></button>
+            <button class="nav-item" onclick="switchTab('home', this)"><i class="fas fa-home"></i></button>
+            <button class="nav-item" onclick="switchTab('ranking', this)"><i class="fas fa-trophy"></i></button>
+            <button class="nav-item active" onclick="switchTab('account', this)"><i class="fas fa-user-circle"></i></button>
+            <button class="nav-item" onclick="switchTab('referral', this)"><i class="fas fa-users"></i></button>
+            <button class="nav-item" onclick="switchTab('support', this)"><i class="fas fa-headset"></i></button>
         </div>
     </div>
 
     <script>
-        // LocalStorage Implementation: ব্যালেন্স এবং লেভেল সুরক্ষিত রাখতে
-        let balance = localStorage.getItem('rs_user_balance') !== null ? parseInt(localStorage.getItem('rs_user_balance')) : 0;
-        let xp = localStorage.getItem('rs_user_xp') !== null ? parseInt(localStorage.getItem('rs_user_xp')) : 0;
-        let vipLevel = localStorage.getItem('rs_user_vip') !== null ? parseInt(localStorage.getItem('rs_user_vip')) : 1;
-        
-        const rate = 150 / 1000000;
+        // LocalStorage & State Management
+        let userBalance = localStorage.getItem('rs_balance') ? parseInt(localStorage.getItem('rs_balance')) : 50000;
 
-        function updateUI() {
-            document.getElementById('balance-display').innerHTML = balance.toLocaleString() + ` <span style="font-size: 14px;">RS TOKEN</span>`;
-            document.getElementById('bdt-display').innerText = "≈ ৳" + (balance * rate).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " BDT";
-            
-            document.getElementById('vip-level-badge').innerHTML = `<i class="fas fa-crown"></i> VIP ${vipLevel}`;
-            document.getElementById('current-lv-text').innerText = `Lv.${vipLevel}`;
-            document.getElementById('xp-text').innerText = `${xp.toLocaleString()} / ${(vipLevel * 1000).toLocaleString()} XP`;
-            let xpPercent = Math.min(100, (xp / (vipLevel * 1000)) * 100);
-            document.getElementById('xp-fill-bar').style.width = xpPercent + '%';
+        function updateUIBalance() {
+            document.getElementById('account-balance-text').innerHTML = `${userBalance.toLocaleString()} <span style="font-size: 14px;">RS TOKEN</span>`;
+            let bdtValue = (userBalance * 0.009).toFixed(2);
+            document.getElementById('account-bdt-text').innerText = `≈ ৳${bdtValue} BDT`;
+            localStorage.setItem('rs_balance', userBalance);
+        }
+        updateUIBalance();
 
-            // ডাটা লোকালস্টোরেজে সেভ করে রাখা হচ্ছে যাতে রিফ্রেশ বা বের হলে মুছে না যায়
-            localStorage.setItem('rs_user_balance', balance);
-            localStorage.setItem('rs_user_xp', xp);
-            localStorage.setItem('rs_user_vip', vipLevel);
+        function handleTap() {
+            userBalance += 100;
+            updateUIBalance();
+            alert("সফল! ট্যাপ করার জন্য ১০০ RS কয়েন যোগ করা হয়েছে।");
         }
 
-        // Deposit temporary closed notice
         function handleDeposit() {
             alert("⚠️ দুঃখিত! ডিপোজিট অপশনটি বর্তমানে সাময়িক সময়ের জন্য বন্ধ রয়েছে। পরবর্তী আপডেটের জন্য অপেক্ষা করুন।");
         }
 
-        // Withdraw handling
-        function handleWithdraw() {
-            let amount = prompt("উত্তোলন করতে চান এমন RS টোকেনের পরিমাণ লিখুন (ন্যূনতম ১,০০০,০০০ RS):", "1000000");
-            if(amount) {
-                let parsedAmt = parseInt(amount);
-                if(parsedAmt < 1000000) {
-                    alert("⚠️ সর্বনিম্ন ১,০০০,০০০ RS টোকেন হতে হবে!");
-                    return;
-                }
-                if(parsedAmt > balance) {
-                    alert("❌ আপনার অ্যাকাউন্টে পর্যাপ্ত টোকেন নেই!");
-                    return;
-                }
-                let method = prompt("পেমেন্ট পদ্ধতি নির্বাচন করুন: bkash, nagad বা rocket লিখুন", "bkash");
-                if(method) {
-                    let number = prompt("আপনার অ্যাকাউন্ট নম্বরটি দিন:", "017XXXXXXXX");
-                    if(number) {
-                        balance -= parsedAmt;
-                        updateUI();
-                        alert(`সফল! আপনার ${parsedAmt.toLocaleString()} RS টোকেন উত্তোলনের অনুরোধ ${method.toUpperCase()} (${number}) নম্বরে প্রসেস করা হয়েছে।`);
-                    }
-                }
-            }
+        // Withdraw Modal Control Functions
+        function openWithdrawModal() {
+            document.getElementById('withdraw-modal').style.display = 'flex';
         }
 
-        function claimDailyBonus() {
-            balance += 500;
-            xp += 150;
-            if(xp >= vipLevel * 1000) {
-                vipLevel++;
-                alert("অভিনন্দন! আপনার ভিআইপি লেভেল বৃদ্ধি পেয়েছে!");
-            }
-            updateUI();
-            alert("ডেইলি বোনাস সফলভাবে ক্লাইম করা হয়েছে (+৫০০ RS)!");
+        function closeWithdrawModal() {
+            document.getElementById('withdraw-modal').style.display = 'none';
         }
 
-        function completeTask() {
-            balance += 1000;
-            xp += 250;
-            if(xp >= vipLevel * 1000) {
-                vipLevel++;
-                alert("অভিনন্দন! আপনার ভিআইপি লেভেল বৃদ্ধি পেয়েছে!");
+        function submitWithdraw() {
+            let method = document.getElementById('withdraw-method').value;
+            let amount = parseInt(document.getElementById('withdraw-amount').value);
+            let number = document.getElementById('withdraw-number').value;
+
+            // শর্ত যাচাই (Validation)
+            if(isNaN(amount) || amount < 400 || amount > 5000) {
+                alert("❌ ত্রুটি: উত্তোলনের পরিমাণ ন্যূনতম ৪০০ টাকা এবং সর্বোচ্চ ৫০০০ টাকার মধ্যে হতে হবে।");
+                return;
             }
-            updateUI();
-            alert("টাস্ক সফলভাবে সম্পন্ন হয়েছে (+১,০০০ RS)!");
+
+            let bdtEquivalentInTokens = amount * 111; // আনুমানিক কনভার্শন বা একাউন্ট ব্যালেন্স চেক
+            if(userBalance < bdtEquivalentInTokens) {
+                alert("❌ ত্রুটি: আপনার একাউন্টে পর্যাপ্ত টোকেন বা ব্যালেন্স নেই!");
+                return;
+            }
+
+            if(!number || number.length < 11) {
+                alert("❌ ত্রুটি: দয়া করে সঠিক ১১ ডিজিটের অ্যাকাউন্ট নম্বর প্রদান করুন।");
+                return;
+            }
+
+            // সফল হলে ব্যালেন্স কেটে নেওয়া বা প্রসেস করা
+            alert(`✅ সফল! আপনার ${amount} টাকার উত্তোলনের অনুরোধ ${method.toUpperCase()} (${number}) নম্বরে সফলভাবে সাবমিট করা হয়েছে।`);
+            closeWithdrawModal();
         }
 
         // Tab Navigation Switcher
-        function switchTab(viewId, btnElement) {
-            document.querySelectorAll('.section-view').forEach(view => view.style.display = 'none');
-            document.getElementById(viewId).style.display = 'block';
-
+        function switchTab(tabName, btnElement) {
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
             if(btnElement) btnElement.classList.add('active');
+
+            document.querySelectorAll('.section-view').forEach(view => view.classList.remove('active-view'));
+            
+            const targetView = document.getElementById(`${tabName}-view`);
+            if(targetView) targetView.classList.add('active-view');
         }
 
-        // Live Animated Transactions Data
+        function switchTabByAction(tabName) {
+            let navButtons = document.querySelectorAll('.bottom-nav .nav-item');
+            let indexMap = {'home': 0, 'ranking': 1, 'account': 2, 'referral': 3, 'support': 4};
+            if(navButtons[indexMap[tabName]]) {
+                switchTab(tabName, navButtons[indexMap[tabName]]);
+            }
+        }
+
+        // Populate Live Animated Transactions
         const txSlider = document.getElementById('tx-slider');
         const txData = [
             {type: "income", icon: "fa-arrow-up", title: "Referral Reward", sub: "From: Demo_User_01", amt: "+ 1,000 RS", time: "2026-06-08 14:32", cls: "plus"},
@@ -766,9 +847,6 @@
             `;
         });
         txSlider.innerHTML = txHtml;
-
-        // Initial UI Load
-        updateUI();
     </script>
 </body>
 </html>
