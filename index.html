@@ -263,6 +263,7 @@
             padding: 10px;
             text-align: center;
             box-shadow: 0 4px 12px rgba(250, 204, 21, 0.15);
+            cursor: pointer;
         }
 
         .ad-card h3 {
@@ -761,7 +762,7 @@
             justify-content: center;
         }
 
-        /* --- MY ACCOUNT STYLES (MATCHING IMAGE 304.png) --- */
+        /* --- MY ACCOUNT STYLES --- */
         .account-box {
             display: flex;
             flex-direction: column;
@@ -841,7 +842,7 @@
         .vip-progress-fill {
             height: 100%;
             background: linear-gradient(to right, #facc15, #f59e0b);
-            width: 15%; /* ডায়নামিকালি আপডেট হবে */
+            width: 15%;
             border-radius: 4px;
         }
 
@@ -932,7 +933,7 @@
             background: linear-gradient(145deg, #0f172a, #0b0f19);
         }
 
-        /* Bottom Navigation (5 Icons Only) */
+        /* Bottom Navigation */
         .bottom-nav {
             position: absolute;
             bottom: 0;
@@ -1000,19 +1001,19 @@
                 </div>
 
                 <div class="ads-grid">
-                    <div class="ad-card">
+                    <div class="ad-card" onclick="claimAdReward(1200)">
                         <h3>1,200 RS</h3>
                         <span>Watch Ad 1</span>
                     </div>
-                    <div class="ad-card">
+                    <div class="ad-card" onclick="claimAdReward(600)">
                         <h3>600 RS</h3>
                         <span>Watch Ad 2</span>
                     </div>
-                    <div class="ad-card">
+                    <div class="ad-card" onclick="claimAdReward(900)">
                         <h3>900 RS</h3>
                         <span>Watch Ad 3</span>
                     </div>
-                    <div class="ad-card">
+                    <div class="ad-card" onclick="claimAdReward(1400)">
                         <h3>1,400 RS</h3>
                         <span>Watch Ad 4</span>
                     </div>
@@ -1024,32 +1025,8 @@
                 <div class="ads-section-title" style="text-align: center; margin-bottom: 5px;">🏆 GLOBAL LEADERBOARD 🏆</div>
                 <p style="text-align: center; font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Top earners of RS Token</p>
 
-                <div class="podium-section">
-                    <div class="podium-item rank-2">
-                        <div class="podium-avatar-wrapper">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="podium-avatar" alt="Top 2" style="border-color: #cbd5e1;">
-                        </div>
-                        <h5>Rakibul H.</h5>
-                        <div class="p-score">4,200,000 RS</div>
-                        <div class="p-bdt">630.00 BDT</div>
-                    </div>
-                    <div class="podium-item rank-1">
-                        <i class="fas fa-crown crown"></i>
-                        <div class="podium-avatar-wrapper">
-                            <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100" class="podium-avatar" alt="Top 1">
-                        </div>
-                        <h5>RS Sahebaliy</h5>
-                        <div class="p-score" style="font-size: 12px;">8,950,000 RS</div>
-                        <div class="p-bdt">1,342.50 BDT</div>
-                    </div>
-                    <div class="podium-item rank-3">
-                        <div class="podium-avatar-wrapper">
-                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" class="podium-avatar" alt="Top 3" style="border-color: #b45309;">
-                        </div>
-                        <h5>Sumaiya A.</h5>
-                        <div class="p-score">3,100,000 RS</div>
-                        <div class="p-bdt">465.00 BDT</div>
-                    </div>
+                <div class="podium-section" id="podium-container">
+                    <!-- Dynamic Podium -->
                 </div>
 
                 <div class="leaderboard-list" id="leaderboard-container"></div>
@@ -1077,7 +1054,7 @@
                     <div class="ref-stats-grid">
                         <div class="ref-stat-box">
                             <i class="fas fa-users"></i>
-                            <h5>128</h5>
+                            <h5 id="total-ref-count">128</h5>
                             <p>মোট রেফারেল</p>
                         </div>
                         <div class="ref-stat-box">
@@ -1087,12 +1064,12 @@
                         </div>
                         <div class="ref-stat-box">
                             <i class="fas fa-wallet"></i>
-                            <h5>128K</h5>
+                            <h5 id="total-ref-earn">128K</h5>
                             <p>মোট আয়</p>
                         </div>
                         <div class="ref-stat-box">
                             <i class="fas fa-trophy"></i>
-                            <h5>Lv. 5</h5>
+                            <h5 id="ref-level-text">Lv. 5</h5>
                             <p>রেফারেল লেভেল</p>
                         </div>
                     </div>
@@ -1131,11 +1108,10 @@
                 </div>
             </div>
 
-            <!-- MY ACCOUNT SCREEN VIEW (EXACTLY MATCHING IMAGE 304.png) -->
+            <!-- MY ACCOUNT SCREEN VIEW -->
             <div id="account-view" class="section-view">
                 <div class="account-box">
                     
-                    <!-- Profile Header Card (VIP 1 থেকে শুরু ও ডায়নামিক প্রোগ্রেস) -->
                     <div class="account-profile-card">
                         <div class="account-profile-left">
                             <div class="account-avatar-wrapper" onclick="triggerPhotoUpload()" style="cursor: pointer;" title="ফটো পরিবর্তন করুন">
@@ -1146,7 +1122,6 @@
                                 <h3 id="profile-name-text">RS Sahebaliy <i class="fas fa-check-circle" style="font-size: 12px; color: var(--gold-primary);"></i></h3>
                                 <p id="profile-id-text">ID: RS123456</p>
                                 
-                                <!-- VIP & XP Bar -->
                                 <div class="vip-progress-box">
                                     <div class="vip-header-row">
                                         <span id="vip-level-label">VIP 1 (Lv.1)</span>
@@ -1163,7 +1138,6 @@
                         </button>
                     </div>
 
-                    <!-- Customize Card (Theme, Name & Photo Generator) -->
                     <div class="customize-banner" onclick="openEditProfileModal()">
                         <div class="customize-left">
                             <div class="customize-icon">
@@ -1177,34 +1151,31 @@
                         <i class="fas fa-chevron-right" style="color: var(--gold-primary);"></i>
                     </div>
 
-                    <!-- Total Balance Card -->
                     <div class="balance-card" style="margin-bottom: 0; text-align: left; padding: 16px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                             <span style="font-size: 11px; color: var(--text-muted);">Total Balance <i class="fas fa-eye"></i></span>
-                            <span style="background: rgba(250,204,21,0.15); border: 1px solid var(--gold-primary); color: var(--gold-primary); font-size: 9px; padding: 2px 8px; border-radius: 10px; font-weight: bold;">DEMO BALANCE</span>
+                            <span style="background: rgba(250,204,21,0.15); border: 1px solid var(--gold-primary); color: var(--gold-primary); font-size: 9px; padding: 2px 8px; border-radius: 10px; font-weight: bold;">LIVE BALANCE</span>
                         </div>
                         <h2 id="acc-balance-main" style="font-size: 24px; color: var(--gold-primary);">50,000 <span style="font-size: 12px; color: #fff;">RS TOKEN</span></h2>
                         <p style="font-size: 11px; color: var(--text-muted);">≈ <span id="acc-bdt-main">7,500.00</span> BDT</p>
                     </div>
 
-                    <!-- Conversion Rate Box -->
                     <div class="conversion-card">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <div style="width: 32px; height: 32px; background: var(--gold-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-weight: bold; font-size: 12px;">RS</div>
                             <div>
-                                <h5 style="font-size: 11px; font-weight: bold;">50,000,000 RS TOKEN</h5>
-                                <p style="font-size: 10px; color: var(--text-muted);">≈ ৳7,500,000.00 BDT</p>
+                                <h5 style="font-size: 11px; font-weight: bold;">1,000,000 RS TOKEN</h5>
+                                <p style="font-size: 10px; color: var(--text-muted);">≈ ৳150.00 BDT</p>
                             </div>
                         </div>
                         <div style="text-align: right;">
                             <p style="font-size: 9px; color: var(--text-muted);"><i class="fas fa-calculator"></i> Conversion Rate</p>
-                            <p style="font-size: 11px; font-weight: bold; color: var(--gold-primary);">1,000,000 RS = $150</p>
+                            <p style="font-size: 11px; font-weight: bold; color: var(--gold-primary);">1M RS = 150 BDT</p>
                         </div>
                     </div>
 
-                    <!-- Deposit & Withdraw Action Buttons -->
                     <div class="action-buttons-grid">
-                        <button class="action-btn-box" onclick="alert('ডিপোজিট সিস্টেমটি সাময়িকভাবে বন্ধ আছে।')">
+                        <button class="action-btn-box" onclick="simulateDeposit()">
                             <div>
                                 <div style="display: flex; align-items: center; gap: 6px; color: var(--gold-primary); font-weight: bold; font-size: 13px;">
                                     <i class="fas fa-wallet"></i> Deposit
@@ -1225,14 +1196,12 @@
                         </button>
                     </div>
 
-                    <!-- SECURE WITHDRAWAL PORTAL (শর্তযুক্ত: min 400, max 5000 BDT) -->
                     <div id="withdrawSection" style="display: none; background: #121622; border: 1px solid rgba(56,189,248,0.4); border-radius: 14px; padding: 14px; gap: 10px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
                             <h4 style="font-size: 12px; color: #38bdf8; font-weight: bold;"><i class="fas fa-shield-alt"></i> Secure Withdrawal</h4>
                             <span style="font-size: 9px; color: var(--gold-primary); background: rgba(250,204,21,0.1); padding: 2px 6px; border-radius: 4px;">Limit: ৳400 - ৳5,000</span>
                         </div>
 
-                        <!-- Payment Method (bKash / Nagad) -->
                         <div style="margin-bottom: 8px;">
                             <label style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 4px;">Select Method</label>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
@@ -1245,13 +1214,11 @@
                             </div>
                         </div>
 
-                        <!-- Account Number Input -->
                         <div style="margin-bottom: 8px;">
                             <label style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 4px;">Account Number</label>
                             <input type="text" id="wdAccountNumber" placeholder="017XXXXXXXX" style="width: 100%; background: #07070b; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px; color: #fff; font-size: 11px; outline: none;">
                         </div>
 
-                        <!-- Amount Input -->
                         <div style="margin-bottom: 10px;">
                             <label style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 4px;">Amount (BDT)</label>
                             <input type="number" id="wdAmountInput" placeholder="Min ৳400, Max ৳5,000" style="width: 100%; background: #07070b; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px; color: #fff; font-size: 11px; outline: none;">
@@ -1261,70 +1228,19 @@
                         <p id="wdErrorMsg" style="font-size: 10px; text-align: center; color: #ef4444; margin-top: 4px;"></p>
                     </div>
 
-                    <!-- 5 Feature Grid Icons -->
-                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; text-align: center;">
-                        <div style="background: var(--card-bg); border: 1px solid rgba(250,204,21,0.2); border-radius: 10px; padding: 8px 2px;">
-                            <i class="fas fa-users" style="color: var(--gold-primary); font-size: 14px;"></i>
-                            <h6 style="font-size: 9px; color: #fff; margin-top: 2px;">Referral</h6>
-                        </div>
-                        <div style="background: var(--card-bg); border: 1px solid rgba(250,204,21,0.2); border-radius: 10px; padding: 8px 2px;">
-                            <i class="fas fa-gift" style="color: var(--gold-primary); font-size: 14px;"></i>
-                            <h6 style="font-size: 9px; color: #fff; margin-top: 2px;">Daily Bonus</h6>
-                        </div>
-                        <div style="background: var(--card-bg); border: 1px solid rgba(250,204,21,0.2); border-radius: 10px; padding: 8px 2px;">
-                            <i class="fas fa-tasks" style="color: var(--gold-primary); font-size: 14px;"></i>
-                            <h6 style="font-size: 9px; color: #fff; margin-top: 2px;">Tasks</h6>
-                        </div>
-                        <div style="background: var(--card-bg); border: 1px solid rgba(250,204,21,0.2); border-radius: 10px; padding: 8px 2px;">
-                            <i class="fas fa-store" style="color: var(--gold-primary); font-size: 14px;"></i>
-                            <h6 style="font-size: 9px; color: #fff; margin-top: 2px;">Shop</h6>
-                        </div>
-                        <div style="background: var(--card-bg); border: 1px solid rgba(250,204,21,0.2); border-radius: 10px; padding: 8px 2px;">
-                            <i class="fas fa-trophy" style="color: var(--gold-primary); font-size: 14px;"></i>
-                            <h6 style="font-size: 9px; color: #fff; margin-top: 2px;">Leaderboard</h6>
-                        </div>
-                    </div>
-
-                    <!-- Recent Transactions (Image 304.png style) -->
                     <div style="background: var(--card-bg); border: 1px solid rgba(250,204,21,0.2); border-radius: 12px; padding: 12px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                             <span style="font-size: 12px; font-weight: bold; color: var(--gold-primary);"><i class="fas fa-history"></i> Recent Transactions</span>
                             <span style="font-size: 10px; color: var(--gold-primary); cursor: pointer;">View All ›</span>
                         </div>
-                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 11px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <div style="width: 24px; height: 24px; background: rgba(34,197,94,0.2); color: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px;"><i class="fas fa-arrow-up"></i></div>
-                                    <div>
-                                        <p style="font-weight: bold;">Referral Reward</p>
-                                        <p style="font-size: 9px; color: var(--text-muted);">From: Demo_User_01</p>
-                                    </div>
-                                </div>
-                                <div style="text-align: right;">
-                                    <p style="color: #22c55e; font-weight: bold;">+ 1,000 RS</p>
-                                    <p style="font-size: 9px; color: var(--text-muted);">2025-09-18 14:32</p>
-                                </div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <div style="width: 24px; height: 24px; background: rgba(239,68,68,0.2); color: #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px;"><i class="fas fa-arrow-down"></i></div>
-                                    <div>
-                                        <p style="font-weight: bold;">Withdrawal</p>
-                                        <p style="font-size: 9px; color: var(--text-muted);">To: bKash (****1234)</p>
-                                    </div>
-                                </div>
-                                <div style="text-align: right;">
-                                    <p style="color: #ef4444; font-weight: bold;">- 5,000 RS</p>
-                                    <p style="font-size: 9px; color: var(--text-muted);">2025-09-18 12:10</p>
-                                </div>
-                            </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 11px;" id="transaction-list-container">
+                            <!-- Dynamic Transactions -->
                         </div>
                     </div>
 
                 </div>
             </div>
 
-            <!-- PLACEHOLDER FOR OTHERS -->
             <div id="other-view" class="section-view">
                 <div style="text-align: center; margin-top: 150px; color: var(--gold-primary);">
                     <h2>Coming Soon...</h2>
@@ -1333,7 +1249,7 @@
 
         </div>
 
-        <!-- Bottom Navigation (5 Icons Only) -->
+        <!-- Bottom Navigation -->
         <div class="bottom-nav">
             <button class="nav-item active" onclick="switchTab('home', this)"><i class="fas fa-home"></i></button>
             <button class="nav-item" onclick="switchTab('ranking', this)"><i class="fas fa-trophy"></i></button>
@@ -1344,10 +1260,33 @@
     </div>
 
     <script>
-        let balance = 50000;
+        // LocalStorage Data Management
+        let balance = parseInt(localStorage.getItem('rs_balance')) || 50000;
+        let userName = localStorage.getItem('rs_username') || "RS Sahebaliy";
+        let userAvatar = localStorage.getItem('rs_avatar') || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120";
+        let transactions = JSON.parse(localStorage.getItem('rs_transactions')) || [
+            {type: 'reward', title: 'Referral Reward', desc: 'From: Demo_User_01', amount: '+ 1,000 RS', color: '#22c55e', icon: 'fa-arrow-up', time: '2026-09-22 14:32'},
+            {type: 'withdraw', title: 'Withdrawal', desc: 'To: bKash (****1234)', amount: '- 5,000 RS', color: '#ef4444', icon: 'fa-arrow-down', time: '2026-09-22 12:10'}
+        ];
+        let refUsersList = JSON.parse(localStorage.getItem('rs_ref_users')) || [
+            {name: "Demo_Arif_01", level: "Lv.5", time: "2026-09-22 14:32", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60"},
+            {name: "Rasel_007", level: "Lv.4", time: "2026-09-22 13:21", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60"},
+            {name: "Sakib_Alam", level: "Lv.3", time: "2026-09-22 12:10", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60"},
+            {name: "Tanjim_88", level: "Lv.3", time: "2026-09-22 11:45", img: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=60"},
+            {name: "Nusrat_Jahan", level: "Lv.2", time: "2026-09-22 10:32", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60"}
+        ];
+
         const rate = 150 / 1000000;
         const possibleRewards = [1, 2, 3, 5, 10];
         const rewardColors = ['#facc15', '#38bdf8', '#c084fc', '#22c55e', '#ec4899'];
+
+        function saveData() {
+            localStorage.setItem('rs_balance', balance);
+            localStorage.setItem('rs_username', userName);
+            localStorage.setItem('rs_avatar', userAvatar);
+            localStorage.setItem('rs_transactions', JSON.stringify(transactions));
+            localStorage.setItem('rs_ref_users', JSON.stringify(refUsersList));
+        }
 
         function updateUI() {
             document.getElementById('balance-display').innerText = balance.toLocaleString() + " RS";
@@ -1359,7 +1298,9 @@
                 document.getElementById('acc-bdt-main').innerText = (balance * rate).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
             }
 
-            // ডায়নামিক ভিআইপি লেভেল ক্যালকুলেশন (১ থেকে শুরু)
+            document.getElementById('profile-name-text').innerHTML = `${userName} <i class="fas fa-check-circle" style="font-size: 12px; color: var(--gold-primary);"></i>`;
+            document.getElementById('user-avatar-img').src = userAvatar;
+
             let vipLevel = Math.floor(balance / 50000) + 1;
             let xpCurrent = balance % 50000;
             let xpNeeded = 50000;
@@ -1374,8 +1315,17 @@
                 xpTextEl.innerText = `${xpCurrent.toLocaleString()} / ${xpNeeded.toLocaleString()} XP`;
                 fillEl.style.width = percentage + '%';
             }
+
+            document.getElementById('total-ref-count').innerText = refUsersList.length + 120;
+            document.getElementById('total-ref-earn').innerText = ((refUsersList.length + 120) * 1000 >= 1000 ? Math.floor(((refUsersList.length + 120) * 1000)/1000) + 'K' : (refUsersList.length + 120) * 1000);
+            
+            renderTransactions();
+            renderReferredUsers();
+            renderLeaderboard();
+            saveData();
         }
 
+        // Tap Logic
         const tapTarget = document.getElementById('tap-target');
         tapTarget.addEventListener('click', (e) => {
             let reward = possibleRewards[Math.floor(Math.random() * possibleRewards.length)];
@@ -1399,6 +1349,148 @@
             setTimeout(() => { floatText.remove(); }, 800);
         });
 
+        // Claim Ad Reward
+        function claimAdReward(amount) {
+            balance += amount;
+            let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
+            transactions.unshift({
+                type: 'reward', title: 'Ad Watch Reward', desc: 'Bonus from Ads System', amount: `+ ${amount} RS`, color: '#22c55e', icon: 'fa-arrow-up', time: nowStr
+            });
+            updateUI();
+            alert(`সফলভাবে ${amount} RS টোকেন রিওয়ার্ড যোগ হয়েছে!`);
+        }
+
+        // Render Dynamic Transactions
+        function renderTransactions() {
+            let container = document.getElementById('transaction-list-container');
+            if(!container) return;
+            let html = "";
+            transactions.slice(0, 5).forEach(tx => {
+                html += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="width: 24px; height: 24px; background: ${tx.color}33; color: ${tx.color}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px;"><i class="fas ${tx.icon}"></i></div>
+                            <div>
+                                <p style="font-weight: bold;">${tx.title}</p>
+                                <p style="font-size: 9px; color: var(--text-muted);">${tx.desc}</p>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <p style="color: ${tx.color}; font-weight: bold;">${tx.amount}</p>
+                            <p style="font-size: 9px; color: var(--text-muted);">${tx.time}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // Render Referred Users List
+        function renderReferredUsers() {
+            let container = document.getElementById('referred-users-container');
+            if(!container) return;
+            let html = "";
+            refUsersList.forEach((u, index) => {
+                let rankNum = String(index + 1).padStart(2, '0');
+                html += `
+                    <div class="ref-user-row">
+                        <div class="ref-user-left">
+                            <span class="ref-user-rank">${rankNum}</span>
+                            <img src="${u.img}" class="ref-user-avatar" alt="User">
+                            <div class="ref-user-info">
+                                h5>${u.name}</h5>
+                                <p><i class="fas fa-circle" style="font-size: 6px;"></i> Online (${u.level}) • ${u.time}</p>
+                            </div>
+                        </div>
+                        <div class="ref-user-right">
+                            <div class="reward-amt">1,000 RS</div>
+                            <span class="status-tag">পেয়েছেন</span>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // Render Real-time Leaderboard and Podium
+        function renderLeaderboard() {
+            let podiumContainer = document.getElementById('podium-container');
+            let leaderboardContainer = document.getElementById('leaderboard-container');
+            if(!podiumContainer || !leaderboardContainer) return;
+
+            let topUsers = [
+                {name: "RS Sahebaliy", score: balance + 8900000, bdt: ((balance + 8900000)*rate).toFixed(2), avatar: userAvatar},
+                {name: "Rakibul H.", score: 4200000, bdt: (4200000*rate).toFixed(2), avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100"},
+                {name: "Sumaiya A.", score: 3100000, bdt: (3100000*rate).toFixed(2), avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100"}
+            ];
+
+            // Sort top users by score descending
+            topUsers.sort((a, b) => b.score - a.score);
+
+            podiumContainer.innerHTML = `
+                <div class="podium-item rank-2">
+                    <div class="podium-avatar-wrapper">
+                        <img src="${topUsers[1].avatar}" class="podium-avatar" alt="Top 2" style="border-color: #cbd5e1;">
+                    </div>
+                    <h5>${topUsers[1].name}</h5>
+                    <div class="p-score">${topUsers[1].score.toLocaleString()} RS</div>
+                    <div class="p-bdt">${topUsers[1].bdt} BDT</div>
+                </div>
+                <div class="podium-item rank-1">
+                    <i class="fas fa-crown crown"></i>
+                    <div class="podium-avatar-wrapper">
+                        <img src="${topUsers[0].avatar}" class="podium-avatar" alt="Top 1">
+                    </div>
+                    <h5>${topUsers[0].name}</h5>
+                    <div class="p-score" style="font-size: 12px;">${topUsers[0].score.toLocaleString()} RS</div>
+                    <div class="p-bdt">${topUsers[0].bdt} BDT</div>
+                </div>
+                <div class="podium-item rank-3">
+                    <div class="podium-avatar-wrapper">
+                        <img src="${topUsers[2].avatar}" class="podium-avatar" alt="Top 3" style="border-color: #b45309;">
+                    </div>
+                    <h5>${topUsers[2].name}</h5>
+                    <div class="p-score">${topUsers[2].score.toLocaleString()} RS</div>
+                    <div class="p-bdt">${topUsers[2].bdt} BDT</div>
+                </div>
+            `;
+
+            const sampleNames = ["Tanvir Ahmed", "Nayeem Khan", "Farhan Sadik", "Mehedi Hasan", "Ashraful Islam", "Imran Hossain", "Jahidul Islam", "Sabbir Rahman", "Mahmudul Hasan", "Al-Amin Sheikh"];
+            const avatarUrls = [
+                "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50",
+                "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=50",
+                "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=50",
+                "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=50",
+                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50"
+            ];
+            
+            let htmlContent = "";
+            for (let i = 4; i <= 50; i++) {
+                let randomName = sampleNames[(i + 3) % sampleNames.length] + " " + i;
+                let randomAvatar = avatarUrls[i % avatarUrls.length];
+                let score = Math.max(50000, (2900000 - (i * 45000)));
+                let bdtVal = (score * rate).toFixed(2);
+                
+                htmlContent += `
+                    <div class="leader-row">
+                        <div class="leader-left">
+                            <span class="leader-rank">#${i}</span>
+                            <img src="${randomAvatar}" class="leader-avatar" alt="User">
+                            <div class="leader-info">
+                                <h4>${randomName}</h4>
+                                <p>Level ${Math.max(1, 10 - Math.floor(i/10))}</p>
+                            </div>
+                        </div>
+                        <div class="leader-right">
+                            <div class="l-score">${score.toLocaleString()} RS</div>
+                            <div class="l-bdt">${bdtVal} BDT</div>
+                        </div>
+                    </div>
+                `;
+            }
+            leaderboardContainer.innerHTML = htmlContent;
+        }
+
         // Timer
         let totalSeconds = 2 * 3600 - 45;
         setInterval(() => {
@@ -1407,8 +1499,10 @@
                 let hours = Math.floor(totalSeconds / 3600);
                 let minutes = Math.floor((totalSeconds % 3600) / 60);
                 let seconds = totalSeconds % 60;
-                document.getElementById('countdown-timer').innerText = 
-                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                let timerEl = document.getElementById('countdown-timer');
+                if(timerEl) {
+                    timerEl.innerText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                }
             }
         }, 1000);
 
@@ -1420,10 +1514,23 @@
             let inputElem = document.getElementById('ref-link-input');
             inputElem.select();
             navigator.clipboard.writeText(inputElem.value);
-            alert("রেফারেল লিংক কপি করা হয়েছে!");
+            
+            // Add a new dynamic referral user simulation on copy/share
+            let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
+            refUsersList.unshift({
+                name: "Active_Ref_" + Math.floor(Math.random() * 900 + 100),
+                level: "Lv.1",
+                time: nowStr,
+                img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=60"
+            });
+            balance += 1000;
+            transactions.unshift({
+                type: 'reward', title: 'Referral Bonus', desc: 'New user joined via link', amount: '+ 1,000 RS', color: '#22c55e', icon: 'fa-arrow-up', time: nowStr
+            });
+            updateUI();
+            alert("রেফারেল লিংক কপি করা হয়েছে এবং নতুন বোনাস যুক্ত হয়েছে!");
         }
 
-        // Tab Navigation Switcher
         function switchTab(tabName, btnElement) {
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
@@ -1434,6 +1541,7 @@
                 document.getElementById('home-view').style.display = 'block';
             } else if (tabName === 'ranking') {
                 document.getElementById('ranking-view').style.display = 'block';
+                renderLeaderboard();
             } else if (tabName === 'referral') {
                 document.getElementById('referral-view').style.display = 'block';
             } else if (tabName === 'support') {
@@ -1445,7 +1553,6 @@
             }
         }
 
-        // Profile Photo & Name Customization Functions
         function triggerPhotoUpload() {
             document.getElementById('avatar-file-input').click();
         }
@@ -1455,20 +1562,35 @@
             if (file) {
                 let reader = new FileReader();
                 reader.onload = function(e) {
-                    document.getElementById('user-avatar-img').src = e.target.result;
+                    userAvatar = e.target.result;
+                    updateUI();
                 }
                 reader.readAsDataURL(file);
             }
         }
 
         function openEditProfileModal() {
-            let newName = prompt("আপনার নতুন নাম লিখুন:", document.getElementById('profile-name-text').innerText.replace('✔', '').trim());
-            if (newName) {
-                document.getElementById('profile-name-text').innerHTML = newName + ` <i class="fas fa-check-circle" style="font-size: 12px; color: var(--gold-primary);"></i>`;
+            let newName = prompt("আপনার নতুন নাম লিখুন:", userName);
+            if (newName && newName.trim() !== "") {
+                userName = newName.trim();
+                updateUI();
             }
         }
 
-        // Withdrawal Portal Toggle & Validation (Min 400 BDT, Max 5000 BDT)
+        function simulateDeposit() {
+            let amount = prompt("ডিপোজিট করতে চান কত RS টোকেন?", "10000");
+            if(amount && !isNaN(amount)) {
+                let val = parseInt(amount);
+                balance += val;
+                let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
+                transactions.unshift({
+                    type: 'reward', title: 'Token Deposit', desc: 'Added via system', amount: `+ ${val.toLocaleString()} RS`, color: '#22c55e', icon: 'fa-arrow-up', time: nowStr
+                });
+                updateUI();
+                alert("সফলভাবে টোকেন ডিপোজিট হয়েছে!");
+            }
+        }
+
         function toggleWithdrawSection() {
             let section = document.getElementById('withdrawSection');
             section.style.display = section.style.display === 'none' ? 'block' : 'none';
@@ -1477,6 +1599,7 @@
         function submitWithdrawal() {
             let amount = parseFloat(document.getElementById('wdAmountInput').value);
             let accNum = document.getElementById('wdAccountNumber').value;
+            let payMethod = document.querySelector('input[name="payMethod"]:checked').value;
             let errorEl = document.getElementById('wdErrorMsg');
             let currentBdtBalance = balance * rate;
 
@@ -1488,7 +1611,7 @@
             }
 
             if (isNaN(amount) || amount < 400) {
-                errorEl.innerText = "সর্বনিম্ন উত্তোলন ৪০০ টাকা হতে হবে (৪০০ টাকার নিচে উত্তোলন অসম্ভব)।";
+                errorEl.innerText = "সর্বনিম্ন উত্তোলন ৪০০ টাকা হতে হবে।";
                 return;
             }
 
@@ -1502,85 +1625,19 @@
                 return;
             }
 
-            alert("উত্তোলন সফল হয়েছে! আপনার পেমেন্ট রিকোয়েস্টটি প্রসেস করা হচ্ছে।");
+            let requiredRs = Math.ceil(amount / rate);
+            balance -= requiredRs;
+
+            let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
+            transactions.unshift({
+                type: 'withdraw', title: 'Withdrawal', desc: `To: ${payMethod} (${accNum})`, amount: `- ${requiredRs.toLocaleString()} RS`, color: '#ef4444', icon: 'fa-arrow-down', time: nowStr
+            });
+
+            updateUI();
+            alert(`উত্তোলন সফল হয়েছে! ৳${amount} টাকা (${requiredRs} RS) কেটে নেওয়া হয়েছে।`);
             document.getElementById('withdrawSection').style.display = 'none';
         }
 
-        // Generate Leaderboard Users (100 Users)
-        const leaderboardContainer = document.getElementById('leaderboard-container');
-        const sampleNames = ["Tanvir Ahmed", "Nayeem Khan", "Farhan Sadik", "Mehedi Hasan", "Ashraful Islam", "Imran Hossain", "Jahidul Islam", "Sabbir Rahman", "Mahmudul Hasan", "Al-Amin Sheikh"];
-        const avatarUrls = [
-            "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50",
-            "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=50",
-            "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=50",
-            "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=50",
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50"
-        ];
-        
-        let htmlContent = "";
-        for (let i = 4; i <= 100; i++) {
-            let randomName = sampleNames[(i + 3) % sampleNames.length] + " " + i;
-            let randomAvatar = avatarUrls[i % avatarUrls.length];
-            let score = (2900000 - (i * 25000));
-            let bdtVal = (score * rate).toFixed(2);
-            
-            htmlContent += `
-                <div class="leader-row">
-                    <div class="leader-left">
-                        <span class="leader-rank">#${i}</span>
-                        <img src="${randomAvatar}" class="leader-avatar" alt="User">
-                        <div class="leader-info">
-                            <h4>${randomName}</h4>
-                            <p>Level ${Math.max(1, 10 - Math.floor(i/10))}</p>
-                        </div>
-                    </div>
-                    <div class="leader-right">
-                        <div class="l-score">${score.toLocaleString()} RS</div>
-                        <div class="l-bdt">${bdtVal} BDT</div>
-                    </div>
-                </div>
-            `;
-        }
-        leaderboardContainer.innerHTML = htmlContent;
-
-        // Generate Referred Users List
-        const referredContainer = document.getElementById('referred-users-container');
-        const refUsers = [
-            {name: "Demo_Arif_01", level: "Lv.5", time: "2025-09-18 14:32", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60"},
-            {name: "Rasel_007", level: "Lv.4", time: "2025-09-18 13:21", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60"},
-            {name: "Sakib_Alam", level: "Lv.3", time: "2025-09-18 12:10", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60"},
-            {name: "Tanjim_88", level: "Lv.3", time: "2025-09-18 11:45", img: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=60"},
-            {name: "Nusrat_Jahan", level: "Lv.2", time: "2025-09-18 10:32", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60"},
-            {name: "Fahim_TheBoss", level: "Lv.2", time: "2025-09-18 09:21", img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=60"},
-            {name: "Rony_Official", level: "Lv.1", time: "2025-09-18 08:14", img: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=60"},
-            {name: "Mitu_24", level: "Lv.1", time: "2025-09-18 07:03", img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=60"},
-            {name: "Shuvo_123", level: "Lv.2", time: "2025-09-18 06:27", img: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=60"},
-            {name: "Hasan_501", level: "Lv.1", time: "2025-09-18 05:12", img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=60"}
-        ];
-
-        let refHtml = "";
-        refUsers.forEach((u, index) => {
-            let rankNum = String(index + 1).padStart(2, '0');
-            refHtml += `
-                <div class="ref-user-row">
-                    <div class="ref-user-left">
-                        <span class="ref-user-rank">${rankNum}</span>
-                        <img src="${u.img}" class="ref-user-avatar" alt="User">
-                        <div class="ref-user-info">
-                            <h5>${u.name}</h5>
-                            <p><i class="fas fa-circle" style="font-size: 6px;"></i> Online (${u.level}) • ${u.time}</p>
-                        </div>
-                    </div>
-                    <div class="ref-user-right">
-                        <div class="reward-amt">1,000 RS</div>
-                        <span class="status-tag">পেয়েছেন</span>
-                    </div>
-                </div>
-            `;
-        });
-        referredContainer.innerHTML = refHtml;
-
-        // AI Chat Functionality
         function sendMessage() {
             let inputField = document.getElementById('user-input');
             let text = inputField.value.trim();
@@ -1607,6 +1664,7 @@
             }
         }
 
+        // Initial setup on load
         updateUI();
     </script>
 </body>
