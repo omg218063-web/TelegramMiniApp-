@@ -65,7 +65,7 @@
             display: none;
         }
 
-        /* --- MY ACCOUNT STYLES --- */
+        /* --- MY ACCOUNT STYLES (Matching Screenshot 304_2.png) --- */
         .account-box {
             display: flex;
             flex-direction: column;
@@ -150,7 +150,7 @@
         }
 
         .xp-fill {
-            width: 15%;
+            width: 49%;
             height: 100%;
             background: linear-gradient(90deg, #ca8a04, #facc15);
             border-radius: 4px;
@@ -313,6 +313,7 @@
             cursor: pointer;
         }
 
+        /* Live Animated Transaction Box */
         .live-tx-container {
             background: var(--card-bg);
             border: 1px solid rgba(250, 204, 21, 0.2);
@@ -469,29 +470,29 @@
     <div class="app-frame">
         <div class="app-container">
             
-            <!-- MY ACCOUNT VIEW -->
+            <!-- MY ACCOUNT VIEW (Default active based on screenshot 304_2.png) -->
             <div id="account-view" class="section-view" style="display: block;">
                 <div class="account-box">
                     
-                    <!-- Profile Card (VIP 1 Initial Setup) -->
+                    <!-- Profile Card -->
                     <div class="profile-card">
                         <div class="profile-top">
                             <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120" class="profile-avatar" alt="Profile">
                             <div class="profile-info">
                                 <h3>RS Sahebaliy <i class="fas fa-check-circle"></i></h3>
                                 <p>ID: RS123456</p>
-                                <div class="vip-badge"><i class="fas fa-crown"></i> VIP 1</div>
+                                <div class="vip-badge"><i class="fas fa-crown"></i> VIP 5</div>
                             </div>
                         </div>
                         <div class="xp-container">
                             <div class="xp-bar-row">
-                                <span>Lv.1</span>
-                                <span>150 / 1,000 XP</span>
+                                <span>Lv.5</span>
+                                <span>2,450 / 5,000 XP</span>
                             </div>
                             <div class="xp-bar">
                                 <div class="xp-fill"></div>
                             </div>
-                            <div class="xp-footer">👑 Tap to earn & upgrade your VIP level!</div>
+                            <div class="xp-footer">👑 Dream • Play • Earn • Grow</div>
                         </div>
                         <div class="customize-card" onclick="alert('Customize Profile: Change avatar, theme & name options.')">
                             <div class="customize-left">
@@ -508,8 +509,8 @@
                     <!-- Total Balance Box -->
                     <div class="total-bal-box">
                         <p><i class="fas fa-eye"></i> Total Balance</p>
-                        <h2>10,000 <span style="font-size: 14px;">RS TOKEN</span></h2>
-                        <p style="color: #4ade80; font-weight: bold; margin-top: 4px;">≈ ৳1,500.00 BDT</p>
+                        <h2>50,000 <span style="font-size: 14px;">RS TOKEN</span></h2>
+                        <p style="color: #4ade80; font-weight: bold; margin-top: 4px;">≈ ৳7,500.00 BDT</p>
                     </div>
 
                     <!-- Deposit & Withdraw Buttons -->
@@ -559,7 +560,7 @@
                         </div>
                     </div>
 
-                    <!-- Recent Transactions -->
+                    <!-- Recent Transactions (Live Auto Up/Down Animation) -->
                     <div class="section-header-row">
                         <div class="section-title"><i class="fas fa-history"></i> Recent Transactions</div>
                         <span class="view-all-link" onclick="alert('Viewing all transactions history')">View All ></span>
@@ -567,7 +568,7 @@
 
                     <div class="live-tx-container">
                         <div class="tx-list-slider" id="tx-slider">
-                            <!-- Transactions populated dynamically -->
+                            <!-- Transactions will be populated dynamically and loop smoothly -->
                         </div>
                     </div>
 
@@ -611,7 +612,7 @@
                 </div>
             </div>
 
-            <!-- OTHER VIEWS -->
+            <!-- OTHER VIEWS PLACEHOLDER -->
             <div id="other-view" class="section-view">
                 <div style="text-align: center; margin-top: 150px; color: var(--gold-primary);">
                     <h2>Section Active...</h2>
@@ -631,10 +632,12 @@
     </div>
 
     <script>
+        // Deposit temporary closed notice
         function handleDeposit() {
             alert("⚠️ দুঃখিত! ডিপোজিট অপশনটি বর্তমানে সাময়িক সময়ের জন্য বন্ধ রয়েছে। পরবর্তী আপডেটের জন্য অপেক্ষা করুন।");
         }
 
+        // Withdraw handling
         function handleWithdraw() {
             let amount = prompt("উত্তোলন করতে চান এমন RS টোকেনের পরিমাণ লিখুন (ন্যূনতম ১,০০০,০০০ RS):", "1000000");
             if(amount) {
@@ -648,19 +651,24 @@
             }
         }
 
+        // Tab Navigation Switcher
         function switchTab(tabName, btnElement) {
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
+            // Can be expanded to switch between main tabs
         }
 
+        // Populate Live Animated Transactions
         const txSlider = document.getElementById('tx-slider');
         const txData = [
             {type: "income", icon: "fa-arrow-up", title: "Referral Reward", sub: "From: Demo_User_01", amt: "+ 1,000 RS", time: "2026-06-08 14:32", cls: "plus"},
             {type: "expense", icon: "fa-arrow-down", title: "Withdrawal", sub: "To: bKash (****1234)", amt: "- 5,000 RS", time: "2026-06-08 12:10", cls: "minus"},
             {type: "bonus", icon: "fa-gift", title: "Daily Bonus", sub: "Login Reward", amt: "+ 500 RS", time: "2026-06-08 10:45", cls: "plus"},
-            {type: "bonus", icon: "fa-video", title: "Task Complete", sub: "Video Watch (x5)", amt: "+ 2,500 RS", time: "2026-06-08 09:21", cls: "plus"}
+            {type: "bonus", icon: "fa-video", title: "Task Complete", sub: "Video Watch (x5)", amt: "+ 2,500 RS", time: "2026-06-08 09:21", cls: "plus"},
+            {type: "income", icon: "fa-user-plus", title: "Referral Bonus", sub: "From: Rifat_99", amt: "+ 1,000 RS", time: "2026-06-08 08:15", cls: "plus"}
         ];
 
+        // Duplicate array to make seamless infinite loop animation
         let repeatedTx = [...txData, ...txData];
         let txHtml = "";
         repeatedTx.forEach(tx => {
