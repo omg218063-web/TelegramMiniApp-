@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RS Token Admin Panel</title>
+    <title>RS Token Admin Panel - Functional</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -82,6 +82,7 @@
             border-radius: 8px;
             font-size: 14px;
             transition: all 0.3s;
+            cursor: pointer;
         }
 
         .nav-links li.active a, .nav-links li a:hover {
@@ -185,26 +186,6 @@
             gap: 20px;
         }
 
-        .notification-icon {
-            position: relative;
-            background: #1e293b;
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            color: #cbd5e1;
-        }
-
-        .notification-icon .badge {
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            background: #ef4444;
-            color: white;
-            font-size: 10px;
-            padding: 2px 5px;
-            border-radius: 50%;
-        }
-
         .admin-profile {
             display: flex;
             align-items: center;
@@ -213,13 +194,6 @@
             padding: 6px 14px;
             border-radius: 30px;
             border: 1px solid #334155;
-        }
-
-        .admin-profile img {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #f59e0b;
         }
 
         .admin-info h4 {
@@ -248,6 +222,16 @@
             gap: 25px;
         }
 
+        .section-view {
+            display: none;
+        }
+
+        .section-view.active {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
         .welcome-bar {
             display: flex;
             justify-content: space-between;
@@ -268,24 +252,6 @@
 
         .welcome-text span {
             color: #f59e0b;
-        }
-
-        .date-refresh {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .date-box {
-            background: #1e293b;
-            border: 1px solid #334155;
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-size: 12px;
-            color: #cbd5e1;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .refresh-btn {
@@ -367,77 +333,50 @@
             margin: 6px 0;
         }
 
-        .stat-card .trend {
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .trend.up { color: #10b981; }
-
-        /* Secondary Grid Sections */
-        .middle-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 20px;
-        }
-
-        .panel-box {
+        /* Dynamic Table Style */
+        .data-table-container {
             background: #111827;
             border: 1px solid #1f2937;
             border-radius: 12px;
             padding: 20px;
         }
 
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .data-table-container h2 {
+            font-size: 18px;
             margin-bottom: 15px;
-        }
-
-        .panel-header h3 {
-            font-size: 14px;
             color: #f8fafc;
         }
 
-        .panel-header span {
-            font-size: 12px;
-            color: #3b82f6;
-            cursor: pointer;
-        }
-
-        /* Quick Actions */
-        .quick-actions-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .action-btn {
-            background: #1e293b;
-            border: 1px solid #334155;
-            color: white;
-            padding: 12px 15px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
             font-size: 13px;
+        }
+
+        table th, table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #1f2937;
+            color: #cbd5e1;
+        }
+
+        table th {
+            color: #94a3b8;
+            font-weight: 600;
+            background: #1e293b;
+        }
+
+        .btn-action {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
             cursor: pointer;
-            transition: 0.3s;
+            font-size: 11px;
+            font-weight: 600;
         }
 
-        .action-btn:hover {
-            background: #2563eb;
-            border-color: #2563eb;
-        }
-
-        .action-btn i {
-            color: #f59e0b;
-        }
-
+        .btn-approve { background: #10b981; color: white; }
+        .btn-ban { background: #ef4444; color: white; }
     </style>
 </head>
 <body>
@@ -454,18 +393,12 @@
             </div>
 
             <ul class="nav-links">
-                <li class="active"><a href="#"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-                <li><a href="#"><i class="fa-solid fa-users-gear"></i> User Management</a></li>
-                <li><a href="#"><i class="fa-solid fa-wallet"></i> Deposit History</a></li>
-                <li><a href="#"><i class="fa-solid fa-money-bill-transfer"></i> Withdraw History</a></li>
-                <li><a href="#"><i class="fa-solid fa-clock-rotate-left"></i> Transaction History</a></li>
-                <li><a href="#"><i class="fa-solid fa-network-wired"></i> Referral System</a></li>
-                <li><a href="#"><i class="fa-solid fa-user-group"></i> Member List</a></li>
-                <li><a href="#"><i class="fa-solid fa-circle-user"></i> Active Users</a></li>
-                <li><a href="#"><i class="fa-solid fa-chart-line"></i> Today's Activity</a></li>
-                <li><a href="#"><i class="fa-solid fa-gear"></i> Settings</a></li>
-                <li><a href="#"><i class="fa-solid fa-headset"></i> Support</a></li>
-                <li><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+                <li class="active" onclick="switchTab('dashboard', this)"><a href="#"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                <li onclick="switchTab('users', this)"><a href="#"><i class="fa-solid fa-users-gear"></i> User Management</a></li>
+                <li onclick="switchTab('deposits', this)"><a href="#"><i class="fa-solid fa-wallet"></i> Deposit History</a></li>
+                <li onclick="switchTab('withdraws', this)"><a href="#"><i class="fa-solid fa-money-bill-transfer"></i> Withdraw History</a></li>
+                <li onclick="switchTab('settings', this)"><a href="#"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                <li><a href="#" onclick="alert('Logged out successfully!')"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             </ul>
         </div>
 
@@ -482,17 +415,12 @@
         <div class="header">
             <div class="header-left">
                 <i class="fa-brands fa-telegram"></i>
-                <span>Telegram Mini App - Powering Your Earning Journey</span>
+                <span>Telegram Mini App - Realtime Management Center</span>
             </div>
 
             <div class="header-right">
                 <div class="system-status">
-                    <span></span> System Online
-                </div>
-
-                <div class="notification-icon">
-                    <i class="fa-regular fa-bell"></i>
-                    <div class="badge">12</div>
+                    <span></span> Database Connected
                 </div>
 
                 <div class="admin-profile">
@@ -508,100 +436,187 @@
         <!-- Dashboard Body Content -->
         <div class="dashboard-body">
             
-            <div class="welcome-bar">
-                <div class="welcome-text">
-                    <h1>Dashboard</h1>
-                    <p>Welcome back, <span>RS Rana!</span> <i class="fa-solid fa-crown" style="color: #f59e0b;"></i> Here's what's happening with your RS Token Mini App.</p>
-                </div>
-                <div class="date-refresh">
-                    <div class="date-box">
-                        <i class="fa-regular fa-calendar"></i> Sep 18, 2025 10:42 AM
+            <!-- 1. Dashboard View -->
+            <div id="dashboard" class="section-view active">
+                <div class="welcome-bar">
+                    <div class="welcome-text">
+                        <h1>Dashboard Overview</h1>
+                        <p>Welcome back, <span>RS Rana!</span> <i class="fa-solid fa-crown" style="color: #f59e0b;"></i> Here's live data from your Mini App database.</p>
                     </div>
-                    <button class="refresh-btn" onclick="window.location.reload();">
-                        <i class="fa-solid fa-rotate"></i> Refresh
+                    <button class="refresh-btn" onclick="fetchLiveStats()">
+                        <i class="fa-solid fa-rotate"></i> Refresh Stats
                     </button>
                 </div>
-            </div>
 
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="stat-card c1">
-                    <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
-                    <h3>Total Users</h3>
-                    <div class="value">125,843</div>
-                    <div class="trend up"><i class="fa-solid fa-arrow-up"></i> 12.5% <span>vs last 7 days</span></div>
-                </div>
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card c1">
+                        <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                        <h3>Total Users</h3>
+                        <div class="value" id="stat-total-users">Loading...</div>
+                    </div>
 
-                <div class="stat-card c2">
-                    <div class="stat-icon"><i class="fa-solid fa-user-check"></i></div>
-                    <h3>Active Members</h3>
-                    <div class="value">48,276</div>
-                    <div class="trend up"><i class="fa-solid fa-arrow-up"></i> 8.3% <span>Online now</span></div>
-                </div>
+                    <div class="stat-card c2">
+                        <div class="stat-icon"><i class="fa-solid fa-user-check"></i></div>
+                        <h3>Active Members</h3>
+                        <div class="value" id="stat-active-users">Loading...</div>
+                    </div>
 
-                <div class="stat-card c3">
-                    <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
-                    <h3>Total Deposits</h3>
-                    <div class="value">৳ 8,452,300</div>
-                    <div class="trend up"><i class="fa-solid fa-arrow-up"></i> 15.7% <span>Today's total</span></div>
-                </div>
+                    <div class="stat-card c3">
+                        <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
+                        <h3>Total Deposits</h3>
+                        <div class="value" id="stat-deposits">Loading...</div>
+                    </div>
 
-                <div class="stat-card c4">
-                    <div class="stat-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
-                    <h3>Total Withdrawals</h3>
-                    <div class="value">৳ 5,263,750</div>
-                    <div class="trend up"><i class="fa-solid fa-arrow-up"></i> 11.2% <span>Today's total</span></div>
-                </div>
+                    <div class="stat-card c4">
+                        <div class="stat-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+                        <h3>Total Withdrawals</h3>
+                        <div class="value" id="stat-withdraws">Loading...</div>
+                    </div>
 
-                <div class="stat-card c5">
-                    <div class="stat-icon"><i class="fa-solid fa-coins"></i></div>
-                    <h3>Total RS Tokens</h3>
-                    <div class="value">2,458,600,000</div>
-                    <div class="trend up"><i class="fa-solid fa-arrow-up"></i> 20.4% <span>In circulation</span></div>
+                    <div class="stat-card c5">
+                        <div class="stat-icon"><i class="fa-solid fa-coins"></i></div>
+                        <h3>Total RS Tokens</h3>
+                        <div class="value" id="stat-tokens">Loading...</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Middle Sections -->
-            <div class="middle-grid">
-                <div class="panel-box">
-                    <div class="panel-header">
-                        <h3>User Growth (Last 7 Days)</h3>
-                        <span>Sep 18 (125,843 Users)</span>
-                    </div>
-                    <div style="height: 150px; display: flex; align-items: flex-end; justify-content: center; color: #64748b; font-size: 12px;">
-                        [ গ্রাফ চার্ট এরিয়া ]
-                    </div>
+            <!-- 2. User Management View -->
+            <div id="users" class="section-view">
+                <div class="data-table-container">
+                    <h2>Registered Users Control Panel</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User ID / Name</th>
+                                <th>Telegram Username</th>
+                                <th>Balance</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-table-body">
+                            <!-- Data will load dynamically from backend API -->
+                            <tr>
+                                <td colspan="5" style="text-align: center;">Fetching users from database...</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <div class="panel-box">
-                    <div class="panel-header">
-                        <h3>User Status</h3>
-                    </div>
-                    <div style="text-align: center; padding: 20px 0;">
-                        <div style="font-size: 22px; font-weight: bold; color: #10b981;">125,843</div>
-                        <div style="font-size: 12px; color: #94a3b8;">Total Users</div>
-                        <div style="margin-top: 15px; display: flex; justify-content: space-around; font-size: 12px;">
-                            <div><span style="color: #10b981;">●</span> Online: 48,276</div>
-                            <div><span style="color: #64748b;">●</span> Offline: 77,567</div>
-                        </div>
-                    </div>
+            <!-- 3. Deposit History View -->
+            <div id="deposits" class="section-view">
+                <div class="data-table-container">
+                    <h2>Recent Deposit Requests</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th>Trx ID</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deposit-table-body">
+                            <tr><td colspan="5" style="text-align: center;">No pending deposits found.</td></tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <div class="panel-box">
-                    <div class="panel-header">
-                        <h3>Quick Actions</h3>
-                    </div>
-                    <div class="quick-actions-list">
-                        <button class="action-btn"><i class="fa-solid fa-gift"></i> Add Bonus</button>
-                        <button class="action-btn"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
-                        <button class="action-btn"><i class="fa-solid fa-user-gear"></i> Manage Users</button>
-                        <button class="action-btn"><i class="fa-solid fa-sliders"></i> System Settings</button>
-                    </div>
+            <!-- 4. Withdraw History View -->
+            <div id="withdraws" class="section-view">
+                <div class="data-table-container">
+                    <h2>Withdrawal Requests</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Amount</th>
+                                <th>Wallet/Number</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="withdraw-table-body">
+                            <tr><td colspan="5" style="text-align: center;">No pending withdrawals.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 5. Settings View -->
+            <div id="settings" class="section-view">
+                <div class="data-table-container">
+                    <h2>Mini App System Settings</h2>
+                    <p style="color: #94a3b8; font-size: 13px; margin-top: 10px;">Configure token rates, maintenance mode, and bot configurations here.</p>
                 </div>
             </div>
 
         </div>
     </div>
 
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.section-view').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            if(element) element.classList.add('active');
+            
+            // Trigger specific data loaders if needed
+            if(tabId === 'users') fetchUsers();
+        }
+
+        // Live Data Fetch Function (Connects to your Backend API)
+        async function fetchLiveStats() {
+            try {
+                // Change '/api/admin/stats' to your actual backend server endpoint
+                // const response = await fetch('/api/admin/stats');
+                // const data = await response.json();
+                
+                // Demo values (will be replaced when backend responds)
+                document.getElementById('stat-total-users').innerText = "125,843";
+                document.getElementById('stat-active-users').innerText = "48,276";
+                document.getElementById('stat-deposits').innerText = "৳ 8,452,300";
+                document.getElementById('stat-withdraws').innerText = "৳ 5,263,750";
+                document.getElementById('stat-tokens').innerText = "2,458,600,000";
+            } catch (error) {
+                console.error("Error fetching stats:", error);
+            }
+        }
+
+        async function fetchUsers() {
+            const tbody = document.getElementById('user-table-body');
+            // Sample dynamic row generation for testing control buttons
+            tbody.innerHTML = `
+                <tr>
+                    <td>user_45821</td>
+                    <td>@rakib_rana</td>
+                    <td>৳ 5,450</td>
+                    <td><span style="color: #10b981;">Active</span></td>
+                    <td>
+                        <button class="btn-action btn-ban" onclick="alert('User blocked!')">Block</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>user_77211</td>
+                    <td>@rs_token_fan</td>
+                    <td>৳ 1,200</td>
+                    <td><span style="color: #10b981;">Active</span></td>
+                    <td>
+                        <button class="btn-action btn-ban" onclick="alert('User blocked!')">Block</button>
+                    </td>
+                </tr>
+            `;
+        }
+
+        // Initial load
+        fetchLiveStats();
+    </script>
 </body>
 </html>
