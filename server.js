@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const User = require('./User'); // আপনার User.js মডেলটি ইমপোর্ট করা হলো
 
 const app = express();
+
+// স্ট্যাটিক ফোল্ডার (public) যুক্ত করা হলো যাতে admin.html ও অন্যান্য ফাইল ব্রাউজারে লোড হতে পারে
+app.use(express.static('public'));
+
 app.use(express.json()); // JSON ডেটা রিড করার জন্য
 
 // MongoDB কানেকশন
