@@ -247,11 +247,6 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            transition: background 0.2s;
-        }
-
-        .refresh-btn:active {
-            background: rgba(250, 204, 21, 0.3);
         }
 
         .ads-grid {
@@ -281,9 +276,9 @@
             color: var(--text-muted);
         }
 
-        /* --- RANKING / LEADERBOARD STYLES --- */
-        .ranking-container {
-            display: none; /* Toggled via JS */
+        /* --- RANKING / LEADERBOARD STYLES (Updated Frames) --- */
+        .section-view {
+            display: none;
         }
 
         .podium-section {
@@ -307,31 +302,42 @@
 
         .podium-item.rank-1 {
             width: 34%;
-            height: 150px;
+            height: 155px;
             border-color: #facc15;
-            background: linear-gradient(145deg, #232212, #12131c);
+            background: linear-gradient(145deg, #2b2710, #12131c);
+            box-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
         }
 
         .podium-item.rank-2 {
             width: 31%;
-            height: 130px;
+            height: 135px;
             border-color: #cbd5e1;
         }
 
         .podium-item.rank-3 {
             width: 31%;
-            height: 115px;
+            height: 120px;
             border-color: #b45309;
         }
 
+        .podium-avatar-wrapper {
+            position: relative;
+            width: 42px;
+            height: 42px;
+            margin: -26px auto 5px auto;
+        }
+
         .podium-avatar {
-            width: 38px;
-            height: 38px;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-            border: 2px solid var(--gold-primary);
             object-fit: cover;
-            margin: -25px auto 5px auto;
-            background: #000;
+            border: 2px solid var(--gold-primary);
+        }
+
+        .rank-1 .podium-avatar {
+            border: 3px solid #facc15;
+            box-shadow: 0 0 10px #facc15;
         }
 
         .podium-item h5 {
@@ -355,14 +361,15 @@
 
         .crown {
             position: absolute;
-            top: -12px;
+            top: -14px;
             left: 50%;
             transform: translateX(-50%);
             color: #facc15;
-            font-size: 14px;
+            font-size: 15px;
+            filter: drop-shadow(0 0 5px #facc15);
         }
 
-        /* Leaderboard List (100 Users) */
+        /* Leaderboard List */
         .leaderboard-list {
             display: flex;
             flex-direction: column;
@@ -426,6 +433,101 @@
             color: var(--text-muted);
         }
 
+        /* --- AI CUSTOMER SERVICE STYLES --- */
+        .support-box {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: space-between;
+        }
+
+        .support-header-card {
+            background: linear-gradient(145deg, #181926, #0f1017);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            border-radius: 14px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .support-header-card i {
+            font-size: 32px;
+            color: var(--gold-primary);
+            margin-bottom: 8px;
+        }
+
+        .support-header-card h3 {
+            font-size: 16px;
+            color: var(--gold-primary);
+        }
+
+        .support-header-card p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            background: var(--card-bg);
+            border: 1px solid rgba(250, 204, 21, 0.15);
+            border-radius: 12px;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 380px;
+            margin-bottom: 12px;
+        }
+
+        .chat-msg {
+            max-width: 80%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .chat-msg.bot {
+            background: #1e1b4b;
+            color: #e2e8f0;
+            align-self: flex-start;
+            border-left: 3px solid var(--gold-primary);
+        }
+
+        .chat-msg.user {
+            background: #ca8a04;
+            color: #fff;
+            align-self: flex-end;
+        }
+
+        .chat-input-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input-row input {
+            flex: 1;
+            background: var(--card-bg);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            border-radius: 10px;
+            padding: 10px 12px;
+            color: #fff;
+            outline: none;
+            font-size: 12px;
+        }
+
+        .chat-input-row button {
+            background: var(--gold-gradient);
+            border: none;
+            color: #000;
+            padding: 0 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
         /* Bottom Navigation (5 Icons Only) */
         .bottom-nav {
             position: absolute;
@@ -463,14 +565,12 @@
         <div class="app-container">
             
             <!-- HOME SCREEN VIEW -->
-            <div id="home-view">
-                <!-- Top Header Balance with RS -->
+            <div id="home-view" class="section-view" style="display: block;">
                 <div class="balance-card">
                     <h2 id="balance-display">50,000 RS</h2>
                     <p>≈ <span id="bdt-display">7,500.00</span> BDT (1M = 150 BDT)</p>
                 </div>
 
-                <!-- Tap Logo Section -->
                 <div class="tap-section">
                     <div class="logo-container" id="tap-target">
                         <div class="ring-gold"></div>
@@ -482,7 +582,6 @@
                     </div>
                 </div>
 
-                <!-- Daily Task & 2 Hours Live Timer Box -->
                 <div class="task-timer-box">
                     <div class="task-info">
                         <h4>Daily Task Reward</h4>
@@ -491,7 +590,6 @@
                     <div class="timer-badge" id="countdown-timer">01:59:45</div>
                 </div>
 
-                <!-- Ads Section Header with Refresh Button -->
                 <div class="ads-header-row">
                     <div class="ads-section-title">⭐ ADS REWARD SYSTEM ⭐</div>
                     <button class="refresh-btn" onclick="refreshAds()"><i class="fas fa-sync-alt"></i> Refresh</button>
@@ -518,39 +616,70 @@
             </div>
 
             <!-- RANKING SCREEN VIEW -->
-            <div id="ranking-view" class="ranking-container">
+            <div id="ranking-view" class="section-view">
                 <div class="ads-section-title" style="text-align: center; margin-bottom: 5px;">🏆 GLOBAL LEADERBOARD 🏆</div>
                 <p style="text-align: center; font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Top earners of RS Token</p>
 
-                <!-- Podium Top 3 -->
+                <!-- Podium Top 3 with Premium Frames & Unique Images -->
                 <div class="podium-section">
                     <!-- Rank 2 -->
                     <div class="podium-item rank-2">
-                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100" class="podium-avatar" alt="Top 2">
+                        <div class="podium-avatar-wrapper">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="podium-avatar" alt="Top 2" style="border-color: #cbd5e1;">
+                        </div>
                         <h5>Rakibul H.</h5>
                         <div class="p-score">4,200,000 RS</div>
                         <div class="p-bdt">630.00 BDT</div>
                     </div>
-                    <!-- Rank 1 -->
+                    <!-- Rank 1 (Special Premium Glow Frame) -->
                     <div class="podium-item rank-1">
                         <i class="fas fa-crown crown"></i>
-                        <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100" class="podium-avatar" alt="Top 1" style="border-color: #facc15;">
+                        <div class="podium-avatar-wrapper">
+                            <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100" class="podium-avatar" alt="Top 1">
+                        </div>
                         <h5>RS Sahebaliy</h5>
                         <div class="p-score" style="font-size: 12px;">8,950,000 RS</div>
                         <div class="p-bdt">1,342.50 BDT</div>
                     </div>
                     <!-- Rank 3 -->
                     <div class="podium-item rank-3">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" class="podium-avatar" alt="Top 3">
+                        <div class="podium-avatar-wrapper">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" class="podium-avatar" alt="Top 3" style="border-color: #b45309;">
+                        </div>
                         <h5>Sumaiya A.</h5>
                         <div class="p-score">3,100,000 RS</div>
                         <div class="p-bdt">465.00 BDT</div>
                     </div>
                 </div>
 
-                <!-- Leaderboard List (100 Users Demo generator) -->
-                <div class="leaderboard-list" id="leaderboard-container">
-                    <!-- Javascript will populate rows 4 to 100 here -->
+                <!-- Leaderboard List (100 Users with Unique Random Images) -->
+                <div class="leaderboard-list" id="leaderboard-container"></div>
+            </div>
+
+            <!-- AI CUSTOMER SERVICE SCREEN VIEW -->
+            <div id="support-view" class="section-view">
+                <div class="support-box">
+                    <div class="support-header-card">
+                        <i class="fas fa-robot"></i>
+                        <h3>RS AI Assistant</h3>
+                        <p>How can we help you with your mining or withdrawal today?</p>
+                    </div>
+
+                    <div class="chat-messages" id="chat-container">
+                        <div class="chat-msg bot">Hello! I am your RS Support Assistant. Ask me anything about tapping, withdrawals, or rewards!</div>
+                    </div>
+
+                    <div class="chat-input-row">
+                        <input type="text" id="user-input" placeholder="Type your message...">
+                        <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PLACEHOLDER FOR OTHERS -->
+            <div id="other-view" class="section-view">
+                <div style="text-align: center; margin-top: 150px; color: var(--gold-primary);">
+                    <h2>Coming Soon...</h2>
                 </div>
             </div>
 
@@ -567,7 +696,6 @@
     </div>
 
     <script>
-        // Balance & Tap System
         let balance = 50000;
         const rate = 150 / 1000000;
         const possibleRewards = [1, 2, 3, 5, 10];
@@ -598,28 +726,22 @@
             floatText.style.color = color;
 
             tapTarget.appendChild(floatText);
-            setTimeout(() => {
-                floatText.remove();
-            }, 800);
+            setTimeout(() => { floatText.remove(); }, 800);
         });
 
-        // 2 Hours Live Countdown Timer
-        let totalSeconds = 2 * 3600 - 45; // Starts around 1h 59m 15s
-        function startTimer() {
-            setInterval(() => {
-                if (totalSeconds > 0) {
-                    totalSeconds--;
-                    let hours = Math.floor(totalSeconds / 3600);
-                    let minutes = Math.floor((totalSeconds % 3600) / 60);
-                    let seconds = totalSeconds % 60;
-                    document.getElementById('countdown-timer').innerText = 
-                        `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                }
-            }, 1000);
-        }
-        startTimer();
+        // Timer
+        let totalSeconds = 2 * 3600 - 45;
+        setInterval(() => {
+            if (totalSeconds > 0) {
+                totalSeconds--;
+                let hours = Math.floor(totalSeconds / 3600);
+                let minutes = Math.floor((totalSeconds % 3600) / 60);
+                let seconds = totalSeconds % 60;
+                document.getElementById('countdown-timer').innerText = 
+                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }
+        }, 1000);
 
-        // Refresh Ads Button Action
         function refreshAds() {
             alert("Ads list refreshed successfully!");
         }
@@ -629,30 +751,34 @@
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
 
-            let homeView = document.getElementById('home-view');
-            let rankingView = document.getElementById('ranking-view');
+            document.querySelectorAll('.section-view').forEach(view => view.style.display = 'none');
 
             if (tabName === 'home') {
-                homeView.style.display = 'block';
-                rankingView.style.display = 'none';
+                document.getElementById('home-view').style.display = 'block';
             } else if (tabName === 'ranking') {
-                homeView.style.display = 'none';
-                rankingView.style.display = 'block';
+                document.getElementById('ranking-view').style.display = 'block';
+            } else if (tabName === 'support') {
+                document.getElementById('support-view').style.display = 'block';
             } else {
-                homeView.style.display = 'none';
-                rankingView.style.display = 'none';
-                // Placeholder for other tabs
-                alert(tabName.toUpperCase() + " section is coming up next!");
+                document.getElementById('other-view').style.display = 'block';
             }
         }
 
-        // Generate 100 Demo Leaderboard Users
+        // Generate 100 Leaderboard Users with Unique Photos & Names
         const leaderboardContainer = document.getElementById('leaderboard-container');
         const sampleNames = ["Tanvir Ahmed", "Nayeem Khan", "Farhan Sadik", "Mehedi Hasan", "Ashraful Islam", "Imran Hossain", "Jahidul Islam", "Sabbir Rahman", "Mahmudul Hasan", "Al-Amin Sheikh"];
+        const avatarUrls = [
+            "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50",
+            "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=50",
+            "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=50",
+            "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=50",
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50"
+        ];
         
         let htmlContent = "";
         for (let i = 4; i <= 100; i++) {
-            let randomName = sampleNames[Math.floor(Math.random() * sampleNames.length)] + " " + i;
+            let randomName = sampleNames[(i + 3) % sampleNames.length] + " " + i;
+            let randomAvatar = avatarUrls[i % avatarUrls.length];
             let score = (2900000 - (i * 25000));
             let bdtVal = (score * rate).toFixed(2);
             
@@ -660,7 +786,7 @@
                 <div class="leader-row">
                     <div class="leader-left">
                         <span class="leader-rank">#${i}</span>
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50" class="leader-avatar" alt="User">
+                        <img src="${randomAvatar}" class="leader-avatar" alt="User">
                         <div class="leader-info">
                             <h4>${randomName}</h4>
                             <p>Level ${Math.max(1, 10 - Math.floor(i/10))}</p>
@@ -674,6 +800,30 @@
             `;
         }
         leaderboardContainer.innerHTML = htmlContent;
+
+        // AI Chat Functionality
+        function sendMessage() {
+            let inputField = document.getElementById('user-input');
+            let text = inputField.value.trim();
+            if(!text) return;
+
+            let chatContainer = document.getElementById('chat-container');
+            
+            // User Message
+            chatContainer.innerHTML += `<div class="chat-msg user">${text}</div>`;
+            inputField.value = "";
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Bot Reply Simulation
+            setTimeout(() => {
+                let botReply = "Thank you for reaching out! Our support team will review your query regarding RS tokens shortly.";
+                if(text.toLowerCase().includes('withdraw') || text.toLowerCase().includes('taka')) {
+                    botReply = "Withdrawals are processed automatically once you reach the minimum threshold of 1,000,000 RS.";
+                }
+                chatContainer.innerHTML += `<div class="chat-msg bot">${botReply}</div>`;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 600);
+        }
 
         updateUI();
     </script>
