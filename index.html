@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RS Tap-to-Earn - My Account</title>
+    <title>RS Tap-to-Earn - App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -31,6 +31,7 @@
             overflow: hidden;
         }
 
+        /* Mobile App Frame Container */
         .app-frame {
             width: 100%;
             max-width: 420px;
@@ -61,380 +62,875 @@
             border-radius: 4px;
         }
 
+        /* Top Header Balance */
+        .balance-card {
+            background: linear-gradient(145deg, #181926, #0f1017);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            border-radius: 16px;
+            padding: 14px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+            margin-bottom: 15px;
+        }
+
+        .balance-card h2 {
+            font-size: 26px;
+            color: var(--gold-primary);
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(250, 204, 21, 0.4);
+        }
+
+        .balance-card p {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        /* Tap Section & Logo */
+        .tap-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .logo-container {
+            position: relative;
+            width: 175px;
+            height: 175px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .ring-gold {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid #facc15;
+            border-radius: 50%;
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.6);
+            animation: spin 12s linear infinite;
+        }
+
+        .ring-blue {
+            position: absolute;
+            width: 84%;
+            height: 84%;
+            border: 3px solid #38bdf8;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
+            animation: spin-reverse 8s linear infinite;
+        }
+
+        .ring-purple {
+            position: absolute;
+            width: 68%;
+            height: 68%;
+            border: 3px solid #c084fc;
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+
+        .center-logo-btn {
+            width: 105px;
+            height: 105px;
+            background: radial-gradient(circle, #1e1b4b, #09090b);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.4), 0 0 15px rgba(0,0,0,0.9);
+            border: 2px solid rgba(255,255,255,0.15);
+            z-index: 2;
+            transition: transform 0.08s ease;
+        }
+
+        .center-logo-btn:active {
+            transform: scale(0.92);
+        }
+
+        .center-logo-btn h1 {
+            font-size: 24px;
+            background: linear-gradient(to right, #cbd5e1, #facc15);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+        }
+
+        /* Floating Score Animation */
+        .floating-score {
+            position: absolute;
+            font-weight: 900;
+            font-size: 22px;
+            animation: floatUp 0.8s ease-out forwards;
+            pointer-events: none;
+            z-index: 10;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-60px) scale(1.3); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes spin-reverse {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* Daily Task & Timer Section */
+        .task-timer-box {
+            background: var(--card-bg);
+            border: 1px solid rgba(250, 204, 21, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-info h4 {
+            font-size: 14px;
+            color: var(--gold-primary);
+        }
+
+        .task-info p {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .timer-badge {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Ads Header with Refresh Button */
+        .ads-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .ads-section-title {
+            color: var(--gold-primary);
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .refresh-btn {
+            background: rgba(250, 204, 21, 0.1);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-primary);
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .ads-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .ad-card {
+            background: linear-gradient(135deg, #1e1b4b, #0f172a);
+            border: 2px solid var(--gold-primary);
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(250, 204, 21, 0.15);
+        }
+
+        .ad-card h3 {
+            font-size: 18px;
+            color: var(--gold-primary);
+            margin-bottom: 2px;
+        }
+
+        .ad-card span {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* --- LIVE WITHDRAWAL TICKER STYLES (NEW) --- */
+        .live-withdraw-ticker {
+            background: linear-gradient(145deg, #181926, #0f1017);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .withdraw-ticker-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 6px;
+        }
+
+        .withdraw-ticker-title {
+            font-size: 13px;
+            color: #4ade80;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .withdraw-ticker-title i {
+            animation: pulse-green 1.5s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.15); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .withdraw-feed-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 110px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .withdraw-feed-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 6px 8px;
+            border-radius: 8px;
+            font-size: 11px;
+        }
+
+        .wf-user {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .wf-method {
+            color: var(--text-muted);
+            font-size: 10px;
+        }
+
+        .wf-amount {
+            color: #4ade80;
+            font-weight: bold;
+        }
+
         .section-view {
             display: none;
         }
 
-        /* --- MY ACCOUNT STYLES (Matching Screenshot 304_2.png) --- */
+        /* --- RANKING / LEADERBOARD STYLES --- */
+        .podium-section {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 10px;
+            margin: 20px 0 25px 0;
+            padding: 0 10px;
+        }
+
+        .podium-item {
+            background: linear-gradient(145deg, #181926, #11121a);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            border-radius: 14px;
+            text-align: center;
+            padding: 10px 8px;
+            position: relative;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+        }
+
+        .podium-item.rank-1 {
+            width: 34%;
+            height: 155px;
+            border-color: #facc15;
+            background: linear-gradient(145deg, #2b2710, #12131c);
+            box-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
+        }
+
+        .podium-item.rank-2 {
+            width: 31%;
+            height: 135px;
+            border-color: #cbd5e1;
+        }
+
+        .podium-item.rank-3 {
+            width: 31%;
+            height: 120px;
+            border-color: #b45309;
+        }
+
+        .podium-avatar-wrapper {
+            position: relative;
+            width: 42px;
+            height: 42px;
+            margin: -26px auto 5px auto;
+        }
+
+        .podium-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-primary);
+        }
+
+        .rank-1 .podium-avatar {
+            border: 3px solid #facc15;
+            box-shadow: 0 0 10px #facc15;
+        }
+
+        .podium-item h5 {
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .podium-item .p-score {
+            font-size: 11px;
+            color: var(--gold-primary);
+            font-weight: bold;
+            margin-top: 2px;
+        }
+
+        .podium-item .p-bdt {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .crown {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #facc15;
+            font-size: 15px;
+            filter: drop-shadow(0 0 5px #facc15);
+        }
+
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .leader-row {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .leader-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .leader-rank {
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--text-muted);
+            width: 22px;
+            text-align: center;
+        }
+
+        .leader-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(250, 204, 21, 0.4);
+        }
+
+        .leader-info h4 {
+            font-size: 13px;
+            color: var(--text-main);
+        }
+
+        .leader-info p {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .leader-right {
+            text-align: right;
+        }
+
+        .leader-right .l-score {
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--gold-primary);
+        }
+
+        .leader-right .l-bdt {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        /* --- REFERRAL SYSTEM STYLES --- */
+        .referral-box {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ref-top-banner {
+            background: linear-gradient(145deg, #1f1b0c, #12131c);
+            border: 2px solid var(--gold-primary);
+            border-radius: 14px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(250, 204, 21, 0.2);
+        }
+
+        .ref-top-banner h4 {
+            font-size: 14px;
+            color: var(--gold-primary);
+            margin-bottom: 4px;
+        }
+
+        .ref-badge-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(250, 204, 21, 0.15);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-primary);
+            font-weight: bold;
+            font-size: 15px;
+            margin: 6px 0;
+        }
+
+        .ref-badge-row i {
+            color: #facc15;
+        }
+
+        .ref-top-banner p {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .ref-link-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .ref-link-card label {
+            font-size: 11px;
+            color: var(--gold-primary);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .ref-input-group {
+            display: flex;
+            margin-top: 6px;
+            gap: 6px;
+        }
+
+        .ref-input-group input {
+            flex: 1;
+            background: #09090b;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 8px 10px;
+            color: #fff;
+            font-size: 11px;
+            outline: none;
+        }
+
+        .copy-btn {
+            background: var(--gold-primary);
+            border: none;
+            color: #000;
+            font-weight: bold;
+            padding: 0 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .ref-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+
+        .ref-stat-box {
+            background: var(--card-bg);
+            border: 1px solid rgba(250, 204, 21, 0.2);
+            border-radius: 10px;
+            padding: 8px 4px;
+            text-align: center;
+        }
+
+        .ref-stat-box i {
+            font-size: 14px;
+            color: var(--gold-primary);
+            margin-bottom: 2px;
+        }
+
+        .ref-stat-box h5 {
+            font-size: 12px;
+            color: #fff;
+        }
+
+        .ref-stat-box p {
+            font-size: 9px;
+            color: var(--text-muted);
+        }
+
+        .referred-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .live-users-badge {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid #22c55e;
+            color: #4ade80;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .live-users-badge span {
+            width: 6px;
+            height: 6px;
+            background: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #22c55e;
+        }
+
+        .ref-user-row {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .ref-user-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ref-user-rank {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--gold-primary);
+            width: 20px;
+            text-align: center;
+        }
+
+        .ref-user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--gold-primary);
+        }
+
+        .ref-user-info h5 {
+            font-size: 12px;
+            color: #fff;
+        }
+
+        .ref-user-info p {
+            font-size: 9px;
+            color: #22c55e;
+        }
+
+        .ref-user-right {
+            text-align: right;
+        }
+
+        .ref-user-right .reward-amt {
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--gold-primary);
+        }
+
+        .status-tag {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+        /* --- PREMIUM AI CUSTOMER SERVICE STYLES --- */
+        .support-box {
+            display: flex;
+            flex-direction: column;
+            height: 480px;
+            justify-content: space-between;
+        }
+
+        .support-header-card {
+            background: linear-gradient(145deg, #181926, #0f1017);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .ai-avatar-container {
+            position: relative;
+            width: 48px;
+            height: 48px;
+        }
+
+        .ai-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-primary);
+            box-shadow: 0 0 12px rgba(250, 204, 21, 0.6);
+        }
+
+        .ai-status-dot {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 10px;
+            height: 10px;
+            background: #22c55e;
+            border-radius: 50%;
+            border: 2px solid #0f1017;
+        }
+
+        .support-info h3 {
+            font-size: 14px;
+            color: var(--gold-primary);
+        }
+
+        .support-info p {
+            font-size: 11px;
+            color: #22c55e;
+            font-weight: 500;
+        }
+
+        .chat-messages {
+            flex: 1;
+            background: var(--card-bg);
+            border: 1px solid rgba(250, 204, 21, 0.15);
+            border-radius: 12px;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .chat-msg {
+            max-width: 80%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .chat-msg.bot {
+            background: #1e1b4b;
+            color: #e2e8f0;
+            align-self: flex-start;
+            border-left: 3px solid var(--gold-primary);
+        }
+
+        .chat-msg.user {
+            background: #ca8a04;
+            color: #fff;
+            align-self: flex-end;
+        }
+
+        .chat-input-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input-row input {
+            flex: 1;
+            background: var(--card-bg);
+            border: 1px solid rgba(250, 204, 21, 0.3);
+            border-radius: 10px;
+            padding: 10px 12px;
+            color: #fff;
+            outline: none;
+            font-size: 12px;
+        }
+
+        .send-btn {
+            background: var(--gold-primary);
+            border: none;
+            color: #000;
+            padding: 0 16px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- MY ACCOUNT STYLES --- */
         .account-box {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .profile-card {
+        .account-profile-card {
             background: linear-gradient(145deg, #181926, #0f1017);
             border: 1px solid rgba(250, 204, 21, 0.3);
-            border-radius: 16px;
-            padding: 14px;
-            position: relative;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-        }
-
-        .profile-top {
+            border-radius: 14px;
+            padding: 16px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
         }
 
-        .profile-avatar {
-            width: 65px;
-            height: 65px;
+        .account-avatar-wrapper {
+            position: relative;
+            width: 60px;
+            height: 60px;
+        }
+
+        .account-avatar {
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--gold-primary);
-            box-shadow: 0 0 12px rgba(250, 204, 21, 0.5);
         }
 
-        .profile-info h3 {
+        .account-details h3 {
             font-size: 16px;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            color: var(--text-main);
+            margin-bottom: 2px;
         }
 
-        .profile-info h3 i {
-            color: var(--gold-primary);
-            font-size: 13px;
-        }
-
-        .profile-info p {
+        .account-details p {
             font-size: 11px;
             color: var(--text-muted);
-            margin-top: 2px;
         }
 
-        .vip-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background: linear-gradient(135deg, #ca8a04, #facc15);
-            color: #000;
-            padding: 3px 10px;
-            border-radius: 12px;
+        .vip-badge-tag {
+            display: inline-block;
+            background: rgba(250, 204, 21, 0.15);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-primary);
+            padding: 2px 8px;
+            border-radius: 6px;
             font-size: 10px;
-            font-weight: 900;
+            font-weight: bold;
             margin-top: 5px;
         }
 
-        .xp-container {
-            margin-top: 10px;
-        }
-
-        .xp-bar-row {
+        .account-menu-list {
             display: flex;
-            justify-content: space-between;
-            font-size: 10px;
-            color: var(--text-muted);
-            margin-bottom: 4px;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .xp-bar {
-            width: 100%;
-            height: 6px;
-            background: #09090b;
-            border-radius: 4px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .xp-fill {
-            width: 49%;
-            height: 100%;
-            background: linear-gradient(90deg, #ca8a04, #facc15);
-            border-radius: 4px;
-        }
-
-        .xp-footer {
-            font-size: 9px;
-            color: var(--gold-primary);
-            margin-top: 4px;
-            letter-spacing: 0.5px;
-        }
-
-        .customize-card {
-            background: linear-gradient(135deg, #1e1b4b, #12131c);
-            border: 1px solid rgba(250, 204, 21, 0.25);
-            border-radius: 12px;
-            padding: 10px 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .customize-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .customize-left i {
-            font-size: 20px;
-            color: var(--gold-primary);
-        }
-
-        .customize-left h5 {
-            font-size: 12px;
-            color: #fff;
-        }
-
-        .customize-left p {
-            font-size: 9px;
-            color: var(--text-muted);
-        }
-
-        .total-bal-box {
-            background: linear-gradient(145deg, #1a1608, #12131c);
-            border: 2px solid var(--gold-primary);
-            border-radius: 14px;
-            padding: 14px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 0 15px rgba(250, 204, 21, 0.25);
-        }
-
-        .total-bal-box h2 {
-            font-size: 24px;
-            color: var(--gold-primary);
-            font-weight: 900;
-            margin-top: 2px;
-        }
-
-        .total-bal-box p {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        .action-btn-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .action-card {
+        .account-menu-item {
             background: var(--card-bg);
-            border: 2px solid var(--gold-primary);
-            border-radius: 12px;
-            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 12px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
-            transition: transform 0.1s;
+            transition: background 0.2s;
         }
 
-        .action-card:active {
-            transform: scale(0.97);
+        .account-menu-item:hover {
+            background: rgba(250, 204, 21, 0.05);
         }
 
-        .action-card.withdraw {
-            border-color: #38bdf8;
-            background: linear-gradient(135deg, #0c1c2e, #12131c);
-        }
-
-        .action-info h4 {
+        .menu-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             font-size: 14px;
+            color: var(--text-main);
+        }
+
+        .menu-item-left i {
             color: var(--gold-primary);
-        }
-
-        .action-card.withdraw .action-info h4 {
-            color: #38bdf8;
-        }
-
-        .action-info p {
-            font-size: 9px;
-            color: var(--text-muted);
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
-        }
-
-        .feature-item {
-            background: var(--card-bg);
-            border: 1px solid rgba(250, 204, 21, 0.2);
-            border-radius: 10px;
-            padding: 8px 4px;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .feature-item i {
             font-size: 16px;
-            color: var(--gold-primary);
-            margin-bottom: 3px;
+            width: 20px;
+            text-align: center;
         }
 
-        .feature-item h5 {
-            font-size: 10px;
-            color: #fff;
-        }
-
-        .feature-item p {
-            font-size: 8px;
-            color: var(--text-muted);
-        }
-
-        .section-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 4px;
-        }
-
-        .section-title {
+        .menu-item-right {
             font-size: 12px;
-            color: var(--gold-primary);
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .view-all-link {
-            font-size: 10px;
-            color: var(--text-muted);
-            cursor: pointer;
-        }
-
-        /* Live Animated Transaction Box */
-        .live-tx-container {
-            background: var(--card-bg);
-            border: 1px solid rgba(250, 204, 21, 0.2);
-            border-radius: 12px;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            overflow: hidden;
-            height: 180px;
-            position: relative;
-        }
-
-        .tx-list-slider {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            position: absolute;
-            width: calc(100% - 20px);
-            animation: slideTransactions 12s linear infinite;
-        }
-
-        .tx-list-slider:hover {
-            animation-play-state: paused;
-        }
-
-        @keyframes slideTransactions {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); }
-        }
-
-        .tx-row {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 8px 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .tx-left {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .tx-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-        }
-
-        .tx-icon.income { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
-        .tx-icon.expense { background: rgba(239, 68, 68, 0.2); color: #f87171; }
-        .tx-icon.bonus { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
-
-        .tx-info h5 {
-            font-size: 11px;
-            color: #fff;
-        }
-
-        .tx-info p {
-            font-size: 9px;
             color: var(--text-muted);
         }
 
-        .tx-right {
-            text-align: right;
-        }
-
-        .tx-amt {
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        .tx-amt.plus { color: #4ade80; }
-        .tx-amt.minus { color: #f87171; }
-
-        .tx-time {
-            font-size: 8px;
-            color: var(--text-muted);
-        }
-
-        .security-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-
-        .security-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
-        .security-card i {
-            font-size: 18px;
-            color: var(--gold-primary);
-        }
-
-        .security-info h5 {
-            font-size: 11px;
-            color: #fff;
-        }
-
-        .security-info p {
-            font-size: 9px;
-            color: var(--text-muted);
-        }
-
-        /* Bottom Navigation */
+        /* Bottom Navigation (5 Icons Only) */
         .bottom-nav {
             position: absolute;
             bottom: 0;
@@ -470,227 +966,452 @@
     <div class="app-frame">
         <div class="app-container">
             
-            <!-- MY ACCOUNT VIEW (Default active based on screenshot 304_2.png) -->
-            <div id="account-view" class="section-view" style="display: block;">
-                <div class="account-box">
-                    
-                    <!-- Profile Card -->
-                    <div class="profile-card">
-                        <div class="profile-top">
-                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120" class="profile-avatar" alt="Profile">
-                            <div class="profile-info">
-                                <h3>RS Sahebaliy <i class="fas fa-check-circle"></i></h3>
-                                <p>ID: RS123456</p>
-                                <div class="vip-badge"><i class="fas fa-crown"></i> VIP 5</div>
-                            </div>
-                        </div>
-                        <div class="xp-container">
-                            <div class="xp-bar-row">
-                                <span>Lv.5</span>
-                                <span>2,450 / 5,000 XP</span>
-                            </div>
-                            <div class="xp-bar">
-                                <div class="xp-fill"></div>
-                            </div>
-                            <div class="xp-footer">👑 Dream • Play • Earn • Grow</div>
-                        </div>
-                        <div class="customize-card" onclick="alert('Customize Profile: Change avatar, theme & name options.')">
-                            <div class="customize-left">
-                                <i class="fas fa-palette"></i>
-                                <div>
-                                    <h5>Customize</h5>
-                                    <p>Change your profile, name, theme & more</p>
-                                </div>
-                            </div>
-                            <i class="fas fa-chevron-right" style="font-size: 12px; color: var(--text-muted);"></i>
+            <!-- HOME SCREEN VIEW -->
+            <div id="home-view" class="section-view" style="display: block;">
+                <div class="balance-card">
+                    <h2 id="balance-display">50,000 RS</h2>
+                    <p>≈ <span id="bdt-display">7,500.00</span> BDT (1M = 150 BDT)</p>
+                </div>
+
+                <div class="tap-section">
+                    <div class="logo-container" id="tap-target">
+                        <div class="ring-gold"></div>
+                        <div class="ring-blue"></div>
+                        <div class="ring-purple"></div>
+                        <div class="center-logo-btn">
+                            <h1>RS</h1>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Total Balance Box -->
-                    <div class="total-bal-box">
-                        <p><i class="fas fa-eye"></i> Total Balance</p>
-                        <h2>50,000 <span style="font-size: 14px;">RS TOKEN</span></h2>
-                        <p style="color: #4ade80; font-weight: bold; margin-top: 4px;">≈ ৳7,500.00 BDT</p>
+                <div class="task-timer-box">
+                    <div class="task-info">
+                        <h4>Daily Task Reward</h4>
+                        <p>200 RS Token Bonus</p>
                     </div>
+                    <div class="timer-badge" id="countdown-timer">01:59:45</div>
+                </div>
 
-                    <!-- Deposit & Withdraw Buttons -->
-                    <div class="action-btn-row">
-                        <div class="action-card" onclick="handleDeposit()">
-                            <div class="action-info">
-                                <h4>Deposit</h4>
-                                <p>Add RS Tokens</p>
-                            </div>
-                            <i class="fas fa-wallet" style="font-size: 18px; color: var(--gold-primary);"></i>
-                        </div>
-                        <div class="action-card withdraw" onclick="handleWithdraw()">
-                            <div class="action-info">
-                                <h4>Withdraw</h4>
-                                <p>Get Your Earnings</p>
-                            </div>
-                            <i class="fas fa-exchange-alt" style="font-size: 18px; color: #38bdf8;"></i>
-                        </div>
+                <div class="ads-header-row">
+                    <div class="ads-section-title">⭐ ADS REWARD SYSTEM ⭐</div>
+                    <button class="refresh-btn" onclick="refreshAds()"><i class="fas fa-sync-alt"></i> Refresh</button>
+                </div>
+
+                <div class="ads-grid">
+                    <div class="ad-card">
+                        <h3>1,200 RS</h3>
+                        <span>Watch Ad 1</span>
                     </div>
-
-                    <!-- 5 Feature Grid -->
-                    <div class="feature-grid">
-                        <div class="feature-item" onclick="alert('Navigating to Referral System')">
-                            <i class="fas fa-users"></i>
-                            <h5>Referral</h5>
-                            <p>Invite & Earn</p>
-                        </div>
-                        <div class="feature-item" onclick="alert('Claiming Daily Bonus')">
-                            <i class="fas fa-gift"></i>
-                            <h5>Daily Bonus</h5>
-                            <p>Claim Now</p>
-                        </div>
-                        <div class="feature-item" onclick="alert('Opening Tasks')">
-                            <i class="fas fa-tasks"></i>
-                            <h5>Tasks</h5>
-                            <p>Complete</p>
-                        </div>
-                        <div class="feature-item" onclick="alert('Opening Shop')">
-                            <i class="fas fa-store"></i>
-                            <h5>Shop</h5>
-                            <p>Buy Items</p>
-                        </div>
-                        <div class="feature-item" onclick="alert('Opening Leaderboard')">
-                            <i class="fas fa-trophy"></i>
-                            <h5>Leaderboard</h5>
-                            <p>Top Players</p>
-                        </div>
+                    <div class="ad-card">
+                        <h3>600 RS</h3>
+                        <span>Watch Ad 2</span>
                     </div>
-
-                    <!-- Recent Transactions (Live Auto Up/Down Animation) -->
-                    <div class="section-header-row">
-                        <div class="section-title"><i class="fas fa-history"></i> Recent Transactions</div>
-                        <span class="view-all-link" onclick="alert('Viewing all transactions history')">View All ></span>
+                    <div class="ad-card">
+                        <h3>900 RS</h3>
+                        <span>Watch Ad 3</span>
                     </div>
+                    <div class="ad-card">
+                        <h3>1,400 RS</h3>
+                        <span>Watch Ad 4</span>
+                    </div>
+                </div>
 
-                    <div class="live-tx-container">
-                        <div class="tx-list-slider" id="tx-slider">
-                            <!-- Transactions will be populated dynamically and loop smoothly -->
+                <!-- LIVE WITHDRAWAL TICKER (SCREENSHOT STYLE PROOF) -->
+                <div class="live-withdraw-ticker">
+                    <div class="withdraw-ticker-header">
+                        <div class="withdraw-ticker-title">
+                            <i class="fas fa-circle-check"></i> সফল পেমেন্ট প্রুফ (লাইভ)
+                        </div>
+                        <span style="font-size: 10px; color: var(--text-muted);">বিকাশ / নগদ</span>
+                    </div>
+                    <div class="withdraw-feed-list" id="withdraw-feed-container">
+                        <div class="withdraw-feed-item">
+                            <div><span class="wf-user">Rakibul H.</span> <span class="wf-method">(bKash)</span></div>
+                            <div class="wf-amount">৳1,500 পেমেন্ট সফল</div>
+                        </div>
+                        <div class="withdraw-feed-item">
+                            <div><span class="wf-user">Sumaiya A.</span> <span class="wf-method">(Nagad)</span></div>
+                            <div class="wf-amount">৳850 পেমেন্ট সফল</div>
+                        </div>
+                        <div class="withdraw-feed-item">
+                            <div><span class="wf-user">Tanvir Khan</span> <span class="wf-method">(bKash)</span></div>
+                            <div class="wf-amount">৳3,200 পেমেন্ট সফল</div>
                         </div>
                     </div>
-
-                    <!-- History & Security -->
-                    <div class="section-header-row">
-                        <div class="section-title"><i class="fas fa-shield-alt"></i> History & Security</div>
-                        <span class="view-all-link" onclick="alert('Viewing Security Logs')">View All ></span>
-                    </div>
-
-                    <div class="security-grid">
-                        <div class="security-card" onclick="alert('Opening Transaction History')">
-                            <i class="fas fa-file-invoice-dollar"></i>
-                            <div class="security-info">
-                                <h5>Transaction</h5>
-                                <p>All your records</p>
-                            </div>
-                        </div>
-                        <div class="security-card" onclick="alert('Opening Deposit History')">
-                            <i class="fas fa-arrow-circle-down"></i>
-                            <div class="security-info">
-                                <h5>Deposit</h5>
-                                <p>Your deposits</p>
-                            </div>
-                        </div>
-                        <div class="security-card" onclick="alert('Opening Account Security (2FA, Password)')">
-                            <i class="fas fa-lock"></i>
-                            <div class="security-info">
-                                <h5>Security</h5>
-                                <p>2FA, Password</p>
-                            </div>
-                        </div>
-                        <div class="security-card" onclick="alert('Opening Account Activity Log')">
-                            <i class="fas fa-history"></i>
-                            <div class="security-info">
-                                <h5>Activity</h5>
-                                <p>Login, device</p>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
 
-            <!-- OTHER VIEWS PLACEHOLDER -->
-            <div id="other-view" class="section-view">
-                <div style="text-align: center; margin-top: 150px; color: var(--gold-primary);">
-                    <h2>Section Active...</h2>
+            <!-- RANKING SCREEN VIEW -->
+            <div id="ranking-view" class="section-view">
+                <div class="ads-section-title" style="text-align: center; margin-bottom: 5px;">🏆 GLOBAL LEADERBOARD 🏆</div>
+                <p style="text-align: center; font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Top earners of RS Token</p>
+
+                <div class="podium-section">
+                    <div class="podium-item rank-2">
+                        <div class="podium-avatar-wrapper">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="podium-avatar" alt="Top 2" style="border-color: #cbd5e1;">
+                        </div>
+                        <h5>Rakibul H.</h5>
+                        <div class="p-score">4,200,000 RS</div>
+                        <div class="p-bdt">630.00 BDT</div>
+                    </div>
+                    <div class="podium-item rank-1">
+                        <i class="fas fa-crown crown"></i>
+                        <div class="podium-avatar-wrapper">
+                            <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100" class="podium-avatar" alt="Top 1">
+                        </div>
+                        <h5>RS Sahebaliy</h5>
+                        <div class="p-score" style="font-size: 12px;">8,950,000 RS</div>
+                        <div class="p-bdt">1,342.50 BDT</div>
+                    </div>
+                    <div class="podium-item rank-3">
+                        <div class="podium-avatar-wrapper">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" class="podium-avatar" alt="Top 3" style="border-color: #b45309;">
+                        </div>
+                        <h5>Sumaiya A.</h5>
+                        <div class="p-score">3,100,000 RS</div>
+                        <div class="p-bdt">465.00 BDT</div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-list" id="leaderboard-container"></div>
+            </div>
+
+            <!-- REFERRAL SCREEN VIEW -->
+            <div id="referral-view" class="section-view">
+                <div class="referral-box">
+                    <div class="ref-top-banner">
+                        <h4>আপনার জন্য রেফারেল বোনাস</h4>
+                        <div class="ref-badge-row">
+                            <i class="fas fa-coins"></i> 1,000 RS COIN
+                        </div>
+                        <p>প্রতি নতুন বন্ধু রেজিস্ট্রেশন + প্রথমবার অ্যাক্টিভ হলে</p>
+                    </div>
+
+                    <div class="ref-link-card">
+                        <label><i class="fas fa-link"></i> আপনার রেফারেল লিংক</label>
+                        <div class="ref-input-group">
+                            <input type="text" id="ref-link-input" value="https://t.me/rs_tap_to_earn_2026_bot?start=ref_12345" readonly>
+                            <button class="copy-btn" onclick="copyRefLink()">কপি করুন</button>
+                        </div>
+                    </div>
+
+                    <div class="ref-stats-grid">
+                        <div class="ref-stat-box">
+                            <i class="fas fa-users"></i>
+                            <h5>128</h5>
+                            <p>মোট রেফারেল</p>
+                        </div>
+                        <div class="ref-stat-box">
+                            <i class="fas fa-user-plus"></i>
+                            <h5>12</h5>
+                            <p>আজকের নতুন</p>
+                        </div>
+                        <div class="ref-stat-box">
+                            <i class="fas fa-wallet"></i>
+                            <h5>128K</h5>
+                            <p>মোট আয়</p>
+                        </div>
+                        <div class="ref-stat-box">
+                            <i class="fas fa-trophy"></i>
+                            <h5>Lv. 5</h5>
+                            <p>রেফারেল লেভেল</p>
+                        </div>
+                    </div>
+
+                    <div class="referred-list-header">
+                        <span class="ads-section-title" style="font-size: 13px;">Your Referred Users</span>
+                        <div class="live-users-badge"><span></span> Live Users</div>
+                    </div>
+
+                    <div class="leaderboard-list" id="referred-users-container"></div>
+                </div>
+            </div>
+
+            <!-- AI CUSTOMER SERVICE SCREEN VIEW -->
+            <div id="support-view" class="section-view">
+                <div class="support-box">
+                    <div class="support-header-card">
+                        <div class="ai-avatar-container">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120" class="ai-avatar" alt="AI Support">
+                            <div class="ai-status-dot"></div>
+                        </div>
+                        <div class="support-info">
+                            <h3>RS AI Assistant</h3>
+                            <p>Online • Ready to help</p>
+                        </div>
+                    </div>
+
+                    <div class="chat-messages" id="chat-container">
+                        <div class="chat-msg bot">হ্যালো! আমি আপনার RS AI সাপোর্ট অ্যাসিস্ট্যান্ট। ট্যাপ, উইথড্রয়াল বা রেফারেল সংক্রান্ত যেকোনো সহায়তায় আমি প্রস্তুত!</div>
+                    </div>
+
+                    <div class="chat-input-row">
+                        <input type="text" id="user-input" placeholder="আপনার বার্তা লিখুন..." onkeypress="handleKeyPress(event)">
+                        <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MY ACCOUNT SCREEN VIEW -->
+            <div id="account-view" class="section-view">
+                <div class="account-box">
+                    <div class="ads-section-title" style="margin-bottom: 5px;">👤 MY ACCOUNT 👤</div>
+                    
+                    <!-- Profile Header Card -->
+                    <div class="account-profile-card">
+                        <div class="account-avatar-wrapper">
+                            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120" class="account-avatar" alt="User Profile">
+                        </div>
+                        <div class="account-details">
+                            <h3 id="account-name-display">Rakib Hossain</h3>
+                            <p id="account-id-display">ID: 88492019</p>
+                            <span class="vip-badge-tag" id="vip-level-tag">VIP Level 1</span>
+                        </div>
+                    </div>
+
+                    <!-- Account Menu Options -->
+                    <div class="account-menu-list">
+                        <div class="account-menu-item" onclick="alert('Wallet & Balance Details')">
+                            <div class="menu-item-left">
+                                <i class="fas fa-wallet"></i>
+                                <span>My Wallet</span>
+                            </div>
+                            <div class="menu-item-right" id="account-wallet-balance">50,000 RS</div>
+                        </div>
+
+                        <div class="account-menu-item" onclick="alert('VIP Progression: Active on VIP 1')">
+                            <div class="menu-item-left">
+                                <i class="fas fa-crown"></i>
+                                <span>VIP Membership</span>
+                            </div>
+                            <div class="menu-item-right">VIP 1</div>
+                        </div>
+
+                        <div class="account-menu-item" onclick="alert('Transaction History is empty')">
+                            <div class="menu-item-left">
+                                <i class="fas fa-history"></i>
+                                <span>Transaction History</span>
+                            </div>
+                            <div class="menu-item-right"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+
+                        <div class="account-menu-item" onclick="alert('Security Settings: Email & Password verified')">
+                            <div class="menu-item-left">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Security Settings</span>
+                            </div>
+                            <div class="menu-item-right"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+
+                        <div class="account-menu-item" onclick="alert('Logged out successfully')">
+                            <div class="menu-item-left" style="color: #ef4444;">
+                                <i class="fas fa-sign-out-alt" style="color: #ef4444;"></i>
+                                <span style="color: #ef4444;">Log Out</span>
+                            </div>
+                            <div class="menu-item-right"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- Bottom Navigation -->
+        <!-- Bottom Navigation (5 Icons Only) -->
         <div class="bottom-nav">
-            <button class="nav-item" onclick="switchTab('home', this)"><i class="fas fa-home"></i></button>
-            <button class="nav-item" onclick="switchTab('earn', this)"><i class="fas fa-coins"></i></button>
-            <button class="nav-item active" onclick="switchTab('account', this)"><i class="fas fa-user-circle"></i></button>
-            <button class="nav-item" onclick="switchTab('wallet', this)"><i class="fas fa-wallet"></i></button>
-            <button class="nav-item" onclick="switchTab('more', this)"><i class="fas fa-ellipsis-h"></i></button>
+            <button class="nav-item active" onclick="switchTab('home', this)"><i class="fas fa-home"></i></button>
+            <button class="nav-item" onclick="switchTab('ranking', this)"><i class="fas fa-trophy"></i></button>
+            <button class="nav-item" onclick="switchTab('referral', this)"><i class="fas fa-users"></i></button>
+            <button class="nav-item" onclick="switchTab('support', this)"><i class="fas fa-headset"></i></button>
+            <button class="nav-item" onclick="switchTab('account', this)"><i class="fas fa-user-circle"></i></button>
         </div>
     </div>
 
     <script>
-        // Deposit temporary closed notice
-        function handleDeposit() {
-            alert("⚠️ দুঃখিত! ডিপোজিট অপশনটি বর্তমানে সাময়িক সময়ের জন্য বন্ধ রয়েছে। পরবর্তী আপডেটের জন্য অপেক্ষা করুন।");
+        let balance = 50000;
+        const rate = 150 / 1000000;
+        const possibleRewards = [1, 2, 3, 5, 10];
+        const rewardColors = ['#facc15', '#38bdf8', '#c084fc', '#22c55e', '#ec4899'];
+
+        function updateUI() {
+            document.getElementById('balance-display').innerText = balance.toLocaleString() + " RS";
+            document.getElementById('bdt-display').innerText = (balance * rate).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            
+            let accWallet = document.getElementById('account-wallet-balance');
+            if(accWallet) {
+                accWallet.innerText = balance.toLocaleString() + " RS";
+            }
         }
 
-        // Withdraw handling
-        function handleWithdraw() {
-            let amount = prompt("উত্তোলন করতে চান এমন RS টোকেনের পরিমাণ লিখুন (ন্যূনতম ১,০০০,০০০ RS):", "1000000");
-            if(amount) {
-                let method = prompt("পেমেন্ট পদ্ধতি নির্বাচন করুন: bkash, nagad বা rocket লিখুন", "bkash");
-                if(method) {
-                    let number = prompt("আপনার অ্যাকাউন্ট নম্বরটি দিন:", "017XXXXXXXX");
-                    if(number) {
-                        alert(`সফল! আপনার ${amount} RS টোকেন উত্তোলনের অনুরোধ ${method.toUpperCase()} (${number}) নম্বরে প্রসেস করা হয়েছে।`);
-                    }
-                }
+        const tapTarget = document.getElementById('tap-target');
+        tapTarget.addEventListener('click', (e) => {
+            let reward = possibleRewards[Math.floor(Math.random() * possibleRewards.length)];
+            let color = rewardColors[Math.floor(Math.random() * rewardColors.length)];
+
+            balance += reward;
+            updateUI();
+
+            let rect = tapTarget.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            let y = e.clientY - rect.top;
+
+            let floatText = document.createElement('div');
+            floatText.className = 'floating-score';
+            floatText.innerText = `+${reward} RS`;
+            floatText.style.left = `${x}px`;
+            floatText.style.top = `${y}px`;
+            floatText.style.color = color;
+
+            tapTarget.appendChild(floatText);
+            setTimeout(() => { floatText.remove(); }, 800);
+        });
+
+        // Timer
+        let totalSeconds = 2 * 3600 - 45;
+        setInterval(() => {
+            if (totalSeconds > 0) {
+                totalSeconds--;
+                let hours = Math.floor(totalSeconds / 3600);
+                let minutes = Math.floor((totalSeconds % 3600) / 60);
+                let seconds = totalSeconds % 60;
+                document.getElementById('countdown-timer').innerText = 
+                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             }
+        }, 1000);
+
+        function refreshAds() {
+            alert("Ads list refreshed successfully!");
+        }
+
+        function copyRefLink() {
+            let inputElem = document.getElementById('ref-link-input');
+            inputElem.select();
+            navigator.clipboard.writeText(inputElem.value);
+            alert("রেফারেল লিংক কপি করা হয়েছে!");
         }
 
         // Tab Navigation Switcher
         function switchTab(tabName, btnElement) {
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
-            // Can be expanded to switch between main tabs
+
+            document.querySelectorAll('.section-view').forEach(view => view.style.display = 'none');
+
+            if (tabName === 'home') {
+                document.getElementById('home-view').style.display = 'block';
+            } else if (tabName === 'ranking') {
+                document.getElementById('ranking-view').style.display = 'block';
+            } else if (tabName === 'referral') {
+                document.getElementById('referral-view').style.display = 'block';
+            } else if (tabName === 'support') {
+                document.getElementById('support-view').style.display = 'block';
+            } else if (tabName === 'account') {
+                document.getElementById('account-view').style.display = 'block';
+            }
         }
 
-        // Populate Live Animated Transactions
-        const txSlider = document.getElementById('tx-slider');
-        const txData = [
-            {type: "income", icon: "fa-arrow-up", title: "Referral Reward", sub: "From: Demo_User_01", amt: "+ 1,000 RS", time: "2026-06-08 14:32", cls: "plus"},
-            {type: "expense", icon: "fa-arrow-down", title: "Withdrawal", sub: "To: bKash (****1234)", amt: "- 5,000 RS", time: "2026-06-08 12:10", cls: "minus"},
-            {type: "bonus", icon: "fa-gift", title: "Daily Bonus", sub: "Login Reward", amt: "+ 500 RS", time: "2026-06-08 10:45", cls: "plus"},
-            {type: "bonus", icon: "fa-video", title: "Task Complete", sub: "Video Watch (x5)", amt: "+ 2,500 RS", time: "2026-06-08 09:21", cls: "plus"},
-            {type: "income", icon: "fa-user-plus", title: "Referral Bonus", sub: "From: Rifat_99", amt: "+ 1,000 RS", time: "2026-06-08 08:15", cls: "plus"}
+        // Generate Leaderboard Users (100 Users)
+        const leaderboardContainer = document.getElementById('leaderboard-container');
+        const sampleNames = ["Tanvir Ahmed", "Nayeem Khan", "Farhan Sadik", "Mehedi Hasan", "Ashraful Islam", "Imran Hossain", "Jahidul Islam", "Sabbir Rahman", "Mahmudul Hasan", "Al-Amin Sheikh"];
+        const avatarUrls = [
+            "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50",
+            "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=50",
+            "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=50",
+            "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=50",
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50"
         ];
-
-        // Duplicate array to make seamless infinite loop animation
-        let repeatedTx = [...txData, ...txData];
-        let txHtml = "";
-        repeatedTx.forEach(tx => {
-            txHtml += `
-                <div class="tx-row">
-                    <div class="tx-left">
-                        <div class="tx-icon ${tx.type}">
-                            <i class="fas ${tx.icon}"></i>
-                        </div>
-                        <div class="tx-info">
-                            <h5>${tx.title}</h5>
-                            <p>${tx.sub}</p>
+        
+        let htmlContent = "";
+        for (let i = 4; i <= 100; i++) {
+            let randomName = sampleNames[(i + 3) % sampleNames.length] + " " + i;
+            let randomAvatar = avatarUrls[i % avatarUrls.length];
+            let score = (2900000 - (i * 25000));
+            let bdtVal = (score * rate).toFixed(2);
+            
+            htmlContent += `
+                <div class="leader-row">
+                    <div class="leader-left">
+                        <span class="leader-rank">#${i}</span>
+                        <img src="${randomAvatar}" class="leader-avatar" alt="User">
+                        <div class="leader-info">
+                            <h4>${randomName}</h4>
+                            <p>Level ${Math.max(1, 10 - Math.floor(i/10))}</p>
                         </div>
                     </div>
-                    <div class="tx-right">
-                        <div class="tx-amt ${tx.cls}">${tx.amt}</div>
-                        <div class="tx-time">${tx.time}</div>
+                    <div class="leader-right">
+                        <div class="l-score">${score.toLocaleString()} RS</div>
+                        <div class="l-bdt">${bdtVal} BDT</div>
+                    </div>
+                </div>
+            `;
+        }
+        leaderboardContainer.innerHTML = htmlContent;
+
+        // Generate Referred Users List
+        const referredContainer = document.getElementById('referred-users-container');
+        const refUsers = [
+            {name: "Demo_Arif_01", level: "Lv.5", time: "2025-09-18 14:32", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60"},
+            {name: "Rasel_007", level: "Lv.4", time: "2025-09-18 13:21", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60"},
+            {name: "Sakib_Alam", level: "Lv.3", time: "2025-09-18 12:10", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60"},
+            {name: "Tanjim_88", level: "Lv.3", time: "2025-09-18 11:45", img: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=60"},
+            {name: "Nusrat_Jahan", level: "Lv.2", time: "2025-09-18 10:32", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60"},
+            {name: "Fahim_TheBoss", level: "Lv.2", time: "2025-09-18 09:21", img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=60"},
+            {name: "Rony_Official", level: "Lv.1", time: "2025-09-18 08:14", img: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=60"},
+            {name: "Mitu_24", level: "Lv.1", time: "2025-09-18 07:03", img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=60"},
+            {name: "Shuvo_123", level: "Lv.2", time: "2025-09-18 06:27", img: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=60"},
+            {name: "Hasan_501", level: "Lv.1", time: "2025-09-18 05:12", img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=60"}
+        ];
+
+        let refHtml = "";
+        refUsers.forEach((u, index) => {
+            let rankNum = String(index + 1).padStart(2, '0');
+            refHtml += `
+                <div class="ref-user-row">
+                    <div class="ref-user-left">
+                        <span class="ref-user-rank">${rankNum}</span>
+                        <img src="${u.img}" class="ref-user-avatar" alt="User">
+                        <div class="ref-user-info">
+                            <h5>${u.name}</h5>
+                            <p><i class="fas fa-circle" style="font-size: 6px;"></i> Online (${u.level}) • ${u.time}</p>
+                        </div>
+                    </div>
+                    <div class="ref-user-right">
+                        <div class="reward-amt">1,000 RS</div>
+                        <span class="status-tag">পেয়েছেন</span>
                     </div>
                 </div>
             `;
         });
-        txSlider.innerHTML = txHtml;
+        referredContainer.innerHTML = refHtml;
+
+        // AI Chat Functionality
+        function sendMessage() {
+            let inputField = document.getElementById('user-input');
+            let text = inputField.value.trim();
+            if(!text) return;
+
+            let chatContainer = document.getElementById('chat-container');
+            chatContainer.innerHTML += `<div class="chat-msg user">${text}</div>`;
+            inputField.value = "";
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            setTimeout(() => {
+                let botReply = "ধন্যবাদ! আপনার বার্তাটি পেয়েছি। আমাদের সাপোর্ট টিম দ্রুত আপনার সাথে যোগাযোগ করবে।";
+                if(text.toLowerCase().includes('withdraw') || text.toLowerCase().includes('taka') || text.toLowerCase().includes('টাকা')) {
+                    botReply = "ন্যূনতম ১,০০০,০০০ RS টোকেন হলে আপনি সহজে বিকাশ বা নগদে উইথড্র করতে পারবেন।";
+                }
+                chatContainer.innerHTML += `<div class="chat-msg bot">${botReply}</div>`;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 600);
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        updateUI();
     </script>
 </body>
 </html>
