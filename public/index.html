@@ -1665,7 +1665,83 @@
         }
 
         // Initial setup on load
-        updateUI();
+        updateUI();// Ad Network Credentials & Rotation Logic
+  const ADMOB_CONFIG = {
+    appId: "ca-app-pub-9004902580277628~4744374377",
+    rewardedUnitId: "ca-app-pub-9004902580277628/8581431622"
+  };
+
+  const UNITY_CONFIG = {
+    gameId: "500379346",
+    placementId: "BP_Rewarded_Android"
+  };
+
+  let useAdMobNext = true;
+
+  function showRewardedAd(amount, onRewardGranted) {
+    if (useAdMobNext) {
+      console.log("Attempting to load AdMob Rewarded Ad...");
+      // AdMob ফলব্যাক লজিক
+      tryLoadAdMob(() => {
+        grantAdReward(amount);
+      }, () => {
+        useAdMobNext = false;
+        showRewardedAd(amount, onRewardGranted);
+      });
+    } else {
+      console.log("Attempting to load Unity Ads Rewarded...");
+      // Unity Ads লজিক
+      tryLoadUnity(() => {
+        grantAdReward(amount);
+      }, () => {
+        useAdMobNext = true;
+        showRewardedAd(amount, onRewardGranted);
+      });
+    }
+    useAdMobNext = !useAdMobNext;
+  }
+
+  function tryLoadAdMob(successCallback, failCallback) {
+    // এখানে আপনার AdMob SDK কল থাকবে। সফল হলে successCallback(), ফেইল করলে failCallback() কল হবে।
+    let adMobLoaded = false; // টেস্ট করার জন্য ফলস রাখা হয়েছে যাতে ইউনিটিতে সুইচ করে
+    if (adMobLoaded) {
+      successCallback();
+    } else {
+      failCallback();
+    }
+  }
+
+  function tryLoadUnity(successCallback, failCallback) {
+    // এখানে আপনার Unity Ads SDK কল থাকবে।
+    let unityLoaded = true; 
+    if (unityLoaded) {
+      successCallback();
+    } else {
+      failCallback();
+    }
+  }
+
+  function grantAdReward(amount) {
+    balance += amount;
+    let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
+    transactions.unshift({
+      type: 'reward', 
+      title: 'Ad Watch Reward', 
+      desc: 'Bonus from Ads System', 
+      amount: `${amount} RS`, 
+      color: '#4facfe'
+    });
+    updateUI();
+    alert(`সফলভাবে ${amount} RS রিওয়ার্ড যোগ হয়েছে!`);
+  }
+
+  // আপনার বিদ্যমান অ্যাড কার্ডগুলোর সাথে ফাংশনটি যুক্ত করার জন্য
+  // যেমন: claimAdReward(amount) ফাংশনে নিচের রোটেশন কলটি ব্যবহার করতে পারেন:
+  function claimAdReward(amount) {
+    showRewardedAd(amount, () => {
+      console.log("Reward given via rotation system");
+    });
+        }
     </script>
 </body>
 </html>
