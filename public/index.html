@@ -70,7 +70,7 @@
             padding: 14px;
             text-align: center;
             box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .balance-card h2 {
@@ -86,19 +86,44 @@
             margin-top: 2px;
         }
 
-        /* Tap Section & Logo */
+        /* Marquee Animated Notice */
+        .marquee-container {
+            background: rgba(250, 204, 21, 0.1);
+            border: 1px dashed var(--gold-primary);
+            border-radius: 8px;
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 6px 0;
+            margin-bottom: 15px;
+        }
+
+        .marquee-text {
+            display: inline-block;
+            animation: marquee 12s linear infinite;
+            color: var(--gold-primary);
+            font-weight: bold;
+            font-size: 12px;
+            padding-left: 100%;
+        }
+
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
+        /* Tap Section & 3-Color Rotating Rings */
         .tap-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin: 10px 0;
+            margin: 5px 0 15px 0;
         }
 
         .logo-container {
             position: relative;
-            width: 175px;
-            height: 175px;
+            width: 160px;
+            height: 160px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -113,7 +138,7 @@
             border: 4px solid #facc15;
             border-radius: 50%;
             box-shadow: 0 0 12px rgba(250, 204, 21, 0.6);
-            animation: spin 12s linear infinite;
+            animation: spin 10s linear infinite;
         }
 
         .ring-blue {
@@ -123,7 +148,7 @@
             border: 3px solid #38bdf8;
             border-radius: 50%;
             box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
-            animation: spin-reverse 8s linear infinite;
+            animation: spin-reverse 7s linear infinite;
         }
 
         .ring-purple {
@@ -132,12 +157,13 @@
             height: 68%;
             border: 3px solid #c084fc;
             border-radius: 50%;
-            opacity: 0.8;
+            box-shadow: 0 0 8px rgba(192, 132, 252, 0.5);
+            animation: spin 5s linear infinite;
         }
 
         .center-logo-btn {
-            width: 105px;
-            height: 105px;
+            width: 95px;
+            height: 95px;
             background: radial-gradient(circle, #1e1b4b, #09090b);
             border-radius: 50%;
             display: flex;
@@ -155,11 +181,37 @@
         }
 
         .center-logo-btn h1 {
-            font-size: 24px;
+            font-size: 22px;
             background: linear-gradient(to right, #cbd5e1, #facc15);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 900;
+        }
+
+        /* Pulsing Pointing Prompt */
+        .tap-instruction {
+            text-align: center;
+            margin-top: 8px;
+            animation: pulseText 1.5s infinite;
+        }
+
+        .tap-instruction span {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        @keyframes pulseText {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
         }
 
         /* Floating Score Animation */
@@ -221,60 +273,36 @@
             font-weight: bold;
         }
 
-        /* Ads Header with Refresh Button */
+        /* Single Ad Banner Section */
         .ads-header-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .ads-section-title {
             color: var(--gold-primary);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             letter-spacing: 0.5px;
         }
 
-        .refresh-btn {
-            background: rgba(250, 204, 21, 0.1);
-            border: 1px solid var(--gold-primary);
-            color: var(--gold-primary);
-            padding: 5px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .ads-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .ad-card {
+        .single-ad-card {
             background: linear-gradient(135deg, #1e1b4b, #0f172a);
             border: 2px solid var(--gold-primary);
-            border-radius: 12px;
-            padding: 10px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(250, 204, 21, 0.15);
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(250, 204, 21, 0.2);
             cursor: pointer;
+            transition: transform 0.1s ease;
         }
 
-        .ad-card h3 {
-            font-size: 18px;
-            color: var(--gold-primary);
-            margin-bottom: 2px;
-        }
-
-        .ad-card span {
-            font-size: 11px;
-            color: var(--text-muted);
+        .single-ad-card:active {
+            transform: scale(0.97);
         }
 
         .section-view {
@@ -467,15 +495,6 @@
             font-weight: bold;
             font-size: 15px;
             margin: 6px 0;
-        }
-
-        .ref-badge-row i {
-            color: #facc15;
-        }
-
-        .ref-top-banner p {
-            font-size: 10px;
-            color: var(--text-muted);
         }
 
         .ref-link-card {
@@ -976,6 +995,11 @@
                     <p>≈ <span id="bdt-display">7,500.00</span> BDT (1M = 150 BDT)</p>
                 </div>
 
+                <!-- Marquee Notice Banner -->
+                <div class="marquee-container">
+                    <div class="marquee-text">📢 প্রতি অ্যাড দেখুন এবং ১,০০০ আরএস কয়েন পান! সীমিত সময়ের অফার!</div>
+                </div>
+
                 <div class="tap-section">
                     <div class="logo-container" id="tap-target">
                         <div class="ring-gold"></div>
@@ -987,7 +1011,12 @@
                     </div>
                 </div>
 
-                <div class="task-timer-box">
+                <!-- Pulsing Pointing Prompt -->
+                <div class="tap-instruction">
+                    <span><i class="fas fa-hand-pointer"></i> এই লোগোতে বারবার ট্যাপ করে কয়েন সংগ্রহ করুন!</span>
+                </div>
+
+                <div class="task-timer-box" style="margin-top: 15px;">
                     <div class="task-info">
                         <h4>Daily Task Reward</h4>
                         <p>200 RS Token Bonus</p>
@@ -995,27 +1024,18 @@
                     <div class="timer-badge" id="countdown-timer">01:59:45</div>
                 </div>
 
+                <!-- Single Ad Reward Section -->
                 <div class="ads-header-row">
-                    <div class="ads-section-title">⭐ ADS REWARD SYSTEM ⭐</div>
-                    <button class="refresh-btn" onclick="refreshAds()"><i class="fas fa-sync-alt"></i> Refresh</button>
+                    <div class="ads-section-title">⭐ REWARDED AD SYSTEM ⭐</div>
                 </div>
 
-                <div class="ads-grid">
-                    <div class="ad-card" onclick="claimAdReward(1200)">
-                        <h3>1,200 RS</h3>
-                        <span>Watch Ad 1</span>
+                <div class="single-ad-card" onclick="claimAdReward(1000)">
+                    <div>
+                        <h3 style="font-size: 15px; color: var(--gold-primary); margin-bottom: 2px;">প্রতি অ্যাড দেখুন</h3>
+                        <span style="font-size: 11px; color: var(--text-muted);">বিজ্ঞাপন দেখে ইনস্ট্যান্ট ১,০০০ আরএস কয়েন পান</span>
                     </div>
-                    <div class="ad-card" onclick="claimAdReward(600)">
-                        <h3>600 RS</h3>
-                        <span>Watch Ad 2</span>
-                    </div>
-                    <div class="ad-card" onclick="claimAdReward(900)">
-                        <h3>900 RS</h3>
-                        <span>Watch Ad 3</span>
-                    </div>
-                    <div class="ad-card" onclick="claimAdReward(1400)">
-                        <h3>1,400 RS</h3>
-                        <span>Watch Ad 4</span>
+                    <div style="text-align: right;">
+                        <h3 style="font-size: 18px; color: var(--gold-primary);">1,000 RS</h3>
                     </div>
                 </div>
             </div>
@@ -1265,7 +1285,6 @@
         let userName = localStorage.getItem('rs_username') || "RS Sahebaliy";
         let userAvatar = localStorage.getItem('rs_avatar') || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120";
         
-        // Dynamic Live Transactions Setup
         let transactions = JSON.parse(localStorage.getItem('rs_transactions')) || [
             {type: 'reward', title: 'Referral Reward', desc: 'From: Demo_User_01', amount: '+ 1,000 RS', color: '#22c55e', icon: 'fa-arrow-up', time: '2026-09-22 14:32'},
             {type: 'withdraw', title: 'Withdrawal', desc: 'To: bKash (****1234)', amount: '- 5,000 RS', color: '#ef4444', icon: 'fa-arrow-down', time: '2026-09-22 12:10'}
@@ -1279,13 +1298,12 @@
             {name: "Nusrat_Jahan", level: "Lv.2", time: "2026-09-22 10:32", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60"}
         ];
 
-        // Daily increment logic for referral count
         let lastRefUpdate = localStorage.getItem('rs_last_ref_update') || '';
         let todayDateStr = new Date().toISOString().substring(0, 10);
         let dailyAddedCount = parseInt(localStorage.getItem('rs_daily_added_count')) || 12;
 
         if (lastRefUpdate !== todayDateStr) {
-            dailyAddedCount += 100; // প্রতিদিন ১০০ করে বাড়বে
+            dailyAddedCount += 100;
             localStorage.setItem('rs_daily_added_count', dailyAddedCount);
             localStorage.setItem('rs_last_ref_update', todayDateStr);
         }
@@ -1555,10 +1573,6 @@
             }
         }, 1000);
 
-        function refreshAds() {
-            alert("Ads list refreshed successfully!");
-        }
-
         function copyRefLink() {
             let inputElem = document.getElementById('ref-link-input');
             inputElem.select();
@@ -1625,7 +1639,6 @@
             }
         }
 
-        // Deposit temporarily disabled as requested
         function simulateDeposit() {
             alert("ডিপোজিট অপশনটি বর্তমানে সাময়িকভাবে বন্ধ রয়েছে। দয়া করে পরে চেষ্টা করুন।");
         }
@@ -1703,7 +1716,6 @@
             }
         }
 
-        // Initial setup on load
         updateUI();
     </script>
 </body>
