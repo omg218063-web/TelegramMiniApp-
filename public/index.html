@@ -137,8 +137,8 @@
             height: 100%;
             border: 4px solid #facc15;
             border-radius: 50%;
-            box-shadow: 0 0 12px rgba(250, 204, 21, 0.6);
-            animation: spin 10s linear infinite;
+            box-shadow: 0 0 15px rgba(250, 204, 21, 0.8);
+            animation: spin 8s linear infinite;
         }
 
         .ring-blue {
@@ -147,8 +147,8 @@
             height: 84%;
             border: 3px solid #38bdf8;
             border-radius: 50%;
-            box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
-            animation: spin-reverse 7s linear infinite;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.7);
+            animation: spin-reverse 5s linear infinite;
         }
 
         .ring-purple {
@@ -157,8 +157,8 @@
             height: 68%;
             border: 3px solid #c084fc;
             border-radius: 50%;
-            box-shadow: 0 0 8px rgba(192, 132, 252, 0.5);
-            animation: spin 5s linear infinite;
+            box-shadow: 0 0 10px rgba(192, 132, 252, 0.7);
+            animation: spin 3.5s linear infinite;
         }
 
         .center-logo-btn {
@@ -299,10 +299,17 @@
             box-shadow: 0 4px 15px rgba(250, 204, 21, 0.2);
             cursor: pointer;
             transition: transform 0.1s ease;
+            animation: pulseAd 2s infinite;
         }
 
         .single-ad-card:active {
             transform: scale(0.97);
+        }
+
+        @keyframes pulseAd {
+            0% { box-shadow: 0 0 10px rgba(250, 204, 21, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(250, 204, 21, 0.6); }
+            100% { box-shadow: 0 0 10px rgba(250, 204, 21, 0.2); }
         }
 
         .section-view {
@@ -995,7 +1002,7 @@
                     <p>≈ <span id="bdt-display">7,500.00</span> BDT (1M = 150 BDT)</p>
                 </div>
 
-                <!-- Marquee Notice Banner -->
+                <!-- Marquee Animated Notice -->
                 <div class="marquee-container">
                     <div class="marquee-text">📢 প্রতি অ্যাড দেখুন এবং ১,০০০ আরএস কয়েন পান! সীমিত সময়ের অফার!</div>
                 </div>
@@ -1031,7 +1038,7 @@
 
                 <div class="single-ad-card" onclick="claimAdReward(1000)">
                     <div>
-                        <h3 style="font-size: 15px; color: var(--gold-primary); margin-bottom: 2px;">প্রতি অ্যাড দেখুন</h3>
+                        <h3 style="font-size: 15px; color: var(--gold-primary); margin-bottom: 2px;">প্রতি অ্যাড দেখুন <span style="font-size: 10px; background: #ef4444; color: #fff; padding: 1px 6px; border-radius: 4px;">ক্লিক করুন</span></h3>
                         <span style="font-size: 11px; color: var(--text-muted);">বিজ্ঞাপন দেখে ইনস্ট্যান্ট ১,০০০ আরএস কয়েন পান</span>
                     </div>
                     <div style="text-align: right;">
@@ -1250,8 +1257,8 @@
 
                     <div style="background: var(--card-bg); border: 1px solid rgba(250,204,21,0.2); border-radius: 12px; padding: 12px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <span style="font-size: 12px; font-weight: bold; color: var(--gold-primary);"><i class="fas fa-history"></i> Recent Transactions</span>
-                            <span style="font-size: 10px; color: var(--gold-primary); cursor: pointer;">View All ›</span>
+                            <span style="font-size: 12px; font-weight: bold; color: var(--gold-primary);"><i class="fas fa-history"></i> Recent Transactions (Live)</span>
+                            <span style="font-size: 10px; color: var(--gold-primary); cursor: pointer;">Auto-Updating ›</span>
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 8px; font-size: 11px;" id="transaction-list-container">
                             <!-- Dynamic Transactions -->
@@ -1298,15 +1305,20 @@
             {name: "Nusrat_Jahan", level: "Lv.2", time: "2026-09-22 10:32", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60"}
         ];
 
-        let lastRefUpdate = localStorage.getItem('rs_last_ref_update') || '';
-        let todayDateStr = new Date().toISOString().substring(0, 10);
-        let dailyAddedCount = parseInt(localStorage.getItem('rs_daily_added_count')) || 12;
-
-        if (lastRefUpdate !== todayDateStr) {
-            dailyAddedCount += 100;
-            localStorage.setItem('rs_daily_added_count', dailyAddedCount);
-            localStorage.setItem('rs_last_ref_update', todayDateStr);
+        // Automatic Hourly Referral Increment Logic (10-12 users per hour)
+        let hourlyIncrements = parseInt(localStorage.getItem('rs_hourly_increments')) || 0;
+        let lastIncrementTime = parseInt(localStorage.getItem('rs_last_inc_time')) || Date.now();
+        
+        let currentTime = Date.now();
+        let hoursPassed = Math.floor((currentTime - lastIncrementTime) / (1000 * 60 * 60));
+        if (hoursPassed > 0) {
+            let addedNow = hoursPassed * Math.floor(Math.random() * 3 + 10); // 10 to 12 per hour
+            hourlyIncrements += addedNow;
+            localStorage.setItem('rs_hourly_increments', hourlyIncrements);
+            localStorage.setItem('rs_last_inc_time', currentTime);
         }
+
+        let dailyAddedCount = parseInt(localStorage.getItem('rs_daily_added_count')) || 12;
 
         const rate = 150 / 1000000;
         const possibleRewards = [1, 2, 3, 5, 10];
@@ -1348,11 +1360,12 @@
                 fillEl.style.width = percentage + '%';
             }
 
-            document.getElementById('total-ref-count').innerText = refUsersList.length + 120 + dailyAddedCount;
+            let totalRefs = refUsersList.length + 120 + dailyAddedCount + hourlyIncrements;
+            document.getElementById('total-ref-count').innerText = totalRefs;
             let todayRefEl = document.getElementById('today-ref-count');
-            if(todayRefEl) todayRefEl.innerText = dailyAddedCount;
+            if(todayRefEl) todayRefEl.innerText = dailyAddedCount + hourlyIncrements;
 
-            document.getElementById('total-ref-earn').innerText = (((refUsersList.length + 120 + dailyAddedCount) * 1000) >= 1000 ? Math.floor(((refUsersList.length + 120 + dailyAddedCount) * 1000)/1000) + 'K' : (refUsersList.length + 120 + dailyAddedCount) * 1000);
+            document.getElementById('total-ref-earn').innerText = ((totalRefs * 1000) >= 1000 ? Math.floor((totalRefs * 1000)/1000) + 'K' : totalRefs * 1000);
             
             renderTransactions();
             renderReferredUsers();
@@ -1389,13 +1402,11 @@
 
         function showRewardedAd(amount) {
             if (useAdMobNext) {
-                console.log("Loading AdMob Rewarded Ad...");
                 tryLoadAdMob(() => { grantAdReward(amount); }, () => {
                     useAdMobNext = false;
                     showRewardedAd(amount);
                 });
             } else {
-                console.log("Loading Unity Ads Rewarded...");
                 tryLoadUnity(() => { grantAdReward(amount); }, () => {
                     useAdMobNext = true;
                     showRewardedAd(amount);
@@ -1405,7 +1416,7 @@
         }
 
         function tryLoadAdMob(successCallback, failCallback) {
-            let adMobLoaded = false; 
+            let adMobLoaded = true; 
             if (adMobLoaded) successCallback(); else failCallback();
         }
 
@@ -1428,12 +1439,29 @@
             showRewardedAd(amount);
         }
 
+        // Live Simulated Transactions & Auto Increment Background
+        setInterval(() => {
+            const randomNamesList = ["Arif_BD", "Tanvir_99", "Rahim_Official", "Nusrat_Jahan", "Sabbir_Hossain", "Mehedi_Ali", "Farhana_Akter", "Imran_Khan"];
+            const methodsList = ["bKash", "Nagad"];
+            let rName = randomNamesList[Math.floor(Math.random() * randomNamesList.length)];
+            let rMethod = methodsList[Math.floor(Math.random() * methodsList.length)];
+            let rAmount = Math.floor(Math.random() * 2000 + 500);
+            let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
+
+            transactions.unshift({
+                type: 'withdraw', title: 'Live Payout', desc: `To: ${rMethod} (${rName})`, amount: `- ${rAmount.toLocaleString()} RS`, color: '#38bdf8', icon: 'fa-exchange-alt', time: nowStr
+            });
+
+            if(transactions.length > 20) transactions.pop();
+            updateUI();
+        }, 15000); // Every 15 seconds new transaction simulation
+
         // Render Dynamic Transactions
         function renderTransactions() {
             let container = document.getElementById('transaction-list-container');
             if(!container) return;
             let html = "";
-            transactions.slice(0, 5).forEach(tx => {
+            transactions.slice(0, 6).forEach(tx => {
                 html += `
                     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
                         <div style="display: flex; align-items: center; gap: 8px;">
