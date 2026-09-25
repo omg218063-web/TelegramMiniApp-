@@ -1059,7 +1059,7 @@
                         </div>
                         <div class="ref-stat-box">
                             <i class="fas fa-user-plus"></i>
-                            <h5>12</h5>
+                            <h5 id="today-ref-count">12</h5>
                             <p>আজকের নতুন</p>
                         </div>
                         <div class="ref-stat-box">
@@ -1264,10 +1264,13 @@
         let balance = parseInt(localStorage.getItem('rs_balance')) || 50000;
         let userName = localStorage.getItem('rs_username') || "RS Sahebaliy";
         let userAvatar = localStorage.getItem('rs_avatar') || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120";
+        
+        // Dynamic Live Transactions Setup
         let transactions = JSON.parse(localStorage.getItem('rs_transactions')) || [
             {type: 'reward', title: 'Referral Reward', desc: 'From: Demo_User_01', amount: '+ 1,000 RS', color: '#22c55e', icon: 'fa-arrow-up', time: '2026-09-22 14:32'},
             {type: 'withdraw', title: 'Withdrawal', desc: 'To: bKash (****1234)', amount: '- 5,000 RS', color: '#ef4444', icon: 'fa-arrow-down', time: '2026-09-22 12:10'}
         ];
+
         let refUsersList = JSON.parse(localStorage.getItem('rs_ref_users')) || [
             {name: "Demo_Arif_01", level: "Lv.5", time: "2026-09-22 14:32", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60"},
             {name: "Rasel_007", level: "Lv.4", time: "2026-09-22 13:21", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60"},
@@ -1275,6 +1278,17 @@
             {name: "Tanjim_88", level: "Lv.3", time: "2026-09-22 11:45", img: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=60"},
             {name: "Nusrat_Jahan", level: "Lv.2", time: "2026-09-22 10:32", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60"}
         ];
+
+        // Daily increment logic for referral count
+        let lastRefUpdate = localStorage.getItem('rs_last_ref_update') || '';
+        let todayDateStr = new Date().toISOString().substring(0, 10);
+        let dailyAddedCount = parseInt(localStorage.getItem('rs_daily_added_count')) || 12;
+
+        if (lastRefUpdate !== todayDateStr) {
+            dailyAddedCount += 100; // প্রতিদিন ১০০ করে বাড়বে
+            localStorage.setItem('rs_daily_added_count', dailyAddedCount);
+            localStorage.setItem('rs_last_ref_update', todayDateStr);
+        }
 
         const rate = 150 / 1000000;
         const possibleRewards = [1, 2, 3, 5, 10];
@@ -1316,8 +1330,11 @@
                 fillEl.style.width = percentage + '%';
             }
 
-            document.getElementById('total-ref-count').innerText = refUsersList.length + 120;
-            document.getElementById('total-ref-earn').innerText = ((refUsersList.length + 120) * 1000 >= 1000 ? Math.floor(((refUsersList.length + 120) * 1000)/1000) + 'K' : (refUsersList.length + 120) * 1000);
+            document.getElementById('total-ref-count').innerText = refUsersList.length + 120 + dailyAddedCount;
+            let todayRefEl = document.getElementById('today-ref-count');
+            if(todayRefEl) todayRefEl.innerText = dailyAddedCount;
+
+            document.getElementById('total-ref-earn').innerText = (((refUsersList.length + 120 + dailyAddedCount) * 1000) >= 1000 ? Math.floor(((refUsersList.length + 120 + dailyAddedCount) * 1000)/1000) + 'K' : (refUsersList.length + 120 + dailyAddedCount) * 1000);
             
             renderTransactions();
             renderReferredUsers();
@@ -1349,15 +1366,48 @@
             setTimeout(() => { floatText.remove(); }, 800);
         });
 
-        // Claim Ad Reward
-        function claimAdReward(amount) {
+        // Ad Network Rotation & Claim Logic
+        let useAdMobNext = true;
+
+        function showRewardedAd(amount) {
+            if (useAdMobNext) {
+                console.log("Loading AdMob Rewarded Ad...");
+                tryLoadAdMob(() => { grantAdReward(amount); }, () => {
+                    useAdMobNext = false;
+                    showRewardedAd(amount);
+                });
+            } else {
+                console.log("Loading Unity Ads Rewarded...");
+                tryLoadUnity(() => { grantAdReward(amount); }, () => {
+                    useAdMobNext = true;
+                    showRewardedAd(amount);
+                });
+            }
+            useAdMobNext = !useAdMobNext;
+        }
+
+        function tryLoadAdMob(successCallback, failCallback) {
+            let adMobLoaded = false; 
+            if (adMobLoaded) successCallback(); else failCallback();
+        }
+
+        function tryLoadUnity(successCallback, failCallback) {
+            let unityLoaded = true; 
+            if (unityLoaded) successCallback(); else failCallback();
+        }
+
+        function grantAdReward(amount) {
             balance += amount;
             let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
             transactions.unshift({
-                type: 'reward', title: 'Ad Watch Reward', desc: 'Bonus from Ads System', amount: `+ ${amount} RS`, color: '#22c55e', icon: 'fa-arrow-up', time: nowStr
+                type: 'reward', title: 'Ad Watch Reward', desc: 'Bonus from Ads System', amount: `+ ${amount.toLocaleString()} RS`, color: '#22c55e', icon: 'fa-arrow-up', time: nowStr
             });
             updateUI();
-            alert(`সফলভাবে ${amount} RS টোকেন রিওয়ার্ড যোগ হয়েছে!`);
+            alert(`সফলভাবে ${amount} RS রিওয়ার্ড যোগ হয়েছে!`);
+        }
+
+        function claimAdReward(amount) {
+            showRewardedAd(amount);
         }
 
         // Render Dynamic Transactions
@@ -1398,7 +1448,7 @@
                             <span class="ref-user-rank">${rankNum}</span>
                             <img src="${u.img}" class="ref-user-avatar" alt="User">
                             <div class="ref-user-info">
-                                h5>${u.name}</h5>
+                                <h5>${u.name}</h5>
                                 <p><i class="fas fa-circle" style="font-size: 6px;"></i> Online (${u.level}) • ${u.time}</p>
                             </div>
                         </div>
@@ -1419,12 +1469,11 @@
             if(!podiumContainer || !leaderboardContainer) return;
 
             let topUsers = [
-                {name: "RS Sahebaliy", score: balance + 8900000, bdt: ((balance + 8900000)*rate).toFixed(2), avatar: userAvatar},
+                {name: userName, score: balance + 8900000, bdt: ((balance + 8900000)*rate).toFixed(2), avatar: userAvatar},
                 {name: "Rakibul H.", score: 4200000, bdt: (4200000*rate).toFixed(2), avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100"},
                 {name: "Sumaiya A.", score: 3100000, bdt: (3100000*rate).toFixed(2), avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100"}
             ];
 
-            // Sort top users by score descending
             topUsers.sort((a, b) => b.score - a.score);
 
             podiumContainer.innerHTML = `
@@ -1515,7 +1564,6 @@
             inputElem.select();
             navigator.clipboard.writeText(inputElem.value);
             
-            // Add a new dynamic referral user simulation on copy/share
             let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
             refUsersList.unshift({
                 name: "Active_Ref_" + Math.floor(Math.random() * 900 + 100),
@@ -1577,18 +1625,9 @@
             }
         }
 
+        // Deposit temporarily disabled as requested
         function simulateDeposit() {
-            let amount = prompt("ডিপোজিট করতে চান কত RS টোকেন?", "10000");
-            if(amount && !isNaN(amount)) {
-                let val = parseInt(amount);
-                balance += val;
-                let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
-                transactions.unshift({
-                    type: 'reward', title: 'Token Deposit', desc: 'Added via system', amount: `+ ${val.toLocaleString()} RS`, color: '#22c55e', icon: 'fa-arrow-up', time: nowStr
-                });
-                updateUI();
-                alert("সফলভাবে টোকেন ডিপোজিট হয়েছে!");
-            }
+            alert("ডিপোজিট অপশনটি বর্তমানে সাময়িকভাবে বন্ধ রয়েছে। দয়া করে পরে চেষ্টা করুন।");
         }
 
         function toggleWithdrawSection() {
@@ -1665,83 +1704,7 @@
         }
 
         // Initial setup on load
-        updateUI();// Ad Network Credentials & Rotation Logic
-  const ADMOB_CONFIG = {
-    appId: "ca-app-pub-9004902580277628~4744374377",
-    rewardedUnitId: "ca-app-pub-9004902580277628/8581431622"
-  };
-
-  const UNITY_CONFIG = {
-    gameId: "500379346",
-    placementId: "BP_Rewarded_Android"
-  };
-
-  let useAdMobNext = true;
-
-  function showRewardedAd(amount, onRewardGranted) {
-    if (useAdMobNext) {
-      console.log("Attempting to load AdMob Rewarded Ad...");
-      // AdMob ফলব্যাক লজিক
-      tryLoadAdMob(() => {
-        grantAdReward(amount);
-      }, () => {
-        useAdMobNext = false;
-        showRewardedAd(amount, onRewardGranted);
-      });
-    } else {
-      console.log("Attempting to load Unity Ads Rewarded...");
-      // Unity Ads লজিক
-      tryLoadUnity(() => {
-        grantAdReward(amount);
-      }, () => {
-        useAdMobNext = true;
-        showRewardedAd(amount, onRewardGranted);
-      });
-    }
-    useAdMobNext = !useAdMobNext;
-  }
-
-  function tryLoadAdMob(successCallback, failCallback) {
-    // এখানে আপনার AdMob SDK কল থাকবে। সফল হলে successCallback(), ফেইল করলে failCallback() কল হবে।
-    let adMobLoaded = false; // টেস্ট করার জন্য ফলস রাখা হয়েছে যাতে ইউনিটিতে সুইচ করে
-    if (adMobLoaded) {
-      successCallback();
-    } else {
-      failCallback();
-    }
-  }
-
-  function tryLoadUnity(successCallback, failCallback) {
-    // এখানে আপনার Unity Ads SDK কল থাকবে।
-    let unityLoaded = true; 
-    if (unityLoaded) {
-      successCallback();
-    } else {
-      failCallback();
-    }
-  }
-
-  function grantAdReward(amount) {
-    balance += amount;
-    let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
-    transactions.unshift({
-      type: 'reward', 
-      title: 'Ad Watch Reward', 
-      desc: 'Bonus from Ads System', 
-      amount: `${amount} RS`, 
-      color: '#4facfe'
-    });
-    updateUI();
-    alert(`সফলভাবে ${amount} RS রিওয়ার্ড যোগ হয়েছে!`);
-  }
-
-  // আপনার বিদ্যমান অ্যাড কার্ডগুলোর সাথে ফাংশনটি যুক্ত করার জন্য
-  // যেমন: claimAdReward(amount) ফাংশনে নিচের রোটেশন কলটি ব্যবহার করতে পারেন:
-  function claimAdReward(amount) {
-    showRewardedAd(amount, () => {
-      console.log("Reward given via rotation system");
-    });
-        }
+        updateUI();
     </script>
 </body>
 </html>
