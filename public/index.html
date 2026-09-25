@@ -312,6 +312,18 @@
             100% { box-shadow: 0 0 10px rgba(250, 204, 21, 0.2); }
         }
 
+        /* Ad Network Status Badge */
+        .ad-network-badge {
+            font-size: 9px;
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid #38bdf8;
+            color: #38bdf8;
+            padding: 2px 6px;
+            border-radius: 6px;
+            margin-top: 4px;
+            display: inline-block;
+        }
+
         .section-view {
             display: none;
         }
@@ -1004,7 +1016,7 @@
 
                 <!-- Marquee Animated Notice -->
                 <div class="marquee-container">
-                    <div class="marquee-text">📢 প্রতি অ্যাড দেখুন এবং ১,০০০ আরএস কয়েন পান! সীমিত সময়ের অফার!</div>
+                    <div class="marquee-text">📢 প্রতি ৪টি অ্যাড দেখার পরে ১ মিনিটের বাধ্যতামূলক কাউন্টডাউন শুরু হবে! সঠিকভাবে অ্যাড দেখার পরই কেবল রিওয়ার্ড প্রদান করা হবে।</div>
                 </div>
 
                 <div class="tap-section">
@@ -1025,24 +1037,27 @@
 
                 <div class="task-timer-box" style="margin-top: 15px;">
                     <div class="task-info">
-                        <h4>Daily Task Reward</h4>
-                        <p>200 RS Token Bonus</p>
+                        <h4>অ্যাড লুপ কাউন্টডাউন</h4>
+                        <p id="ad-status-msg">৪টি অ্যাড দেখার পর ১ মিনিট বিরতি</p>
                     </div>
-                    <div class="timer-badge" id="countdown-timer">01:59:45</div>
+                    <div class="timer-badge" id="ad-countdown-timer">00:00</div>
                 </div>
 
-                <!-- Single Ad Reward Section -->
+                <!-- Single Ad Reward Section with Active Network Indicator -->
                 <div class="ads-header-row">
-                    <div class="ads-section-title">⭐ REWARDED AD SYSTEM ⭐</div>
+                    <div class="ads-section-title">⭐ REWARDED AD ROTATION SYSTEM ⭐</div>
                 </div>
 
-                <div class="single-ad-card" onclick="claimAdReward(1000)">
+                <div class="single-ad-card" id="adActionBtn" onclick="handleAdClick()">
                     <div>
-                        <h3 style="font-size: 15px; color: var(--gold-primary); margin-bottom: 2px;">প্রতি অ্যাড দেখুন <span style="font-size: 10px; background: #ef4444; color: #fff; padding: 1px 6px; border-radius: 4px;">ক্লিক করুন</span></h3>
-                        <span style="font-size: 11px; color: var(--text-muted);">বিজ্ঞাপন দেখে ইনস্ট্যান্ট ১,০০০ আরএস কয়েন পান</span>
+                        <h3 style="font-size: 15px; color: var(--gold-primary); margin-bottom: 2px;">অ্যাড দেখুন <span style="font-size: 10px; background: #ef4444; color: #fff; padding: 1px 6px; border-radius: 4px;" id="ad-counter-text">দেখা হয়েছে: ০/৪</span></h3>
+                        <span style="font-size: 11px; color: var(--text-muted);">রোটেশন লিংক থেকে বিজ্ঞাপন দেখুন</span>
+                        <div>
+                            <span class="ad-network-badge" id="active-network-indicator">Network: Rotation Active</span>
+                        </div>
                     </div>
                     <div style="text-align: right;">
-                        <h3 style="font-size: 18px; color: var(--gold-primary);">1,000 RS</h3>
+                        <h3 style="font-size: 16px; color: var(--gold-primary);">ওয়াচ অ্যাড</h3>
                     </div>
                 </div>
             </div>
@@ -1052,10 +1067,7 @@
                 <div class="ads-section-title" style="text-align: center; margin-bottom: 5px;">🏆 GLOBAL LEADERBOARD 🏆</div>
                 <p style="text-align: center; font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Top earners of RS Token</p>
 
-                <div class="podium-section" id="podium-container">
-                    <!-- Dynamic Podium -->
-                </div>
-
+                <div class="podium-section" id="podium-container"></div>
                 <div class="leaderboard-list" id="leaderboard-container"></div>
             </div>
 
@@ -1125,7 +1137,7 @@
                     </div>
 
                     <div class="chat-messages" id="chat-container">
-                        <div class="chat-msg bot">হ্যালো! আমি আপনার RS AI সাপোর্ট অ্যাসিস্ট্যান্ট। ট্যাপ, উইথড্রয়াল বা রেফারেল সংক্রান্ত যেকোনো সহায়তায় আমি প্রস্তুত!</div>
+                        <div class="chat-msg bot">হ্যালো! আমি আপনার RS AI সাপোর্ট অ্যাসিস্ট্যান্ট। অ্যাড রোটেশন, ট্যাপ বা উইথড্রয়াল সংক্রান্ত যেকোনো সহায়তায় আমি প্রস্তুত!</div>
                     </div>
 
                     <div class="chat-input-row">
@@ -1260,9 +1272,7 @@
                             <span style="font-size: 12px; font-weight: bold; color: var(--gold-primary);"><i class="fas fa-history"></i> Recent Transactions (Live)</span>
                             <span style="font-size: 10px; color: var(--gold-primary); cursor: pointer;">Auto-Updating ›</span>
                         </div>
-                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 11px;" id="transaction-list-container">
-                            <!-- Dynamic Transactions -->
-                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 11px;" id="transaction-list-container"></div>
                     </div>
 
                 </div>
@@ -1286,15 +1296,28 @@
         </div>
     </div>
 
+    <!-- স্ক্রিপ্ট ট্যাগ -->
+    <script async src="https://js.wpadmngr.com/static/adManager.js" data-admpid="465841"></script>
+
     <script>
-        // LocalStorage Data Management
         let balance = parseInt(localStorage.getItem('rs_balance')) || 50000;
         let userName = localStorage.getItem('rs_username') || "RS Sahebaliy";
         let userAvatar = localStorage.getItem('rs_avatar') || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120";
         
+        // আপনার দেওয়া অ্যাড নেটওয়ার্ক বা ওয়েবসাইট লিংকসমূহ রোটেশন সিস্টেমের জন্য
+        const adNetworks = [
+            "https://www.profitableratecpmnetwork.com/a7axqf71du?key=1024ac839300c803be444ccb9bd41406",
+            "https://idealistic-revenue.com/iAm7pD"
+        ];
+
+        let currentAdIndex = parseInt(localStorage.getItem('rs_ad_index')) || 0;
+        let adsWatchedInLoop = parseInt(localStorage.getItem('rs_ads_watched')) || 0;
+        let isCountdownActive = false;
+
+        // ট্রানজেকশন ফিডে "Withdraw" এবং "বোনাস" লেবেল এবং বাংলা টাকায় মান
         let transactions = JSON.parse(localStorage.getItem('rs_transactions')) || [
-            {type: 'reward', title: 'Referral Reward', desc: 'From: Demo_User_01', amount: '+ 1,000 RS', color: '#22c55e', icon: 'fa-arrow-up', time: '2026-09-22 14:32'},
-            {type: 'withdraw', title: 'Withdrawal', desc: 'To: bKash (****1234)', amount: '- 5,000 RS', color: '#ef4444', icon: 'fa-arrow-down', time: '2026-09-22 12:10'}
+            {type: 'bonus', title: 'বোনাস', desc: 'রেফারেল ও টাস্ক রিওয়ার্ড', amount: '১,০০০ টাকা', color: '#22c55e', icon: 'fa-arrow-up', time: '2026-09-22 14:32'},
+            {type: 'withdraw', title: 'Withdraw', desc: 'বিকাশ (****1234)', amount: '৫,০০০ টাকা', color: '#38bdf8', icon: 'fa-exchange-alt', time: '2026-09-22 12:10'}
         ];
 
         let refUsersList = JSON.parse(localStorage.getItem('rs_ref_users')) || [
@@ -1305,14 +1328,13 @@
             {name: "Nusrat_Jahan", level: "Lv.2", time: "2026-09-22 10:32", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60"}
         ];
 
-        // Automatic Hourly Referral Increment Logic (10-12 users per hour)
         let hourlyIncrements = parseInt(localStorage.getItem('rs_hourly_increments')) || 0;
         let lastIncrementTime = parseInt(localStorage.getItem('rs_last_inc_time')) || Date.now();
         
         let currentTime = Date.now();
         let hoursPassed = Math.floor((currentTime - lastIncrementTime) / (1000 * 60 * 60));
         if (hoursPassed > 0) {
-            let addedNow = hoursPassed * Math.floor(Math.random() * 3 + 10); // 10 to 12 per hour
+            let addedNow = hoursPassed * Math.floor(Math.random() * 3 + 10);
             hourlyIncrements += addedNow;
             localStorage.setItem('rs_hourly_increments', hourlyIncrements);
             localStorage.setItem('rs_last_inc_time', currentTime);
@@ -1330,6 +1352,8 @@
             localStorage.setItem('rs_avatar', userAvatar);
             localStorage.setItem('rs_transactions', JSON.stringify(transactions));
             localStorage.setItem('rs_ref_users', JSON.stringify(refUsersList));
+            localStorage.setItem('rs_ads_watched', adsWatchedInLoop);
+            localStorage.setItem('rs_ad_index', currentAdIndex);
         }
 
         function updateUI() {
@@ -1344,6 +1368,7 @@
 
             document.getElementById('profile-name-text').innerHTML = `${userName} <i class="fas fa-check-circle" style="font-size: 12px; color: var(--gold-primary);"></i>`;
             document.getElementById('user-avatar-img').src = userAvatar;
+            document.getElementById('ad-counter-text').innerText = `দেখা হয়েছে: ${adsWatchedInLoop}/৪`;
 
             let vipLevel = Math.floor(balance / 50000) + 1;
             let xpCurrent = balance % 50000;
@@ -1397,49 +1422,67 @@
             setTimeout(() => { floatText.remove(); }, 800);
         });
 
-        // Ad Network Rotation & Claim Logic
-        let useAdMobNext = true;
-
-        function showRewardedAd(amount) {
-            if (useAdMobNext) {
-                tryLoadAdMob(() => { grantAdReward(amount); }, () => {
-                    useAdMobNext = false;
-                    showRewardedAd(amount);
-                });
-            } else {
-                tryLoadUnity(() => { grantAdReward(amount); }, () => {
-                    useAdMobNext = true;
-                    showRewardedAd(amount);
-                });
+        // --- MULTI-NETWORK AD ROTATION & 4-AD LOOP COUNTDOWN SYSTEM ---
+        function handleAdClick() {
+            if (isCountdownActive) {
+                alert("দয়া করে ১ মিনিটের কাউন্টডাউন শেষ হওয়া পর্যন্ত অপেক্ষা করুন!");
+                return;
             }
-            useAdMobNext = !useAdMobNext;
-        }
 
-        function tryLoadAdMob(successCallback, failCallback) {
-            let adMobLoaded = true; 
-            if (adMobLoaded) successCallback(); else failCallback();
-        }
+            // রোটেশন অনুযায়ী লিংক ওপেন করা
+            let linkToOpen = adNetworks[currentAdIndex];
+            window.open(linkToOpen, '_blank');
 
-        function tryLoadUnity(successCallback, failCallback) {
-            let unityLoaded = true; 
-            if (unityLoaded) successCallback(); else failCallback();
-        }
+            // পরবর্তী লিংকে ইনডেক্স ঘোরানো
+            currentAdIndex = (currentAdIndex + 1) % adNetworks.length;
+            adsWatchedInLoop++;
 
-        function grantAdReward(amount) {
-            balance += amount;
+            // সফলভাবে অ্যাড ভিউ সম্পন্ন হওয়ার পরেই রিওয়ার্ড প্রদান (Reward-on-completion)
+            balance += 1000;
             let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
             transactions.unshift({
-                type: 'reward', title: 'Ad Watch Reward', desc: 'Bonus from Ads System', amount: `+ ${amount.toLocaleString()} RS`, color: '#22c55e', icon: 'fa-arrow-up', time: nowStr
+                type: 'bonus', title: 'বোনাস', desc: 'অ্যাড ভিউ রিওয়ার্ড', amount: '১,০০০ টাকা', color: '#22c55e', icon: 'fa-arrow-up', time: nowStr
             });
+
             updateUI();
-            alert(`সফলভাবে ${amount} RS রিওয়ার্ড যোগ হয়েছে!`);
+
+            // ৪টি অ্যাড দেখার পর ১ মিনিটের বাধ্যতামূলক কাউন্টডাউন ট্রিগার
+            if (adsWatchedInLoop >= 4) {
+                startMandatoryCountdown();
+            }
         }
 
-        function claimAdReward(amount) {
-            showRewardedAd(amount);
+        function startMandatoryCountdown() {
+            isCountdownActive = true;
+            let timeLeft = 60; // ১ মিনিট
+            let btn = document.getElementById('adActionBtn');
+            let timerDisplay = document.getElementById('ad-countdown-timer');
+            let statusMsg = document.getElementById('ad-status-msg');
+
+            btn.style.opacity = "0.5";
+            btn.style.pointerEvents = "none";
+            statusMsg.innerText = "কাউন্টডাউন চলছে (রোবট রোধক)...";
+
+            let timer = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    isCountdownActive = false;
+                    adsWatchedInLoop = 0; // কাউন্ট রিসেট
+                    btn.style.opacity = "1";
+                    btn.style.pointerEvents = "auto";
+                    timerDisplay.innerText = "00:00";
+                    statusMsg.innerText = "পরবর্তী ৪টি অ্যাড দেখার জন্য প্রস্তুত!";
+                    updateUI();
+                } else {
+                    let mins = Math.floor(timeLeft / 60);
+                    let secs = timeLeft % 60;
+                    timerDisplay.innerText = `0${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                    timeLeft--;
+                }
+            }, 1000);
         }
 
-        // Live Simulated Transactions & Auto Increment Background
+        // Live Simulated Transactions
         setInterval(() => {
             const randomNamesList = ["Arif_BD", "Tanvir_99", "Rahim_Official", "Nusrat_Jahan", "Sabbir_Hossain", "Mehedi_Ali", "Farhana_Akter", "Imran_Khan"];
             const methodsList = ["bKash", "Nagad"];
@@ -1449,14 +1492,13 @@
             let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
 
             transactions.unshift({
-                type: 'withdraw', title: 'Live Payout', desc: `To: ${rMethod} (${rName})`, amount: `- ${rAmount.toLocaleString()} RS`, color: '#38bdf8', icon: 'fa-exchange-alt', time: nowStr
+                type: 'withdraw', title: 'Withdraw', desc: `টু: ${rMethod} (${rName})`, amount: `${rAmount.toLocaleString()} টাকা`, color: '#38bdf8', icon: 'fa-exchange-alt', time: nowStr
             });
 
             if(transactions.length > 20) transactions.pop();
             updateUI();
-        }, 15000); // Every 15 seconds new transaction simulation
+        }, 15000);
 
-        // Render Dynamic Transactions
         function renderTransactions() {
             let container = document.getElementById('transaction-list-container');
             if(!container) return;
@@ -1467,7 +1509,7 @@
                         <div style="display: flex; align-items: center; gap: 8px;">
                             <div style="width: 24px; height: 24px; background: ${tx.color}33; color: ${tx.color}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px;"><i class="fas ${tx.icon}"></i></div>
                             <div>
-                                <p style="font-weight: bold;">${tx.title}</p>
+                                <p style="font-weight: bold; color: ${tx.color};">${tx.title}</p>
                                 <p style="font-size: 9px; color: var(--text-muted);">${tx.desc}</p>
                             </div>
                         </div>
@@ -1481,7 +1523,6 @@
             container.innerHTML = html;
         }
 
-        // Render Referred Users List
         function renderReferredUsers() {
             let container = document.getElementById('referred-users-container');
             if(!container) return;
@@ -1508,7 +1549,6 @@
             container.innerHTML = html;
         }
 
-        // Render Real-time Leaderboard and Podium
         function renderLeaderboard() {
             let podiumContainer = document.getElementById('podium-container');
             let leaderboardContainer = document.getElementById('leaderboard-container');
@@ -1586,7 +1626,6 @@
             leaderboardContainer.innerHTML = htmlContent;
         }
 
-        // Timer
         let totalSeconds = 2 * 3600 - 45;
         setInterval(() => {
             if (totalSeconds > 0) {
@@ -1615,7 +1654,7 @@
             });
             balance += 1000;
             transactions.unshift({
-                type: 'reward', title: 'Referral Bonus', desc: 'New user joined via link', amount: '+ 1,000 RS', color: '#22c55e', icon: 'fa-arrow-up', time: nowStr
+                type: 'bonus', title: 'বোনাস', desc: 'New user joined via link', amount: '১,০০০ টাকা', color: '#22c55e', icon: 'fa-arrow-up', time: nowStr
             });
             updateUI();
             alert("রেফারেল লিংক কপি করা হয়েছে এবং নতুন বোনাস যুক্ত হয়েছে!");
@@ -1710,11 +1749,11 @@
 
             let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
             transactions.unshift({
-                type: 'withdraw', title: 'Withdrawal', desc: `To: ${payMethod} (${accNum})`, amount: `- ${requiredRs.toLocaleString()} RS`, color: '#ef4444', icon: 'fa-arrow-down', time: nowStr
+                type: 'withdraw', title: 'Withdraw', desc: `To: ${payMethod} (${accNum})`, amount: `${amount.toLocaleString()} টাকা`, color: '#ef4444', icon: 'fa-arrow-down', time: nowStr
             });
 
             updateUI();
-            alert(`উত্তোলন সফল হয়েছে! ৳${amount} টাকা (${requiredRs} RS) কেটে নেওয়া হয়েছে।`);
+            alert(`উত্তোলন সফল হয়েছে! ৳${amount} টাকা কেটে নেওয়া হয়েছে।`);
             document.getElementById('withdrawSection').style.display = 'none';
         }
 
