@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -312,7 +312,6 @@
             100% { box-shadow: 0 0 10px rgba(250, 204, 21, 0.2); }
         }
 
-        /* Ad Network Status Badge */
         .ad-network-badge {
             font-size: 9px;
             background: rgba(56, 189, 248, 0.15);
@@ -443,7 +442,7 @@
             font-size: 13px;
             font-weight: bold;
             color: var(--text-muted);
-            width: 22px;
+            width: 25px;
             text-align: center;
         }
 
@@ -639,7 +638,7 @@
             font-size: 12px;
             font-weight: bold;
             color: var(--gold-primary);
-            width: 20px;
+            width: 25px;
             text-align: center;
         }
 
@@ -658,7 +657,6 @@
 
         .ref-user-info p {
             font-size: 9px;
-            color: #22c55e;
         }
 
         .ref-user-right {
@@ -672,8 +670,6 @@
         }
 
         .status-tag {
-            background: rgba(34, 197, 94, 0.2);
-            color: #4ade80;
             padding: 2px 6px;
             border-radius: 6px;
             font-size: 9px;
@@ -1011,7 +1007,7 @@
             <div id="home-view" class="section-view" style="display: block;">
                 <div class="balance-card">
                     <h2 id="balance-display">50,000 RS</h2>
-                    <p>≈ <span id="bdt-display">7,500.00</span> BDT (1M = 150 BDT)</p>
+                    <p>≈ <span id="bdt-display">15,000.00</span> BDT (1M = 300 BDT)</p>
                 </div>
 
                 <!-- Marquee Animated Notice -->
@@ -1043,17 +1039,17 @@
                     <div class="timer-badge" id="ad-countdown-timer">00:00</div>
                 </div>
 
-                <!-- Single Ad Reward Section with Active Network Indicator -->
+                <!-- Adsterra & Single Ad Reward Section -->
                 <div class="ads-header-row">
-                    <div class="ads-section-title">⭐ REWARDED AD ROTATION SYSTEM ⭐</div>
+                    <div class="ads-section-title">⭐ ADSTERRA REWARDED AD ROTATION ⭐</div>
                 </div>
 
                 <div class="single-ad-card" id="adActionBtn" onclick="handleAdClick()">
                     <div>
                         <h3 style="font-size: 15px; color: var(--gold-primary); margin-bottom: 2px;">অ্যাড দেখুন <span style="font-size: 10px; background: #ef4444; color: #fff; padding: 1px 6px; border-radius: 4px;" id="ad-counter-text">দেখা হয়েছে: ০/৪</span></h3>
-                        <span style="font-size: 11px; color: var(--text-muted);">রোটেশন লিংক থেকে বিজ্ঞাপন দেখুন</span>
+                        <span style="font-size: 11px; color: var(--text-muted);">অ্যাডস্টারার লিংক থেকে বিজ্ঞাপন দেখুন</span>
                         <div>
-                            <span class="ad-network-badge" id="active-network-indicator">Network: Rotation Active</span>
+                            <span class="ad-network-badge" id="active-network-indicator">Adsterra Active</span>
                         </div>
                     </div>
                     <div style="text-align: right;">
@@ -1064,8 +1060,8 @@
 
             <!-- RANKING SCREEN VIEW -->
             <div id="ranking-view" class="section-view">
-                <div class="ads-section-title" style="text-align: center; margin-bottom: 5px;">🏆 GLOBAL LEADERBOARD 🏆</div>
-                <p style="text-align: center; font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Top earners of RS Token</p>
+                <div class="ads-section-title" style="text-align: center; margin-bottom: 5px;">🏆 GLOBAL LEADERBOARD (Top 500) 🏆</div>
+                <p style="text-align: center; font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">500 Unique Users Ranking</p>
 
                 <div class="podium-section" id="podium-container"></div>
                 <div class="leaderboard-list" id="leaderboard-container"></div>
@@ -1093,17 +1089,17 @@
                     <div class="ref-stats-grid">
                         <div class="ref-stat-box">
                             <i class="fas fa-users"></i>
-                            <h5 id="total-ref-count">128</h5>
+                            <h5 id="total-ref-count">100</h5>
                             <p>মোট রেফারেল</p>
                         </div>
                         <div class="ref-stat-box">
                             <i class="fas fa-user-plus"></i>
-                            <h5 id="today-ref-count">12</h5>
-                            <p>আজকের নতুন</p>
+                            <h5 id="today-ref-count">25</h5>
+                            <p>আজকের লাইভ</p>
                         </div>
                         <div class="ref-stat-box">
                             <i class="fas fa-wallet"></i>
-                            <h5 id="total-ref-earn">128K</h5>
+                            <h5 id="total-ref-earn">100K</h5>
                             <p>মোট আয়</p>
                         </div>
                         <div class="ref-stat-box">
@@ -1114,8 +1110,8 @@
                     </div>
 
                     <div class="referred-list-header">
-                        <span class="ads-section-title" style="font-size: 13px;">Your Referred Users</span>
-                        <div class="live-users-badge"><span></span> Live Users</div>
+                        <span class="ads-section-title" style="font-size: 13px;">Referred Users (100 Locked)</span>
+                        <div class="live-users-badge"><span></span> 25-30 Live Active</div>
                     </div>
 
                     <div class="leaderboard-list" id="referred-users-container"></div>
@@ -1196,7 +1192,7 @@
                             <span style="background: rgba(250,204,21,0.15); border: 1px solid var(--gold-primary); color: var(--gold-primary); font-size: 9px; padding: 2px 8px; border-radius: 10px; font-weight: bold;">LIVE BALANCE</span>
                         </div>
                         <h2 id="acc-balance-main" style="font-size: 24px; color: var(--gold-primary);">50,000 <span style="font-size: 12px; color: #fff;">RS TOKEN</span></h2>
-                        <p style="font-size: 11px; color: var(--text-muted);">≈ <span id="acc-bdt-main">7,500.00</span> BDT</p>
+                        <p style="font-size: 11px; color: var(--text-muted);">≈ <span id="acc-bdt-main">15,000.00</span> BDT</p>
                     </div>
 
                     <div class="conversion-card">
@@ -1204,12 +1200,12 @@
                             <div style="width: 32px; height: 32px; background: var(--gold-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-weight: bold; font-size: 12px;">RS</div>
                             <div>
                                 <h5 style="font-size: 11px; font-weight: bold;">1,000,000 RS TOKEN</h5>
-                                <p style="font-size: 10px; color: var(--text-muted);">≈ ৳150.00 BDT</p>
+                                <p style="font-size: 10px; color: var(--text-muted);">≈ ৳300.00 BDT</p>
                             </div>
                         </div>
                         <div style="text-align: right;">
                             <p style="font-size: 9px; color: var(--text-muted);"><i class="fas fa-calculator"></i> Conversion Rate</p>
-                            <p style="font-size: 11px; font-weight: bold; color: var(--gold-primary);">1M RS = 150 BDT</p>
+                            <p style="font-size: 11px; font-weight: bold; color: var(--gold-primary);">1M RS = 300 BDT</p>
                         </div>
                     </div>
 
@@ -1296,7 +1292,7 @@
         </div>
     </div>
 
-    <!-- স্ক্রিপ্ট ট্যাগ -->
+    <!-- Adsterra Manager Script -->
     <script async src="https://js.wpadmngr.com/static/adManager.js" data-admpid="465841"></script>
 
     <script>
@@ -1304,7 +1300,7 @@
         let userName = localStorage.getItem('rs_username') || "RS Sahebaliy";
         let userAvatar = localStorage.getItem('rs_avatar') || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120";
         
-        // আপনার দেওয়া অ্যাড নেটওয়ার্ক বা ওয়েবসাইট লিংকসমূহ রোটেশন সিস্টেমের জন্য
+        // Adsterra Direct Link Rotation System
         const adNetworks = [
             "https://www.profitableratecpmnetwork.com/a7axqf71du?key=1024ac839300c803be444ccb9bd41406",
             "https://idealistic-revenue.com/iAm7pD"
@@ -1314,35 +1310,40 @@
         let adsWatchedInLoop = parseInt(localStorage.getItem('rs_ads_watched')) || 0;
         let isCountdownActive = false;
 
-        // ট্রানজেকশন ফিডে "Withdraw" এবং "বোনাস" লেবেল এবং বাংলা টাকায় মান
         let transactions = JSON.parse(localStorage.getItem('rs_transactions')) || [
             {type: 'bonus', title: 'বোনাস', desc: 'রেফারেল ও টাস্ক রিওয়ার্ড', amount: '১,০০০ টাকা', color: '#22c55e', icon: 'fa-arrow-up', time: '2026-09-22 14:32'},
             {type: 'withdraw', title: 'Withdraw', desc: 'বিকাশ (****1234)', amount: '৫,০০০ টাকা', color: '#38bdf8', icon: 'fa-exchange-alt', time: '2026-09-22 12:10'}
         ];
 
-        let refUsersList = JSON.parse(localStorage.getItem('rs_ref_users')) || [
-            {name: "Demo_Arif_01", level: "Lv.5", time: "2026-09-22 14:32", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60"},
-            {name: "Rasel_007", level: "Lv.4", time: "2026-09-22 13:21", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60"},
-            {name: "Sakib_Alam", level: "Lv.3", time: "2026-09-22 12:10", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60"},
-            {name: "Tanjim_88", level: "Lv.3", time: "2026-09-22 11:45", img: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=60"},
-            {name: "Nusrat_Jahan", level: "Lv.2", time: "2026-09-22 10:32", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60"}
-        ];
+        // Locked 100 Referrals (25-30 Live/Online, rest offline)
+        let refUsersList = JSON.parse(localStorage.getItem('rs_ref_users')) || generateLockedReferrals();
 
-        let hourlyIncrements = parseInt(localStorage.getItem('rs_hourly_increments')) || 0;
-        let lastIncrementTime = parseInt(localStorage.getItem('rs_last_inc_time')) || Date.now();
-        
-        let currentTime = Date.now();
-        let hoursPassed = Math.floor((currentTime - lastIncrementTime) / (1000 * 60 * 60));
-        if (hoursPassed > 0) {
-            let addedNow = hoursPassed * Math.floor(Math.random() * 3 + 10);
-            hourlyIncrements += addedNow;
-            localStorage.setItem('rs_hourly_increments', hourlyIncrements);
-            localStorage.setItem('rs_last_inc_time', currentTime);
+        function generateLockedReferrals() {
+            let refs = [];
+            const names = ["Arif", "Rasel", "Sakib", "Tanjim", "Nusrat", "Rakib", "Sumaiya", "Imran", "Farhan", "Mehedi", "Jahid", "Sabbir", "Al-Amin", "Nayeem", "Ashraful"];
+            const levels = ["Lv.1", "Lv.2", "Lv.3", "Lv.4", "Lv.5"];
+            const avatars = [
+                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60",
+                "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60",
+                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60",
+                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60"
+            ];
+
+            for (let i = 1; i <= 100; i++) {
+                let isLive = i <= 28; // প্রথম ২৮ জন লাইভ/অ্যাক্টিভ থাকবে
+                refs.push({
+                    name: names[i % names.length] + "_" + (100 + i),
+                    level: levels[i % levels.length],
+                    time: isLive ? "Active Now" : "Offline",
+                    img: avatars[i % avatars.length],
+                    live: isLive
+                });
+            }
+            return refs;
         }
 
-        let dailyAddedCount = parseInt(localStorage.getItem('rs_daily_added_count')) || 12;
-
-        const rate = 150 / 1000000;
+        // Updated Conversion Rate: 1M Coins = 300 BDT
+        const rate = 300 / 1000000;
         const possibleRewards = [1, 2, 3, 5, 10];
         const rewardColors = ['#facc15', '#38bdf8', '#c084fc', '#22c55e', '#ec4899'];
 
@@ -1385,12 +1386,8 @@
                 fillEl.style.width = percentage + '%';
             }
 
-            let totalRefs = refUsersList.length + 120 + dailyAddedCount + hourlyIncrements;
-            document.getElementById('total-ref-count').innerText = totalRefs;
-            let todayRefEl = document.getElementById('today-ref-count');
-            if(todayRefEl) todayRefEl.innerText = dailyAddedCount + hourlyIncrements;
-
-            document.getElementById('total-ref-earn').innerText = ((totalRefs * 1000) >= 1000 ? Math.floor((totalRefs * 1000)/1000) + 'K' : totalRefs * 1000);
+            document.getElementById('total-ref-count').innerText = refUsersList.length;
+            document.getElementById('total-ref-earn').innerText = (refUsersList.length * 1000 >= 1000 ? Math.floor((refUsersList.length * 1000)/1000) + 'K' : refUsersList.length * 1000);
             
             renderTransactions();
             renderReferredUsers();
@@ -1422,31 +1419,27 @@
             setTimeout(() => { floatText.remove(); }, 800);
         });
 
-        // --- MULTI-NETWORK AD ROTATION & 4-AD LOOP COUNTDOWN SYSTEM ---
+        // Adsterra Ad Rotation System & 4-Ad Loop
         function handleAdClick() {
             if (isCountdownActive) {
                 alert("দয়া করে ১ মিনিটের কাউন্টডাউন শেষ হওয়া পর্যন্ত অপেক্ষা করুন!");
                 return;
             }
 
-            // রোটেশন অনুযায়ী লিংক ওপেন করা
             let linkToOpen = adNetworks[currentAdIndex];
             window.open(linkToOpen, '_blank');
 
-            // পরবর্তী লিংকে ইনডেক্স ঘোরানো
             currentAdIndex = (currentAdIndex + 1) % adNetworks.length;
             adsWatchedInLoop++;
 
-            // সফলভাবে অ্যাড ভিউ সম্পন্ন হওয়ার পরেই রিওয়ার্ড প্রদান (Reward-on-completion)
             balance += 1000;
             let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
             transactions.unshift({
-                type: 'bonus', title: 'বোনাস', desc: 'অ্যাড ভিউ রিওয়ার্ড', amount: '১,০০০ টাকা', color: '#22c55e', icon: 'fa-arrow-up', time: nowStr
+                type: 'bonus', title: 'বোনাস', desc: 'Adsterra View Reward', amount: '১,০০০ টাকা', color: '#22c55e', icon: 'fa-arrow-up', time: nowStr
             });
 
             updateUI();
 
-            // ৪টি অ্যাড দেখার পর ১ মিনিটের বাধ্যতামূলক কাউন্টডাউন ট্রিগার
             if (adsWatchedInLoop >= 4) {
                 startMandatoryCountdown();
             }
@@ -1454,7 +1447,7 @@
 
         function startMandatoryCountdown() {
             isCountdownActive = true;
-            let timeLeft = 60; // ১ মিনিট
+            let timeLeft = 60;
             let btn = document.getElementById('adActionBtn');
             let timerDisplay = document.getElementById('ad-countdown-timer');
             let statusMsg = document.getElementById('ad-status-msg');
@@ -1467,7 +1460,7 @@
                 if (timeLeft <= 0) {
                     clearInterval(timer);
                     isCountdownActive = false;
-                    adsWatchedInLoop = 0; // কাউন্ট রিসেট
+                    adsWatchedInLoop = 0;
                     btn.style.opacity = "1";
                     btn.style.pointerEvents = "auto";
                     timerDisplay.innerText = "00:00";
@@ -1482,9 +1475,8 @@
             }, 1000);
         }
 
-        // Live Simulated Transactions
         setInterval(() => {
-            const randomNamesList = ["Arif_BD", "Tanvir_99", "Rahim_Official", "Nusrat_Jahan", "Sabbir_Hossain", "Mehedi_Ali", "Farhana_Akter", "Imran_Khan"];
+            const randomNamesList = ["Arif_BD", "Tanvir_99", "Rahim_Official", "Nusrat_Jahan", "Sabbir_Hossain"];
             const methodsList = ["bKash", "Nagad"];
             let rName = randomNamesList[Math.floor(Math.random() * randomNamesList.length)];
             let rMethod = methodsList[Math.floor(Math.random() * methodsList.length)];
@@ -1529,6 +1521,8 @@
             let html = "";
             refUsersList.forEach((u, index) => {
                 let rankNum = String(index + 1).padStart(2, '0');
+                let liveStatusColor = u.live ? "#22c55e" : "#94a3b8";
+                let liveText = u.live ? "Online (Live)" : "Offline";
                 html += `
                     <div class="ref-user-row">
                         <div class="ref-user-left">
@@ -1536,12 +1530,12 @@
                             <img src="${u.img}" class="ref-user-avatar" alt="User">
                             <div class="ref-user-info">
                                 <h5>${u.name}</h5>
-                                <p><i class="fas fa-circle" style="font-size: 6px;"></i> Online (${u.level}) • ${u.time}</p>
+                                <p style="color: ${liveStatusColor};"><i class="fas fa-circle" style="font-size: 6px;"></i> ${liveText} (${u.level})</p>
                             </div>
                         </div>
                         <div class="ref-user-right">
                             <div class="reward-amt">1,000 RS</div>
-                            <span class="status-tag">পেয়েছেন</span>
+                            <span class="status-tag" style="background: ${u.live ? 'rgba(34,197,94,0.2)' : 'rgba(148,163,184,0.2)'}; color: ${liveStatusColor};">${u.live ? 'অ্যাক্টিভ' : 'ইনঅ্যাক্টিভ'}</span>
                         </div>
                     </div>
                 `;
@@ -1549,15 +1543,16 @@
             container.innerHTML = html;
         }
 
+        // Leaderboard: Top 500 Unique Users (Top 1 = 1 Billion Coins)
         function renderLeaderboard() {
             let podiumContainer = document.getElementById('podium-container');
             let leaderboardContainer = document.getElementById('leaderboard-container');
             if(!podiumContainer || !leaderboardContainer) return;
 
             let topUsers = [
-                {name: userName, score: balance + 8900000, bdt: ((balance + 8900000)*rate).toFixed(2), avatar: userAvatar},
-                {name: "Rakibul H.", score: 4200000, bdt: (4200000*rate).toFixed(2), avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100"},
-                {name: "Sumaiya A.", score: 3100000, bdt: (3100000*rate).toFixed(2), avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100"}
+                {name: userName, score: balance + 50000000, bdt: ((balance + 50000000)*rate).toFixed(2), avatar: userAvatar},
+                {name: "Rakibul H.", score: 1000000000, bdt: (1000000000*rate).toFixed(2), avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100"}, // Top 1: 1 Billion Coins
+                {name: "Sumaiya A.", score: 500000000, bdt: (500000000*rate).toFixed(2), avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100"}
             ];
 
             topUsers.sort((a, b) => b.score - a.score);
@@ -1600,10 +1595,11 @@
             ];
             
             let htmlContent = "";
-            for (let i = 4; i <= 50; i++) {
-                let randomName = sampleNames[(i + 3) % sampleNames.length] + " " + i;
+            for (let i = 4; i <= 500; i++) {
+                let randomName = sampleNames[(i + 3) % sampleNames.length] + "_" + i;
                 let randomAvatar = avatarUrls[i % avatarUrls.length];
-                let score = Math.max(50000, (2900000 - (i * 45000)));
+                // নিচের দিকে ৩-৪ শ জনের জন্য কয়েন অনেক কম (যেমন ১০০০ থেকে কয়েক হাজার) থাকবে
+                let score = i > 400 ? Math.floor(Math.random() * 2000 + 500) : Math.max(5000, (400000000 - (i * 800000)));
                 let bdtVal = (score * rate).toFixed(2);
                 
                 htmlContent += `
@@ -1613,7 +1609,7 @@
                             <img src="${randomAvatar}" class="leader-avatar" alt="User">
                             <div class="leader-info">
                                 <h4>${randomName}</h4>
-                                <p>Level ${Math.max(1, 10 - Math.floor(i/10))}</p>
+                                <p>Level ${Math.max(1, 20 - Math.floor(i/25))}</p>
                             </div>
                         </div>
                         <div class="leader-right">
@@ -1626,38 +1622,11 @@
             leaderboardContainer.innerHTML = htmlContent;
         }
 
-        let totalSeconds = 2 * 3600 - 45;
-        setInterval(() => {
-            if (totalSeconds > 0) {
-                totalSeconds--;
-                let hours = Math.floor(totalSeconds / 3600);
-                let minutes = Math.floor((totalSeconds % 3600) / 60);
-                let seconds = totalSeconds % 60;
-                let timerEl = document.getElementById('countdown-timer');
-                if(timerEl) {
-                    timerEl.innerText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                }
-            }
-        }, 1000);
-
         function copyRefLink() {
             let inputElem = document.getElementById('ref-link-input');
             inputElem.select();
             navigator.clipboard.writeText(inputElem.value);
-            
-            let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
-            refUsersList.unshift({
-                name: "Active_Ref_" + Math.floor(Math.random() * 900 + 100),
-                level: "Lv.1",
-                time: nowStr,
-                img: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=60"
-            });
-            balance += 1000;
-            transactions.unshift({
-                type: 'bonus', title: 'বোনাস', desc: 'New user joined via link', amount: '১,০০০ টাকা', color: '#22c55e', icon: 'fa-arrow-up', time: nowStr
-            });
-            updateUI();
-            alert("রেফারেল লিংক কপি করা হয়েছে এবং নতুন বোনাস যুক্ত হয়েছে!");
+            alert("রেফারেল লিংক কপি করা হয়েছে!");
         }
 
         function switchTab(tabName, btnElement) {
