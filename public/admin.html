@@ -1,266 +1,998 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RS RANA - Admin Panel</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .gold-text {
-            color: #D4AF37;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-        .gold-border {
-            border-color: #D4AF37;
-        }
-        .gold-bg {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2411 100%);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<title>RS Rana Hasan • Admin Panel</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:
+        radial-gradient(circle at 15% 10%,rgba(212,175,55,.12),transparent 30%),
+        radial-gradient(circle at 90% 80%,rgba(255,193,7,.08),transparent 28%),
+        #050505;
+    color:#f5f5f5;
+}
+
+.gold{
+    color:#d4af37;
+}
+
+.gold-gradient{
+    background:linear-gradient(135deg,#fff1a8,#d4af37,#9d7610);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+
+.panel{
+    background:linear-gradient(145deg,rgba(22,22,22,.96),rgba(8,8,8,.96));
+    border:1px solid rgba(212,175,55,.20);
+    box-shadow:0 12px 40px rgba(0,0,0,.35);
+    backdrop-filter:blur(14px);
+}
+
+.panel:hover{
+    border-color:rgba(212,175,55,.38);
+}
+
+.admin-ring{
+    background:
+        linear-gradient(#080808,#080808) padding-box,
+        linear-gradient(135deg,#fff0a0,#d4af37,#765500) border-box;
+    border:3px solid transparent;
+}
+
+.status-dot{
+    box-shadow:0 0 12px #22c55e;
+}
+
+.stat-number{
+    font-variant-numeric:tabular-nums;
+}
+
+button{
+    -webkit-tap-highlight-color:transparent;
+}
+
+.action-btn{
+    transition:.2s ease;
+}
+
+.action-btn:active{
+    transform:scale(.97);
+}
+
+.modal-bg{
+    background:rgba(0,0,0,.82);
+    backdrop-filter:blur(8px);
+}
+
+::-webkit-scrollbar{
+    width:5px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#5e4a0c;
+    border-radius:20px;
+}
+
+@media(max-width:640px){
+    .desktop-title{
+        display:none;
+    }
+}
+</style>
 </head>
-<body class="gold-bg text-gray-100 min-h-screen font-sans">
 
-    <!-- Header Section -->
-    <header class="bg-gray-900 border-b border-yellow-600/30 p-4 sticky top-0 z-50 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-full border-2 border-yellow-500 flex items-center justify-center font-bold text-yellow-400 bg-black shadow-md">
-                    RS
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold gold-text">RS RANA</h1>
-                    <p class="text-xs text-yellow-500/80">Mini App Admin Dashboard</p>
-                </div>
-            </div>
-            <div class="flex items-center space-x-4">
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
-                    <span class="w-2 h-2 mr-1.5 bg-green-500 rounded-full animate-pulse"></span> Live Sync
-                </span>
-            </div>
-        </div>
-    </header>
+<body>
 
-    <!-- Main Content Container -->
-    <main class="container mx-auto p-4 md:p-6 space-y-6">
+<!-- ================= HEADER ================= -->
+<header class="sticky top-0 z-50 border-b border-yellow-500/20 bg-black/90 backdrop-blur-xl">
 
-        <!-- Statistics Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-gray-900/80 border border-yellow-500/20 p-5 rounded-xl shadow-lg backdrop-blur-sm">
-                <p class="text-xs text-gray-400 uppercase tracking-wider">Total Real Users</p>
-                <h3 class="text-3xl font-ext500 font-bold gold-text mt-2" id="totalUsersCount">--</h3>
-            </div>
-            <div class="bg-gray-900/80 border border-yellow-500/20 p-5 rounded-xl shadow-lg backdrop-blur-sm cursor-pointer hover:border-yellow-500/50 transition" onclick="openWithdrawModal()">
-                <p class="text-xs text-gray-400 uppercase tracking-wider">Pending Withdrawals</p>
-                <h3 class="text-3xl font-ext500 font-bold gold-text mt-2" id="pendingWithdrawCount">--</h3>
-                <span class="text-xs text-yellow-400 underline mt-1 inline-block">View Details &rarr;</span>
-            </div>
-            <div class="bg-gray-900/80 border border-yellow-500/20 p-5 rounded-xl shadow-lg backdrop-blur-sm">
-                <p class="text-xs text-gray-400 uppercase tracking-wider">Total RS Tokens Minted</p>
-                <h3 class="text-3xl font-ext500 font-bold gold-text mt-2" id="totalTokensCount">--</h3>
-            </div>
-        </div>
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
 
-        <!-- Quick Actions & Notebook Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
-            <!-- Modular Notebook Section -->
-            <div class="bg-gray-900/80 border border-yellow-500/20 p-5 rounded-xl shadow-lg">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold gold-text flex items-center">
-                        📓 Modular Notebook
-                    </h2>
-                    <select id="noteCategory" onchange="loadNoteFile()" class="bg-black border border-yellow-500/30 text-yellow-400 text-xs rounded px-2 py-1 focus:outline-none">
-                        <option value="general">General Notes</option>
-                        <option value="finance">Finance & Withdraws</option>
-                        <option value="strategy">App Strategy</option>
-                    </select>
-                </div>
-                <textarea id="notebookArea" rows="6" class="w-full bg-black/50 border border-yellow-500/20 rounded-lg p-3 text-sm text-gray-200 focus:border-yellow-500 focus:outline-none" placeholder="এখানে আপনার গুরুত্বপূর্ণ নোট ফাইল আকারে সেভ করে রাখুন..."></textarea>
-                <div class="flex justify-end mt-2">
-                    <button onclick="saveNotebook()" class="bg-yellow-600 hover:bg-yellow-500 text-black font-semibold px-4 py-1.5 rounded text-xs transition">Save Note</button>
+        <div class="flex items-center gap-3">
+
+            <!-- ADMIN LOGO -->
+            <div class="admin-ring w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
+                <div class="text-center leading-none">
+                    <div class="text-[15px] font-black gold-gradient">RS</div>
+                    <div class="text-[6px] text-yellow-500 font-bold tracking-widest">
+                        ADMIN
+                    </div>
                 </div>
             </div>
 
-            <!-- Real-Time Activity / Overview -->
-            <div class="bg-gray-900/80 border border-yellow-500/20 p-5 rounded-xl shadow-lg flex flex-col justify-between">
-                <div>
-                    <h2 class="text-lg font-bold gold-text mb-3">⚡ Quick Status Control</h2>
-                    <p class="text-xs text-gray-400 mb-4">রিয়েল-টাইম ডাটা সিঙ্ক্রোনাইজেশন চলছে। কোনো ডেমো অ্যাকাউন্ট বা ডেমো ডেটা এখানে নেই।</p>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <button onclick="openWithdrawModal()" class="bg-black border border-yellow-500/40 hover:bg-yellow-500/10 text-yellow-400 py-3 rounded-lg text-sm font-semibold transition flex items-center justify-center space-x-2">
-                        <span>💰 Withdraw Requests</span>
-                    </button>
-                    <button onclick="refreshData()" class="bg-black border border-yellow-500/40 hover:bg-yellow-500/10 text-yellow-400 py-3 rounded-lg text-sm font-semibold transition flex items-center justify-center space-x-2">
-                        <span>🔄 Refresh Data</span>
-                    </button>
-                </div>
+            <div>
+                <h1 class="text-lg sm:text-xl font-black gold-gradient">
+                    RS Rana Hasan
+                </h1>
+
+                <p class="text-[10px] sm:text-xs text-gray-500">
+                    Premium Mini App Administration
+                </p>
             </div>
 
         </div>
 
-        <!-- Leaderboards Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
-            <!-- RS Token Leaderboard -->
-            <div class="bg-gray-900/80 border border-yellow-500/20 p-5 rounded-xl shadow-lg">
-                <h2 class="text-lg font-bold gold-text mb-4">🏆 RS Token Leaderboard (Real)</h2>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead>
-                            <tr class="border-b border-yellow-500/20 text-yellow-400 text-xs">
-                                <th class="pb-2">Rank</th>
-                                <th class="pb-2">User Name</th>
-                                <th class="pb-2 text-right">Tokens</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tokenLeaderboardBody" class="divide-y divide-gray-800">
-                            <!-- Populated via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="flex items-center gap-2">
 
-            <!-- Referral Leaderboard -->
-            <div class="bg-gray-900/80 border border-yellow-500/20 p-5 rounded-xl shadow-lg">
-                <h2 class="text-lg font-bold gold-text mb-4">👥 Referral Leaderboard (Real)</h2>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead>
-                            <tr class="border-b border-yellow-500/20 text-yellow-400 text-xs">
-                                <th class="pb-2">Rank</th>
-                                <th class="pb-2">User Name</th>
-                                <th class="pb-2 text-right">Referrals</th>
-                            </tr>
-                        </thead>
-                        <tbody id="referralLeaderboardBody" class="divide-y divide-gray-800">
-                            <!-- Populated via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <span class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full
+                         bg-green-500/10 border border-green-500/20 text-green-400 text-xs">
+                <span class="w-2 h-2 rounded-full bg-green-500 status-dot"></span>
+                System Online
+            </span>
+
+            <button onclick="refreshData()"
+                class="action-btn w-9 h-9 rounded-lg border border-yellow-500/20
+                       bg-yellow-500/5 text-yellow-400">
+                ↻
+            </button>
 
         </div>
-    </main>
 
-    <!-- Withdrawal Popup Modal -->
-    <div id="withdrawModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
-        <div class="bg-gray-900 border border-yellow-500/40 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
-            <div class="p-4 border-b border-yellow-500/20 flex justify-between items-center bg-black/40">
-                <h3 class="text-lg font-bold gold-text">Real-Time Withdrawal History</h3>
-                <button onclick="closeWithdrawModal()" class="text-gray-400 hover:text-yellow-400 text-xl font-bold">&times;</button>
-            </div>
-            <div class="p-4 overflow-y-auto flex-1 space-y-3" id="withdrawListContainer">
-                <!-- Dynamically filled list -->
-            </div>
-            <div class="p-4 border-t border-yellow-500/20 bg-black/40 flex justify-end">
-                <button onclick="closeWithdrawModal()" class="bg-gray-800 hover:bg-gray-700 text-yellow-400 px-4 py-2 rounded text-xs font-semibold">Close</button>
-            </div>
-        </div>
     </div>
 
-    <!-- JavaScript Logic for Real-Time Sync & Actions -->
-    <script>
-        // Mocking real production database storage integration template
-        let appData = {
-            users: [
-                { id: 1, name: "Rakib Hossain", tokens: 4500, referrals: 12 },
-                { id: 2, name: "Tanvir Ahmed", tokens: 3200, referrals: 8 },
-                { id: 3, name: "Sakib Khan", tokens: 2100, referrals: 5 }
-            ],
-            withdrawals: [
-                { id: 101, username: "Rakib Hossain", amount: "4000 BDT", number: "01700000000", date: "2026-09-25 14:30", status: "Pending" },
-                { id: 102, username: "Tanvir Ahmed", amount: "1500 BDT", number: "01800000000", date: "2026-09-25 12:15", status: "Pending" }
-            ]
-        };
+</header>
 
-        function refreshData() {
-            // Real Data Rendering
-            document.getElementById('totalUsersCount').innerText = appData.users.length;
-            document.getElementById('totalTokensCount').innerText = appData.users.reduce((acc, curr) => acc + curr.tokens, 0);
-            document.getElementById('pendingWithdrawCount').innerText = appData.withdrawals.filter(w => w.status === 'Pending').length;
 
-            // Leaderboards
-            let tokenHtml = '';
-            appData.users.sort((a,b) => b.tokens - a.tokens).forEach((u, idx) => {
-                tokenHtml += `<tr class="hover:bg-black/30"><td class="py-2.5 text-yellow-500 font-semibold">#${idx+1}</td><td class="py-2.5">${u.name}</td><td class="py-2.5 text-right font-mono text-yellow-400">${u.tokens}</td></tr>`;
-            });
-            document.getElementById('tokenLeaderboardBody').innerHTML = tokenHtml;
+<!-- ================= MAIN ================= -->
+<main class="max-w-7xl mx-auto p-4 sm:p-6 space-y-5">
 
-            let refHtml = '';
-            appData.users.sort((a,b) => b.referrals - a.referrals).forEach((u, idx) => {
-                refHtml += `<tr class="hover:bg-black/30"><td class="py-2.5 text-yellow-500 font-semibold">#${idx+1}</td><td class="py-2.5">${u.name}</td><td class="py-2.5 text-right font-mono text-yellow-400">${u.referrals}</td></tr>`;
-            });
-            document.getElementById('referralLeaderboardBody').innerHTML = refHtml;
+
+<!-- ================= ADMIN PROFILE ================= -->
+<section class="panel rounded-2xl p-5">
+
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+
+        <div class="flex items-center gap-4">
+
+            <div class="admin-ring w-20 h-20 rounded-full flex items-center justify-center">
+                <div class="text-center">
+                    <div class="text-2xl font-black gold-gradient">RS</div>
+                    <div class="text-[8px] tracking-[3px] text-yellow-500">
+                        ADMIN
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <p class="text-xs text-gray-500 uppercase tracking-widest">
+                    Administrator
+                </p>
+
+                <h2 class="text-2xl font-black gold-gradient">
+                    RS Rana Hasan
+                </h2>
+
+                <div class="flex items-center gap-2 mt-1">
+                    <span class="text-xs text-gray-400">
+                        Master Admin
+                    </span>
+
+                    <span class="px-2 py-0.5 rounded-full bg-yellow-500/10
+                                 border border-yellow-500/20 text-yellow-400 text-[10px]">
+                        VERIFIED
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-left sm:text-right">
+            <p class="text-[10px] text-gray-500 uppercase">
+                Dashboard Status
+            </p>
+
+            <p class="text-sm text-green-400 font-semibold mt-1">
+                ● All Systems Operational
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= STATS ================= -->
+<section class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+
+    <div class="panel rounded-2xl p-4">
+        <p class="text-[10px] text-gray-500 uppercase tracking-wider">
+            Total Users
+        </p>
+
+        <h3 id="totalUsersCount"
+            class="stat-number text-2xl sm:text-3xl font-black gold-gradient mt-2">
+            0
+        </h3>
+
+        <p class="text-[10px] text-green-400 mt-1">
+            Live Accounts
+        </p>
+    </div>
+
+
+    <div onclick="openWithdrawModal()"
+         class="panel rounded-2xl p-4 cursor-pointer">
+
+        <p class="text-[10px] text-gray-500 uppercase tracking-wider">
+            Pending Withdraw
+        </p>
+
+        <h3 id="pendingWithdrawCount"
+            class="stat-number text-2xl sm:text-3xl font-black gold-gradient mt-2">
+            0
+        </h3>
+
+        <p class="text-[10px] text-yellow-400 mt-1">
+            View Requests →
+        </p>
+    </div>
+
+
+    <div class="panel rounded-2xl p-4">
+
+        <p class="text-[10px] text-gray-500 uppercase tracking-wider">
+            RS Tokens
+        </p>
+
+        <h3 id="totalTokensCount"
+            class="stat-number text-2xl sm:text-3xl font-black gold-gradient mt-2">
+            0
+        </h3>
+
+        <p class="text-[10px] text-gray-400 mt-1">
+            Total Minted
+        </p>
+    </div>
+
+
+    <div class="panel rounded-2xl p-4">
+
+        <p class="text-[10px] text-gray-500 uppercase tracking-wider">
+            Referrals
+        </p>
+
+        <h3 id="totalReferralsCount"
+            class="stat-number text-2xl sm:text-3xl font-black gold-gradient mt-2">
+            0
+        </h3>
+
+        <p class="text-[10px] text-gray-400 mt-1">
+            Total Network
+        </p>
+    </div>
+
+</section>
+
+
+<!-- ================= QUICK ACTIONS ================= -->
+<section class="panel rounded-2xl p-5">
+
+    <div class="flex items-center justify-between mb-4">
+
+        <div>
+            <h2 class="text-lg font-bold gold-gradient">
+                Quick Control
+            </h2>
+
+            <p class="text-xs text-gray-500 mt-1">
+                Admin dashboard shortcuts
+            </p>
+        </div>
+
+        <span class="text-xl">⚡</span>
+
+    </div>
+
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+        <button onclick="openWithdrawModal()"
+            class="action-btn p-4 rounded-xl bg-yellow-500/5 border border-yellow-500/20
+                   hover:bg-yellow-500/10 text-yellow-400">
+
+            <div class="text-2xl mb-2">💰</div>
+            <div class="text-xs font-bold">Withdraw</div>
+
+        </button>
+
+
+        <button onclick="showUsers()"
+            class="action-btn p-4 rounded-xl bg-yellow-500/5 border border-yellow-500/20
+                   hover:bg-yellow-500/10 text-yellow-400">
+
+            <div class="text-2xl mb-2">👥</div>
+            <div class="text-xs font-bold">Users</div>
+
+        </button>
+
+
+        <button onclick="showReferralStats()"
+            class="action-btn p-4 rounded-xl bg-yellow-500/5 border border-yellow-500/20
+                   hover:bg-yellow-500/10 text-yellow-400">
+
+            <div class="text-2xl mb-2">🔗</div>
+            <div class="text-xs font-bold">Referral</div>
+
+        </button>
+
+
+        <button onclick="refreshData()"
+            class="action-btn p-4 rounded-xl bg-yellow-500/5 border border-yellow-500/20
+                   hover:bg-yellow-500/10 text-yellow-400">
+
+            <div class="text-2xl mb-2">🔄</div>
+            <div class="text-xs font-bold">Refresh</div>
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= LEADERBOARDS ================= -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+
+<!-- TOKEN LEADERBOARD -->
+<div class="panel rounded-2xl p-5">
+
+    <div class="flex justify-between items-center mb-4">
+
+        <div>
+            <h2 class="font-bold gold-gradient">
+                🏆 RS Token Leaders
+            </h2>
+
+            <p class="text-[10px] text-gray-500">
+                Highest token balances
+            </p>
+        </div>
+
+        <span class="text-xs text-yellow-500">
+            TOP USERS
+        </span>
+
+    </div>
+
+
+    <div class="overflow-x-auto">
+
+        <table class="w-full text-sm">
+
+            <thead>
+                <tr class="border-b border-yellow-500/10 text-yellow-500 text-[10px]">
+                    <th class="text-left pb-3">RANK</th>
+                    <th class="text-left pb-3">USER</th>
+                    <th class="text-right pb-3">RS</th>
+                </tr>
+            </thead>
+
+            <tbody id="tokenLeaderboardBody"
+                   class="divide-y divide-gray-800">
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- REFERRAL LEADERBOARD -->
+<div class="panel rounded-2xl p-5">
+
+    <div class="flex justify-between items-center mb-4">
+
+        <div>
+            <h2 class="font-bold gold-gradient">
+                👥 Referral Leaders
+            </h2>
+
+            <p class="text-[10px] text-gray-500">
+                Highest referral counts
+            </p>
+        </div>
+
+        <span class="text-xs text-yellow-500">
+            TOP USERS
+        </span>
+
+    </div>
+
+
+    <div class="overflow-x-auto">
+
+        <table class="w-full text-sm">
+
+            <thead>
+                <tr class="border-b border-yellow-500/10 text-yellow-500 text-[10px]">
+                    <th class="text-left pb-3">RANK</th>
+                    <th class="text-left pb-3">USER</th>
+                    <th class="text-right pb-3">REF</th>
+                </tr>
+            </thead>
+
+            <tbody id="referralLeaderboardBody"
+                   class="divide-y divide-gray-800">
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- ================= NOTEBOOK ================= -->
+<section class="panel rounded-2xl p-5">
+
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+
+        <div>
+            <h2 class="font-bold gold-gradient">
+                📓 Admin Notebook
+            </h2>
+
+            <p class="text-[10px] text-gray-500">
+                Personal dashboard notes
+            </p>
+        </div>
+
+
+        <select id="noteCategory"
+                onchange="loadNoteFile()"
+                class="bg-black border border-yellow-500/20
+                       text-yellow-400 rounded-lg px-3 py-2 text-xs">
+
+            <option value="general">General Notes</option>
+            <option value="finance">Finance & Withdraw</option>
+            <option value="strategy">App Strategy</option>
+            <option value="users">User Notes</option>
+
+        </select>
+
+    </div>
+
+
+    <textarea id="notebookArea"
+              rows="6"
+              placeholder="এখানে আপনার Admin Note লিখুন..."
+              class="w-full bg-black/60 border border-yellow-500/10
+                     rounded-xl p-4 text-sm text-gray-200
+                     outline-none focus:border-yellow-500/40"></textarea>
+
+
+    <div class="flex justify-end mt-3">
+
+        <button onclick="saveNotebook()"
+                class="action-btn bg-gradient-to-r from-yellow-600 to-yellow-500
+                       text-black font-bold px-5 py-2 rounded-lg text-xs">
+
+            Save Note
+
+        </button>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- ================= WITHDRAW MODAL ================= -->
+<div id="withdrawModal"
+     class="fixed inset-0 modal-bg hidden items-center justify-center
+            z-[100] p-4">
+
+    <div class="panel w-full max-w-2xl rounded-2xl overflow-hidden
+                max-h-[85vh] flex flex-col">
+
+        <div class="p-5 border-b border-yellow-500/10
+                    flex justify-between items-center">
+
+            <div>
+                <h3 class="font-bold gold-gradient">
+                    Withdrawal Requests
+                </h3>
+
+                <p class="text-[10px] text-gray-500">
+                    Review current requests
+                </p>
+            </div>
+
+            <button onclick="closeWithdrawModal()"
+                    class="text-gray-400 hover:text-yellow-400 text-2xl">
+                ×
+            </button>
+
+        </div>
+
+
+        <div id="withdrawListContainer"
+             class="p-4 overflow-y-auto space-y-3">
+        </div>
+
+
+        <div class="p-4 border-t border-yellow-500/10 flex justify-end">
+
+            <button onclick="closeWithdrawModal()"
+                    class="px-5 py-2 rounded-lg bg-gray-800
+                           text-yellow-400 text-xs font-bold">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   DEMO DATA
+   Replace this section with your real API/database.
+===================================================== */
+
+let appData = {
+
+    users:[
+        {
+            id:1,
+            name:"Rakib Hossain",
+            tokens:4500,
+            referrals:12
+        },
+        {
+            id:2,
+            name:"Tanvir Ahmed",
+            tokens:3200,
+            referrals:8
+        },
+        {
+            id:3,
+            name:"Sakib Khan",
+            tokens:2100,
+            referrals:5
         }
+    ],
 
-        function openWithdrawModal() {
-            let container = document.getElementById('withdrawListContainer');
-            let html = '';
-            if(appData.withdrawals.length === 0) {
-                html = '<p class="text-center text-gray-500 py-6">কোনো উইথড্র রিকোয়েস্ট নেই</p>';
-            } else {
-                appData.withdrawals.forEach(w => {
-                    html += `
-                        <div class="bg-black/60 border border-yellow-500/20 p-4 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-                            <div>
-                                <h4 class="font-bold text-yellow-400">${w.username} - <span class="text-white">${w.amount}</span></h4>
-                                <p class="text-xs text-gray-400">তারিখ: ${w.date} | স্ট্যাটাস: <span class="text-yellow-500 font-semibold">${w.status}</span></p>
-                                <div class="flex items-center space-x-2 mt-1">
-                                    <span class="text-xs font-mono bg-gray-800 px-2 py-0.5 rounded text-gray-200" id="num_${w.id}">${w.number}</span>
-                                    <button onclick="copyNumber('${w.number}')" class="text-xs text-yellow-400 hover:underline">📋 কপি করুন</button>
-                                </div>
-                            </div>
-                            <div>
-                                ${w.status === 'Pending' ? `<button onclick="completeWithdraw(${w.id})" class="bg-green-600 hover:bg-green-500 text-white px-3 py-1.5 rounded text-xs font-semibold transition">Complete</button>` : `<span class="text-xs text-green-400 font-bold">Completed</span>`}
-                            </div>
+    withdrawals:[
+        {
+            id:101,
+            username:"Rakib Hossain",
+            amount:"4000 BDT",
+            number:"01700000000",
+            date:"2026-09-25 14:30",
+            status:"Pending"
+        },
+        {
+            id:102,
+            username:"Tanvir Ahmed",
+            amount:"1500 BDT",
+            number:"01800000000",
+            date:"2026-09-25 12:15",
+            status:"Pending"
+        }
+    ]
+
+};
+
+
+/* =====================================================
+   DASHBOARD REFRESH
+===================================================== */
+
+function refreshData(){
+
+    document.getElementById("totalUsersCount")
+        .innerText = appData.users.length;
+
+
+    document.getElementById("totalTokensCount")
+        .innerText = appData.users
+        .reduce((sum,user)=>sum + Number(user.tokens),0)
+        .toLocaleString();
+
+
+    document.getElementById("totalReferralsCount")
+        .innerText = appData.users
+        .reduce((sum,user)=>sum + Number(user.referrals),0)
+        .toLocaleString();
+
+
+    document.getElementById("pendingWithdrawCount")
+        .innerText = appData.withdrawals
+        .filter(w=>w.status==="Pending")
+        .length;
+
+
+    renderTokenLeaderboard();
+    renderReferralLeaderboard();
+
+}
+
+
+/* =====================================================
+   TOKEN LEADERBOARD
+===================================================== */
+
+function renderTokenLeaderboard(){
+
+    const users = [...appData.users]
+        .sort((a,b)=>b.tokens-a.tokens);
+
+
+    let html="";
+
+    users.forEach((user,index)=>{
+
+        html += `
+        <tr class="hover:bg-yellow-500/5">
+
+            <td class="py-3">
+                <span class="text-yellow-500 font-bold">
+                    #${index+1}
+                </span>
+            </td>
+
+            <td class="py-3">
+                <span class="font-medium">
+                    ${escapeHtml(user.name)}
+                </span>
+            </td>
+
+            <td class="py-3 text-right">
+                <span class="font-mono text-yellow-400 font-bold">
+                    ${Number(user.tokens).toLocaleString()}
+                </span>
+            </td>
+
+        </tr>
+        `;
+
+    });
+
+
+    document.getElementById("tokenLeaderboardBody")
+        .innerHTML = html;
+
+}
+
+
+/* =====================================================
+   REFERRAL LEADERBOARD
+===================================================== */
+
+function renderReferralLeaderboard(){
+
+    const users = [...appData.users]
+        .sort((a,b)=>b.referrals-a.referrals);
+
+
+    let html="";
+
+
+    users.forEach((user,index)=>{
+
+        html += `
+        <tr class="hover:bg-yellow-500/5">
+
+            <td class="py-3">
+                <span class="text-yellow-500 font-bold">
+                    #${index+1}
+                </span>
+            </td>
+
+            <td class="py-3">
+                <span class="font-medium">
+                    ${escapeHtml(user.name)}
+                </span>
+            </td>
+
+            <td class="py-3 text-right">
+                <span class="font-mono text-yellow-400 font-bold">
+                    ${Number(user.referrals).toLocaleString()}
+                </span>
+            </td>
+
+        </tr>
+        `;
+
+    });
+
+
+    document.getElementById("referralLeaderboardBody")
+        .innerHTML = html;
+
+}
+
+
+/* =====================================================
+   WITHDRAW MODAL
+===================================================== */
+
+function openWithdrawModal(){
+
+    const container =
+        document.getElementById("withdrawListContainer");
+
+
+    if(appData.withdrawals.length===0){
+
+        container.innerHTML = `
+            <div class="text-center py-10 text-gray-500 text-sm">
+                কোনো withdrawal request নেই।
+            </div>
+        `;
+
+    }else{
+
+        let html="";
+
+
+        appData.withdrawals.forEach(w=>{
+
+            html += `
+            <div class="bg-black/60 border border-yellow-500/10
+                        rounded-xl p-4">
+
+                <div class="flex flex-col sm:flex-row
+                            sm:items-center justify-between gap-3">
+
+                    <div>
+
+                        <h4 class="font-bold text-yellow-400">
+                            ${escapeHtml(w.username)}
+                        </h4>
+
+                        <p class="text-sm text-white mt-1">
+                            ${escapeHtml(w.amount)}
+                        </p>
+
+                        <p class="text-[10px] text-gray-500 mt-1">
+                            ${escapeHtml(w.date)}
+                        </p>
+
+                        <div class="flex items-center gap-2 mt-2">
+
+                            <span class="font-mono text-xs
+                                         bg-gray-900 px-2 py-1 rounded">
+                                ${escapeHtml(w.number)}
+                            </span>
+
+                            <button
+                                onclick="copyNumber('${escapeAttr(w.number)}')"
+                                class="text-[10px] text-yellow-400">
+                                📋 Copy
+                            </button>
+
                         </div>
-                    `;
-                });
-            }
-            container.innerHTML = html;
-            document.getElementById('withdrawModal').classList.remove('hidden');
-            document.getElementById('withdrawModal').classList.add('flex');
-        }
 
-        function closeWithdrawModal() {
-            document.getElementById('withdrawModal').classList.remove('flex');
-            document.getElementById('withdrawModal').classList.add('hidden');
-        }
+                    </div>
 
-        function copyNumber(num) {
-            navigator.clipboard.writeText(num);
-            alert('নাবংর কপি সফল হয়েছে: ' + num);
-        }
 
-        function completeWithdraw(id) {
-            let item = appData.withdrawals.find(w => w.id === id);
-            if(item) {
-                item.status = 'Success';
-                openWithdrawModal();
-                refreshData();
-            }
-        }
+                    <div>
 
-        // Modular Notebook functions (File based simulation using localStorage)
-        function loadNoteFile() {
-            let cat = document.getElementById('noteCategory').value;
-            let content = localStorage.getItem('rs_note_' + cat) || '';
-            document.getElementById('notebookArea').value = content;
-        }
+                        ${
+                            w.status==="Pending"
 
-        function saveNotebook() {
-            let cat = document.getElementById('noteCategory').value;
-            let content = document.getElementById('notebookArea').value;
-            localStorage.setItem('rs_note_' + cat, content);
-            alert('নোট সফলভাবে সেভ হয়েছে!');
-        }
+                            ?
 
-        // Initialize on load
-        window.onload = function() {
-            refreshData();
-            loadNoteFile();
-        };
-    </script>
+                            `<button
+                                onclick="completeWithdraw(${w.id})"
+                                class="bg-green-600 hover:bg-green-500
+                                       px-4 py-2 rounded-lg
+                                       text-white text-xs font-bold">
+                                Complete
+                             </button>`
+
+                            :
+
+                            `<span class="text-green-400
+                                         text-xs font-bold">
+                                ✓ Completed
+                             </span>`
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+            `;
+
+        });
+
+
+        container.innerHTML = html;
+
+    }
+
+
+    document.getElementById("withdrawModal")
+        .classList.remove("hidden");
+
+    document.getElementById("withdrawModal")
+        .classList.add("flex");
+
+}
+
+
+function closeWithdrawModal(){
+
+    document.getElementById("withdrawModal")
+        .classList.remove("flex");
+
+    document.getElementById("withdrawModal")
+        .classList.add("hidden");
+
+}
+
+
+/* =====================================================
+   COMPLETE WITHDRAW
+===================================================== */
+
+function completeWithdraw(id){
+
+    const item =
+        appData.withdrawals.find(w=>w.id===id);
+
+
+    if(!item) return;
+
+
+    item.status="Success";
+
+    refreshData();
+    openWithdrawModal();
+
+}
+
+
+/* =====================================================
+   COPY NUMBER
+===================================================== */
+
+async function copyNumber(number){
+
+    try{
+
+        await navigator.clipboard.writeText(number);
+
+        alert("নম্বর কপি হয়েছে: " + number);
+
+    }catch(error){
+
+        alert("কপি করা যায়নি।");
+
+    }
+
+}
+
+
+/* =====================================================
+   NOTEBOOK
+===================================================== */
+
+function loadNoteFile(){
+
+    const category =
+        document.getElementById("noteCategory").value;
+
+
+    document.getElementById("notebookArea").value =
+        localStorage.getItem("rs_note_"+category) || "";
+
+}
+
+
+function saveNotebook(){
+
+    const category =
+        document.getElementById("noteCategory").value;
+
+
+    const content =
+        document.getElementById("notebookArea").value;
+
+
+    localStorage.setItem(
+        "rs_note_"+category,
+        content
+    );
+
+
+    alert("নোট সফলভাবে সেভ হয়েছে।");
+
+}
+
+
+/* =====================================================
+   QUICK ACTIONS
+===================================================== */
+
+function showUsers(){
+
+    alert(
+        "Total Users: " +
+        appData.users.length
+    );
+
+}
+
+
+function showReferralStats(){
+
+    const total =
+        appData.users.reduce(
+            (sum,user)=>sum+Number(user.referrals),0
+        );
+
+
+    alert(
+        "Total Referrals: " +
+        total
+    );
+
+}
+
+
+/* =====================================================
+   BASIC HTML ESCAPING
+===================================================== */
+
+function escapeHtml(value){
+
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+
+function escapeAttr(value){
+
+    return String(value)
+        .replaceAll("\\","\\\\")
+        .replaceAll("'","\\'");
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+window.addEventListener("load",()=>{
+
+    refreshData();
+    loadNoteFile();
+
+});
+
+</script>
+
 </body>
 </html>
