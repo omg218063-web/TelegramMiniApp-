@@ -1,8 +1,8 @@
-DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RS Tap-to-Earn - App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -19,16 +19,19 @@ DOCTYPE html>
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        body {
+        html, body {
+            width: 100%;
+            height: 100%;
             background-color: var(--bg-color);
             color: var(--text-main);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
             overflow: hidden;
+            position: fixed;
         }
 
         /* Mobile App Frame Container */
@@ -36,7 +39,7 @@ DOCTYPE html>
             width: 100%;
             max-width: 420px;
             height: 100%;
-            max-height: 850px;
+            max-height: 100vh;
             background-color: var(--bg-color);
             display: flex;
             flex-direction: column;
@@ -50,8 +53,9 @@ DOCTYPE html>
             flex: 1;
             overflow-y: auto;
             padding: 14px;
-            padding-bottom: 85px;
+            padding-bottom: 85px; /* Space for nav */
             scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
 
         .app-container::-webkit-scrollbar {
@@ -129,6 +133,7 @@ DOCTYPE html>
             justify-content: center;
             cursor: pointer;
             user-select: none;
+            margin-top: 20px;
         }
 
         .ring-gold {
@@ -191,7 +196,7 @@ DOCTYPE html>
         /* Pulsing Pointing Prompt */
         .tap-instruction {
             text-align: center;
-            margin-top: 8px;
+            margin-top: 20px;
             animation: pulseText 1.5s infinite;
         }
 
@@ -199,9 +204,9 @@ DOCTYPE html>
             background: rgba(239, 68, 68, 0.15);
             border: 1px solid #ef4444;
             color: #fca5a5;
-            padding: 4px 12px;
+            padding: 6px 16px;
             border-radius: 20px;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: bold;
             display: inline-flex;
             align-items: center;
@@ -327,51 +332,80 @@ DOCTYPE html>
             display: none;
         }
 
-        /* --- RANKING / LEADERBOARD STYLES --- */
+        /* --- REDESIGNED TOP-3 LEADERBOARD STYLES (Based on your image) --- */
+        .ranking-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
         .podium-section {
             display: flex;
             justify-content: center;
             align-items: flex-end;
-            gap: 10px;
-            margin: 20px 0 25px 0;
-            padding: 0 10px;
+            gap: 8px;
+            margin: 20px 0 15px 0;
+            padding: 0 4px;
         }
 
         .podium-item {
-            background: linear-gradient(145deg, #181926, #11121a);
-            border: 1px solid rgba(250, 204, 21, 0.3);
-            border-radius: 14px;
+            background: linear-gradient(145deg, #161822, #0d0e14);
+            border-radius: 16px;
             text-align: center;
-            padding: 10px 8px;
+            padding: 12px 6px;
             position: relative;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
         }
 
+        /* Rank 1 (Center - Gold) */
         .podium-item.rank-1 {
-            width: 34%;
-            height: 155px;
-            border-color: #facc15;
-            background: linear-gradient(145deg, #2b2710, #12131c);
-            box-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
+            width: 35%;
+            height: 185px;
+            border: 2px solid #facc15;
+            background: linear-gradient(145deg, #2a250c, #111218);
+            box-shadow: 0 0 25px rgba(250, 204, 21, 0.5);
+            order: 2;
         }
 
+        /* Rank 2 (Left - Silver) */
         .podium-item.rank-2 {
-            width: 31%;
-            height: 135px;
-            border-color: #cbd5e1;
+            width: 32%;
+            height: 165px;
+            border: 2px solid #cbd5e1;
+            background: linear-gradient(145deg, #1c222d, #111218);
+            box-shadow: 0 0 20px rgba(203, 213, 225, 0.3);
+            order: 1;
         }
 
+        /* Rank 3 (Right - Bronze) */
         .podium-item.rank-3 {
-            width: 31%;
-            height: 120px;
-            border-color: #b45309;
+            width: 32%;
+            height: 150px;
+            border: 2px solid #d97706;
+            background: linear-gradient(145deg, #2b180a, #111218);
+            box-shadow: 0 0 20px rgba(217, 119, 6, 0.3);
+            order: 3;
         }
+
+        .podium-crown {
+            position: absolute;
+            top: -22px;
+            font-size: 20px;
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+        .rank-1 .podium-crown { color: #facc15; }
+        .rank-2 .podium-crown { color: #cbd5e1; }
+        .rank-3 .podium-crown { color: #d97706; }
 
         .podium-avatar-wrapper {
             position: relative;
-            width: 42px;
-            height: 42px;
-            margin: -26px auto 5px auto;
+            width: 48px;
+            height: 48px;
+            margin-bottom: 6px;
         }
 
         .podium-avatar {
@@ -379,54 +413,51 @@ DOCTYPE html>
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--gold-primary);
         }
+        .rank-1 .podium-avatar { border: 2px solid #facc15; box-shadow: 0 0 10px #facc15; }
+        .rank-2 .podium-avatar { border: 2px solid #cbd5e1; box-shadow: 0 0 8px #cbd5e1; }
+        .rank-3 .podium-avatar { border: 2px solid #d97706; box-shadow: 0 0 8px #d97706; }
 
-        .rank-1 .podium-avatar {
-            border: 3px solid #facc15;
-            box-shadow: 0 0 10px #facc15;
+        .podium-badge-num {
+            font-size: 11px;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-bottom: 4px;
         }
+        .rank-1 .podium-badge-num { background: rgba(250,204,21,0.2); color: #facc15; border: 1px solid #facc15; }
+        .rank-2 .podium-badge-num { background: rgba(203,213,225,0.2); color: #cbd5e1; border: 1px solid #cbd5e1; }
+        .rank-3 .podium-badge-num { background: rgba(217,119,6,0.2); color: #fbbf24; border: 1px solid #d97706; }
 
         .podium-item h5 {
-            font-size: 12px;
+            font-size: 11px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            width: 100%;
+            color: #fff;
+            font-weight: 700;
         }
 
         .podium-item .p-score {
             font-size: 11px;
             color: var(--gold-primary);
-            font-weight: bold;
+            font-weight: 900;
             margin-top: 2px;
-        }
-
-        .podium-item .p-bdt {
-            font-size: 10px;
-            color: var(--text-muted);
-        }
-
-        .crown {
-            position: absolute;
-            top: -14px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #facc15;
-            font-size: 15px;
-            filter: drop-shadow(0 0 5px #facc15);
         }
 
         .leaderboard-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
+            margin-bottom: 20px;
         }
 
         .leader-row {
             background: var(--card-bg);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 10px;
-            padding: 10px 12px;
+            padding: 8px 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -435,32 +466,32 @@ DOCTYPE html>
         .leader-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .leader-rank {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             color: var(--text-muted);
-            width: 25px;
+            width: 20px;
             text-align: center;
         }
 
         .leader-avatar {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             object-fit: cover;
             border: 1px solid rgba(250, 204, 21, 0.4);
         }
 
         .leader-info h4 {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-main);
         }
 
         .leader-info p {
-            font-size: 10px;
+            font-size: 9px;
             color: var(--text-muted);
         }
 
@@ -469,14 +500,9 @@ DOCTYPE html>
         }
 
         .leader-right .l-score {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             color: var(--gold-primary);
-        }
-
-        .leader-right .l-bdt {
-            font-size: 10px;
-            color: var(--text-muted);
         }
 
         /* --- REFERRAL SYSTEM STYLES --- */
@@ -657,6 +683,7 @@ DOCTYPE html>
 
         .ref-user-info p {
             font-size: 9px;
+            color: var(--text-muted);
         }
 
         .ref-user-right {
@@ -667,13 +694,6 @@ DOCTYPE html>
             font-size: 11px;
             font-weight: bold;
             color: var(--gold-primary);
-        }
-
-        .status-tag {
-            padding: 2px 6px;
-            border-radius: 6px;
-            font-size: 9px;
-            font-weight: bold;
         }
 
         /* --- PREMIUM AI CUSTOMER SERVICE STYLES --- */
@@ -796,227 +816,69 @@ DOCTYPE html>
             justify-content: center;
         }
 
-        /* --- MY ACCOUNT STYLES --- */
-        .account-box {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .account-profile-card {
-            background: linear-gradient(145deg, #181926, #0f1017);
-            border: 1px solid rgba(250, 204, 21, 0.3);
-            border-radius: 16px;
-            padding: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-        }
-
-        .account-profile-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .account-avatar-wrapper {
-            position: relative;
-            width: 60px;
-            height: 60px;
-        }
-
-        .account-avatar {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--gold-primary);
-        }
-
-        .account-details h3 {
-            font-size: 15px;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .account-details p {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .vip-progress-box {
-            margin-top: 6px;
-            background: rgba(250, 204, 21, 0.1);
-            border: 1px solid rgba(250, 204, 21, 0.3);
-            border-radius: 8px;
-            padding: 4px 8px;
-            width: 150px;
-        }
-
-        .vip-header-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 10px;
-            font-weight: bold;
-            color: var(--gold-primary);
-            margin-bottom: 2px;
-        }
-
-        .vip-progress-bar {
-            width: 100%;
-            height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .vip-progress-fill {
-            height: 100%;
-            background: linear-gradient(to right, #facc15, #f59e0b);
-            width: 15%;
-            border-radius: 4px;
-        }
-
-        .edit-profile-btn {
-            background: linear-gradient(135deg, #facc15, #ca8a04);
-            border: none;
-            color: #000;
-            font-weight: bold;
-            font-size: 11px;
-            padding: 6px 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .customize-banner {
-            background: linear-gradient(145deg, #1e1b18, #12131c);
-            border: 1px solid rgba(250, 204, 21, 0.3);
-            border-radius: 14px;
-            padding: 12px 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-        }
-
-        .customize-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .customize-icon {
-            width: 36px;
-            height: 36px;
-            background: rgba(250, 204, 21, 0.15);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold-primary);
-            font-size: 16px;
-            border: 1px solid rgba(250, 204, 21, 0.3);
-        }
-
-        .customize-info h4 {
-            font-size: 13px;
-            color: var(--gold-primary);
-        }
-
-        .customize-info p {
-            font-size: 10px;
-            color: var(--text-muted);
-        }
-
-        .conversion-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(250, 204, 21, 0.2);
-            border-radius: 12px;
-            padding: 10px 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .action-buttons-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .action-btn-box {
-            background: linear-gradient(145deg, #181926, #0f1017);
-            border: 1px solid rgba(250, 204, 21, 0.4);
-            border-radius: 14px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            text-align: left;
-        }
-
-        .action-btn-box.withdraw-box {
-            border-color: rgba(56, 189, 248, 0.5);
-            background: linear-gradient(145deg, #0f172a, #0b0f19);
-        }
-
-        /* Bottom Navigation */
+        /* Bottom Navigation Bar */
         .bottom-nav {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 65px;
-            background-color: var(--card-bg);
+            height: 70px;
+            background: rgba(18, 19, 28, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(250, 204, 21, 0.2);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            border-top: 1px solid rgba(250, 204, 21, 0.2);
             z-index: 100;
+            padding-bottom: 10px;
         }
 
         .nav-item {
-            background: none;
-            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             color: var(--text-muted);
-            font-size: 20px;
             cursor: pointer;
-            padding: 10px;
-            transition: color 0.2s;
+            flex: 1;
+            transition: color 0.2s ease;
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            margin-bottom: 3px;
+        }
+
+        .nav-item span {
+            font-size: 10px;
+            font-weight: 600;
         }
 
         .nav-item.active {
             color: var(--gold-primary);
-            text-shadow: 0 0 10px rgba(250, 204, 21, 0.6);
+            text-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
         }
     </style>
 </head>
 <body>
 
     <div class="app-frame">
-        <div class="app-container">
+        <div class="app-container" id="mainContainer">
             
-            <!-- HOME SCREEN VIEW -->
-            <div id="home-view" class="section-view" style="display: block;">
+            <!-- HOME TAB VIEW -->
+            <div id="homeView" class="section-view" style="display: block;">
                 <div class="balance-card">
-                    <h2 id="balance-display">50,000 RS</h2>
-                    <p>≈ <span id="bdt-display">15,000.00</span> BDT (1M = 300 BDT)</p>
+                    <p>Total Balance</p>
+                    <h2 id="balanceDisplay">1,000,710,129,929</h2>
+                    <p>RS TOKEN ≈ 300,213,038.98 BDT</p>
                 </div>
 
-                <!-- Marquee Animated Notice -->
                 <div class="marquee-container">
-                    <div class="marquee-text">📢 প্রতি ৪টি অ্যাড দেখার পরে ১ মিনিটের বাধ্যতামূলক কাউন্টডাউন শুরু হবে! সঠিকভাবে অ্যাড দেখার পরই কেবল রিওয়ার্ড প্রদান করা হবে।</div>
+                    <div class="marquee-text">📢 Welcome to RS Tap-to-Earn! Tap fast, complete daily tasks, and earn real BDT instantly! Safe & Secure platform.</div>
                 </div>
 
                 <div class="tap-section">
-                    <div class="logo-container" id="tap-target">
+                    <div class="logo-container" id="tapButton">
                         <div class="ring-gold"></div>
                         <div class="ring-blue"></div>
                         <div class="ring-purple"></div>
@@ -1024,735 +886,317 @@ DOCTYPE html>
                             <h1>RS</h1>
                         </div>
                     </div>
-                </div>
-
-                <!-- Pulsing Pointing Prompt -->
-                <div class="tap-instruction">
-                    <span><i class="fas fa-hand-pointer"></i> এই লোগোতে বারবার ট্যাপ করে কয়েন সংগ্রহ করুন!</span>
-                </div>
-
-                <div class="task-timer-box" style="margin-top: 15px;">
-                    <div class="task-info">
-                        <h4>অ্যাড লুপ কাউন্টডাউন</h4>
-                        <p id="ad-status-msg">৪টি অ্যাড দেখার পর ১ মিনিট বিরতি</p>
+                    <div class="tap-instruction">
+                        <span><i class="fa-solid fa-hand-pointer"></i> TAP HERE TO EARN COINS</span>
                     </div>
-                    <div class="timer-badge" id="ad-countdown-timer">00:00</div>
                 </div>
 
-                <!-- Adsterra & Single Ad Reward Section -->
+                <div class="task-timer-box">
+                    <div class="task-info">
+                        <h4>Daily Bonus Reward</h4>
+                        <p>Claim free coins every 24 hours</p>
+                    </div>
+                    <div class="timer-badge" id="timerBadge">23:59:50</div>
+                </div>
+
                 <div class="ads-header-row">
-                    <div class="ads-section-title">⭐ ADSTERRA REWARDED AD ROTATION ⭐</div>
+                    <span class="ads-section-title"><i class="fa-solid fa-bolt"></i> SPONSOR TASK & EARN</span>
                 </div>
-
-                <div class="single-ad-card" id="adActionBtn" onclick="handleAdClick()">
+                <div class="single-ad-card" onclick="alert('Task completed successfully! +5000 Coins added.')">
                     <div>
-                        <h3 style="font-size: 15px; color: var(--gold-primary); margin-bottom: 2px;">অ্যাড দেখুন <span style="font-size: 10px; background: #ef4444; color: #fff; padding: 1px 6px; border-radius: 4px;" id="ad-counter-text">দেখা হয়েছে: ০/৪</span></h3>
-                        <span style="font-size: 11px; color: var(--text-muted);">অ্যাডস্টারার লিংক থেকে বিজ্ঞাপন দেখুন</span>
-                        <div>
-                            <span class="ad-network-badge" id="active-network-indicator">Adsterra Active</span>
+                        <h4 style="color:#fff; font-size:13px;">Watch & Earn Instant Bonus</h4>
+                        <p style="color:var(--text-muted); font-size:10px; margin-top:2px;">Click to view sponsor offer</p>
+                        <span class="ad-network-badge">Adsterra Verified Offer</span>
+                    </div>
+                    <i class="fa-solid fa-arrow-right-to-bracket" style="color:var(--gold-primary); font-size:18px;"></i>
+                </div>
+            </div>
+
+            <!-- LEADERBOARD TAB VIEW -->
+            <div id="leaderboardView" class="section-view">
+                <div class="ranking-container">
+                    <div style="text-align: center; margin-bottom: 5px;">
+                        <h3 style="color: var(--gold-primary); font-size: 16px;"><i class="fa-solid fa-trophy"></i> Top Earners Leaderboard</h3>
+                        <p style="color: var(--text-muted); font-size: 11px;">Top 3 Champions of the Week</p>
+                    </div>
+
+                    <!-- Redesigned Top 3 Podium (Matching Image Style) -->
+                    <div class="podium-section">
+                        <!-- Rank 2 (Silver) -->
+                        <div class="podium-item rank-2">
+                            <i class="fa-solid fa-crown podium-crown"></i>
+                            <div class="podium-avatar-wrapper">
+                                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100" class="podium-avatar" alt="User">
+                            </div>
+                            <span class="podium-badge-num">#2</span>
+                            <h5>Rahim Hossain</h5>
+                            <span class="p-score">1,892,760</span>
+                        </div>
+
+                        <!-- Rank 1 (Gold) -->
+                        <div class="podium-item rank-1">
+                            <i class="fa-solid fa-crown podium-crown"></i>
+                            <div class="podium-avatar-wrapper">
+                                <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100" class="podium-avatar" alt="User">
+                            </div>
+                            <span class="podium-badge-num">#1</span>
+                            <h5>Rs Rana</h5>
+                            <span class="p-score">2,458,320</span>
+                        </div>
+
+                        <!-- Rank 3 (Bronze) -->
+                        <div class="podium-item rank-3">
+                            <i class="fa-solid fa-crown podium-crown"></i>
+                            <div class="podium-avatar-wrapper">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" class="podium-avatar" alt="User">
+                            </div>
+                            <span class="podium-badge-num">#3</span>
+                            <h5>Sumaiya Akter</h5>
+                            <span class="p-score">1,276,480</span>
                         </div>
                     </div>
-                    <div style="text-align: right;">
-                        <h3 style="font-size: 16px; color: var(--gold-primary);">ওয়াচ অ্যাড</h3>
+
+                    <!-- Rest of Leaderboard List -->
+                    <div class="leaderboard-list" id="leaderboardList">
+                        <!-- Dynamically populated or static rows -->
                     </div>
                 </div>
             </div>
 
-            <!-- RANKING SCREEN VIEW -->
-            <div id="ranking-view" class="section-view">
-                <div class="ads-section-title" style="text-align: center; margin-bottom: 5px;">🏆 GLOBAL LEADERBOARD (Top 500) 🏆</div>
-                <p style="text-align: center; font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">500 Unique Users Ranking</p>
-
-                <div class="podium-section" id="podium-container"></div>
-                <div class="leaderboard-list" id="leaderboard-container"></div>
-            </div>
-
-            <!-- REFERRAL SCREEN VIEW -->
-            <div id="referral-view" class="section-view">
+            <!-- REFERRAL TAB VIEW -->
+            <div id="referralView" class="section-view">
                 <div class="referral-box">
                     <div class="ref-top-banner">
-                        <h4>আপনার জন্য রেফারেল বোনাস</h4>
+                        <h4>Invite Friends & Earn Big</h4>
+                        <p style="font-size:11px; color:var(--text-muted);">Get 10% commission on every friend's tap earning!</p>
                         <div class="ref-badge-row">
-                            <i class="fas fa-coins"></i> 1,000 RS COIN
+                            <i class="fa-solid fa-gift"></i> 5,000 RS Per Invite
                         </div>
-                        <p>প্রতি নতুন বন্ধু রেজিস্ট্রেশন + প্রথমবার অ্যাক্টিভ হলে</p>
                     </div>
 
                     <div class="ref-link-card">
-                        <label><i class="fas fa-link"></i> আপনার রেফারেল লিংক</label>
+                        <label><i class="fa-solid fa-link"></i> Your Unique Invite Link</label>
                         <div class="ref-input-group">
-                            <input type="text" id="ref-link-input" value="https://t.me/rs_tap_to_earn_2026_bot?start=ref_12345" readonly>
-                            <button class="copy-btn" onclick="copyRefLink()">কপি করুন</button>
+                            <input type="text" id="refLinkInput" value="https://rstap.io/ref?id=RS123456" readonly>
+                            <button class="copy-btn" onclick="copyRefLink()">Copy</button>
                         </div>
                     </div>
 
                     <div class="ref-stats-grid">
                         <div class="ref-stat-box">
-                            <i class="fas fa-users"></i>
-                            <h5 id="total-ref-count">100</h5>
-                            <p>মোট রেফারেল</p>
+                            <i class="fa-solid fa-users"></i>
+                            <h5 id="totalRefCount">128</h5>
+                            <p>Invited</p>
                         </div>
                         <div class="ref-stat-box">
-                            <i class="fas fa-user-plus"></i>
-                            <h5 id="today-ref-count">25</h5>
-                            <p>আজকের লাইভ</p>
+                            <i class="fa-solid fa-coins"></i>
+                            <h5>640K</h5>
+                            <p>Earned</p>
                         </div>
                         <div class="ref-stat-box">
-                            <i class="fas fa-wallet"></i>
-                            <h5 id="total-ref-earn">100K</h5>
-                            <p>মোট আয়</p>
+                            <i class="fa-solid fa-wallet"></i>
+                            <h5>192 ৳</h5>
+                            <p>Bonus</p>
                         </div>
                         <div class="ref-stat-box">
-                            <i class="fas fa-trophy"></i>
-                            <h5 id="ref-level-text">Lv. 5</h5>
-                            <p>রেফারেল লেভেল</p>
+                            <i class="fa-solid fa-star"></i>
+                            <h5>VIP 2</h5>
+                            <p>Level</p>
                         </div>
                     </div>
 
                     <div class="referred-list-header">
-                        <span class="ads-section-title" style="font-size: 13px;">Referred Users (100 Locked)</span>
-                        <div class="live-users-badge"><span></span> 25-30 Live Active</div>
+                        <h4 style="font-size: 13px; color: var(--gold-primary);"><i class="fa-solid fa-list-check"></i> Live Referral Activity (100+ Users)</h4>
+                        <div class="live-users-badge">
+                            <span></span> Live Feed
+                        </div>
                     </div>
 
-                    <div class="leaderboard-list" id="referred-users-container"></div>
+                    <div class="leaderboard-list" id="referralActivityList" style="max-height: 250px; overflow-y: auto;">
+                        <!-- Will be populated via JS with 100+ items to avoid empty space -->
+                    </div>
                 </div>
             </div>
 
-            <!-- AI CUSTOMER SERVICE SCREEN VIEW -->
-            <div id="support-view" class="section-view">
+            <!-- SUPPORT / AI CHAT VIEW -->
+            <div id="supportView" class="section-view">
                 <div class="support-box">
                     <div class="support-header-card">
                         <div class="ai-avatar-container">
-                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120" class="ai-avatar" alt="AI Support">
+                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100" class="ai-avatar" alt="AI Support">
                             <div class="ai-status-dot"></div>
                         </div>
                         <div class="support-info">
                             <h3>RS AI Assistant</h3>
-                            <p>Online • Ready to help</p>
+                            <p>Online • Instant Help</p>
                         </div>
                     </div>
 
-                    <div class="chat-messages" id="chat-container">
-                        <div class="chat-msg bot">হ্যালো! আমি আপনার RS AI সাপোর্ট অ্যাসিস্ট্যান্ট। অ্যাড রোটেশন, ট্যাপ বা উইথড্রয়াল সংক্রান্ত যেকোনো সহায়তায় আমি প্রস্তুত!</div>
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="chat-msg bot">হ্যালো! RS Tap-to-Earn সাপোর্টে আপনাকে স্বাগতম। ট্যাপ করা, কয়েন কনভার্ট বা উইথড্র নিয়ে কোনো সাহায্য প্রয়োজন হলে বলুন।</div>
                     </div>
 
                     <div class="chat-input-row">
-                        <input type="text" id="user-input" placeholder="আপনার বার্তা লিখুন..." onkeypress="handleKeyPress(event)">
-                        <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+                        <input type="text" id="chatInput" placeholder="এখানে আপনার সমস্যা লিখুন...">
+                        <button class="send-btn" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
                     </div>
                 </div>
             </div>
 
-            <!-- MY ACCOUNT SCREEN VIEW -->
-            <div id="account-view" class="section-view">
-                <div class="account-box">
-                    
-                    <div class="account-profile-card">
-                        <div class="account-profile-left">
-                            <div class="account-avatar-wrapper" onclick="triggerPhotoUpload()" style="cursor: pointer;" title="ফটো পরিবর্তন করুন">
-                                <img id="user-avatar-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120" class="account-avatar" alt="User Profile">
-                                <input type="file" id="avatar-file-input" style="display: none;" accept="image/*" onchange="previewAvatar(event)">
-                            </div>
-                            <div class="account-details">
-                                <h3 id="profile-name-text">RS Sahebaliy <i class="fas fa-check-circle" style="font-size: 12px; color: var(--gold-primary);"></i></h3>
-                                <p id="profile-id-text">ID: RS123456</p>
-                                
-                                <div class="vip-progress-box">
-                                    <div class="vip-header-row">
-                                        <span id="vip-level-label">VIP 1 (Lv.1)</span>
-                                        <span id="xp-count-text">150 / 1,000 XP</span>
-                                    </div>
-                                    <div class="vip-progress-bar">
-                                        <div id="vip-progress-fill" class="vip-progress-fill"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="edit-profile-btn" onclick="openEditProfileModal()">
-                            <i class="fas fa-pen"></i> Edit Profile
-                        </button>
-                    </div>
-
-                    <div class="customize-banner" onclick="openEditProfileModal()">
-                        <div class="customize-left">
-                            <div class="customize-icon">
-                                <i class="fas fa-palette"></i>
-                            </div>
-                            <div class="customize-info">
-                                <h4>Customize</h4>
-                                <p>Change your profile, name, theme & more</p>
-                            </div>
-                        </div>
-                        <i class="fas fa-chevron-right" style="color: var(--gold-primary);"></i>
-                    </div>
-
-                    <div class="balance-card" style="margin-bottom: 0; text-align: left; padding: 16px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                            <span style="font-size: 11px; color: var(--text-muted);">Total Balance <i class="fas fa-eye"></i></span>
-                            <span style="background: rgba(250,204,21,0.15); border: 1px solid var(--gold-primary); color: var(--gold-primary); font-size: 9px; padding: 2px 8px; border-radius: 10px; font-weight: bold;">LIVE BALANCE</span>
-                        </div>
-                        <h2 id="acc-balance-main" style="font-size: 24px; color: var(--gold-primary);">50,000 <span style="font-size: 12px; color: #fff;">RS TOKEN</span></h2>
-                        <p style="font-size: 11px; color: var(--text-muted);">≈ <span id="acc-bdt-main">15,000.00</span> BDT</p>
-                    </div>
-
-                    <div class="conversion-card">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <div style="width: 32px; height: 32px; background: var(--gold-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-weight: bold; font-size: 12px;">RS</div>
-                            <div>
-                                <h5 style="font-size: 11px; font-weight: bold;">1,000,000 RS TOKEN</h5>
-                                <p style="font-size: 10px; color: var(--text-muted);">≈ ৳300.00 BDT</p>
-                            </div>
-                        </div>
-                        <div style="text-align: right;">
-                            <p style="font-size: 9px; color: var(--text-muted);"><i class="fas fa-calculator"></i> Conversion Rate</p>
-                            <p style="font-size: 11px; font-weight: bold; color: var(--gold-primary);">1M RS = 300 BDT</p>
+            <!-- ACCOUNT VIEW -->
+            <div id="accountView" class="section-view">
+                <div class="balance-card" style="text-align: left; padding: 16px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100" style="width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--gold-primary);">
+                        <div>
+                            <h3 style="color:#fff; font-size:16px;">Rs Rana <i class="fa-solid fa-circle-check" style="color:var(--gold-primary); font-size:13px;"></i></h3>
+                            <p style="color:var(--text-muted); font-size:11px;">ID: RS123456 • VIP Level 1</p>
                         </div>
                     </div>
-
-                    <div class="action-buttons-grid">
-                        <button class="action-btn-box" onclick="simulateDeposit()">
-                            <div>
-                                <div style="display: flex; align-items: center; gap: 6px; color: var(--gold-primary); font-weight: bold; font-size: 13px;">
-                                    <i class="fas fa-wallet"></i> Deposit
-                                </div>
-                                <p style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Add RS Tokens</p>
-                            </div>
-                            <i class="fas fa-chevron-right" style="color: var(--gold-primary); font-size: 12px;"></i>
-                        </button>
-
-                        <button class="action-btn-box withdraw-box" onclick="toggleWithdrawSection()">
-                            <div>
-                                <div style="display: flex; align-items: center; gap: 6px; color: #38bdf8; font-weight: bold; font-size: 13px;">
-                                    <i class="fas fa-exchange-alt"></i> Withdraw
-                                </div>
-                                <p style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">Get Your Earnings</p>
-                            </div>
-                            <i class="fas fa-chevron-right" style="color: #38bdf8; font-size: 12px;"></i>
-                        </button>
-                    </div>
-
-                    <div id="withdrawSection" style="display: none; background: #121622; border: 1px solid rgba(56,189,248,0.4); border-radius: 14px; padding: 14px; gap: 10px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
-                            <h4 style="font-size: 12px; color: #38bdf8; font-weight: bold;"><i class="fas fa-shield-alt"></i> Secure Withdrawal</h4>
-                            <span style="font-size: 9px; color: var(--gold-primary); background: rgba(250,204,21,0.1); padding: 2px 6px; border-radius: 4px;">Limit: ৳400 - ৳5,000</span>
-                        </div>
-
-                        <div style="margin-bottom: 8px;">
-                            <label style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 4px;">Select Method</label>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-                                <label style="display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(236, 72, 153, 0.1); border: 1px solid rgba(236, 72, 153, 0.4); padding: 6px; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: bold; color: #f472b6;">
-                                    <input type="radio" name="payMethod" value="bKash" checked> bKash
-                                </label>
-                                <label style="display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.4); padding: 6px; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: bold; color: #fb923c;">
-                                    <input type="radio" name="payMethod" value="Nagad"> Nagad
-                                </label>
-                            </div>
-                        </div>
-
-                        <div style="margin-bottom: 8px;">
-                            <label style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 4px;">Account Number</label>
-                            <input type="text" id="wdAccountNumber" placeholder="017XXXXXXXX" style="width: 100%; background: #07070b; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px; color: #fff; font-size: 11px; outline: none;">
-                        </div>
-
-                        <div style="margin-bottom: 10px;">
-                            <label style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 4px;">Amount (BDT)</label>
-                            <input type="number" id="wdAmountInput" placeholder="Min ৳400, Max ৳5,000" style="width: 100%; background: #07070b; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px; color: #fff; font-size: 11px; outline: none;">
-                        </div>
-
-                        <button onclick="submitWithdrawal()" style="width: 100%; background: linear-gradient(135deg, #38bdf8, #2563eb); border: none; color: #fff; font-weight: bold; font-size: 11px; padding: 8px; border-radius: 8px; cursor: pointer;">Submit Request</button>
-                        <p id="wdErrorMsg" style="font-size: 10px; text-align: center; color: #ef4444; margin-top: 4px;"></p>
-                    </div>
-
-                    <div style="background: var(--card-bg); border: 1px solid rgba(250,204,21,0.2); border-radius: 12px; padding: 12px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <span style="font-size: 12px; font-weight: bold; color: var(--gold-primary);"><i class="fas fa-history"></i> Recent Transactions (Live)</span>
-                            <span style="font-size: 10px; color: var(--gold-primary); cursor: pointer;">Auto-Updating ›</span>
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 11px;" id="transaction-list-container"></div>
-                    </div>
-
                 </div>
-            </div>
 
-            <div id="other-view" class="section-view">
-                <div style="text-align: center; margin-top: 150px; color: var(--gold-primary);">
-                    <h2>Coming Soon...</h2>
+                <div class="task-timer-box" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                    <h4 style="color:var(--gold-primary);"><i class="fa-solid fa-shield-halved"></i> Security & Verification</h4>
+                    <p style="font-size: 11px; color: var(--text-muted);">Your account is fully verified with email and device ID.</p>
                 </div>
             </div>
 
         </div>
 
-        <!-- Bottom Navigation -->
+        <!-- Bottom Navigation Bar -->
         <div class="bottom-nav">
-            <button class="nav-item active" onclick="switchTab('home', this)"><i class="fas fa-home"></i></button>
-            <button class="nav-item" onclick="switchTab('ranking', this)"><i class="fas fa-trophy"></i></button>
-            <button class="nav-item" onclick="switchTab('referral', this)"><i class="fas fa-users"></i></button>
-            <button class="nav-item" onclick="switchTab('support', this)"><i class="fas fa-headset"></i></button>
-            <button class="nav-item" onclick="switchTab('account', this)"><i class="fas fa-user-circle"></i></button>
+            <div class="nav-item active" onclick="switchTab('home', this)">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('leaderboard', this)">
+                <i class="fa-solid fa-trophy"></i>
+                <span>Leaderboard</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('referral', this)">
+                <i class="fa-solid fa-users"></i>
+                <span>Referral</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('support', this)">
+                <i class="fa-solid fa-headset"></i>
+                <span>Support</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('account', this)">
+                <i class="fa-solid fa-user"></i>
+                <span>Account</span>
+            </div>
         </div>
     </div>
 
-    <!-- Adsterra Manager Script -->
-    <script async src="https://js.wpadmngr.com/static/adManager.js" data-admpid="465841"></script>
-
     <script>
-        let balance = parseInt(localStorage.getItem('rs_balance')) || 50000;
-        let userName = localStorage.getItem('rs_username') || "RS Sahebaliy";
-        let userAvatar = localStorage.getItem('rs_avatar') || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120";
-        
-        // Adsterra Direct Link Rotation System
-        const adNetworks = [
-            "https://www.profitableratecpmnetwork.com/a7axqf71du?key=1024ac839300c803be444ccb9bd41406",
-            "https://idealistic-revenue.com/iAm7pD"
-        ];
+        // Tab Switching Logic
+        function switchTab(tabName, element) {
+            document.querySelectorAll('.section-view').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
-        let currentAdIndex = parseInt(localStorage.getItem('rs_ad_index')) || 0;
-        let adsWatchedInLoop = parseInt(localStorage.getItem('rs_ads_watched')) || 0;
-        let isCountdownActive = false;
+            if(tabName === 'home') document.getElementById('homeView').style.display = 'block';
+            if(tabName === 'leaderboard') document.getElementById('leaderboardView').style.display = 'block';
+            if(tabName === 'referral') document.getElementById('referralView').style.display = 'block';
+            if(tabName === 'support') document.getElementById('supportView').style.display = 'block';
+            if(tabName === 'account') document.getElementById('accountView').style.display = 'block';
 
-        let transactions = JSON.parse(localStorage.getItem('rs_transactions')) || [
-            {type: 'bonus', title: 'বোনাস', desc: 'রেফারেল ও টাস্ক রিওয়ার্ড', amount: '১,০০০ টাকা', color: '#22c55e', icon: 'fa-arrow-up', time: '2026-09-22 14:32'},
-            {type: 'withdraw', title: 'Withdraw', desc: 'বিকাশ (****1234)', amount: '৫,০০০ টাকা', color: '#38bdf8', icon: 'fa-exchange-alt', time: '2026-09-22 12:10'}
-        ];
-
-        // Locked 100 Referrals (25-30 Live/Online, rest offline)
-        let refUsersList = JSON.parse(localStorage.getItem('rs_ref_users')) || generateLockedReferrals();
-
-        function generateLockedReferrals() {
-            let refs = [];
-            const names = ["Arif", "Rasel", "Sakib", "Tanjim", "Nusrat", "Rakib", "Sumaiya", "Imran", "Farhan", "Mehedi", "Jahid", "Sabbir", "Al-Amin", "Nayeem", "Ashraful"];
-            const levels = ["Lv.1", "Lv.2", "Lv.3", "Lv.4", "Lv.5"];
-            const avatars = [
-                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60",
-                "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60",
-                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60",
-                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60"
-            ];
-
-            for (let i = 1; i <= 100; i++) {
-                let isLive = i <= 28; // প্রথম ২৮ জন লাইভ/অ্যাক্টিভ থাকবে
-                refs.push({
-                    name: names[i % names.length] + "_" + (100 + i),
-                    level: levels[i % levels.length],
-                    time: isLive ? "Active Now" : "Offline",
-                    img: avatars[i % avatars.length],
-                    live: isLive
-                });
-            }
-            return refs;
+            element.classList.add('active');
         }
 
-        // Updated Conversion Rate: 1M Coins = 300 BDT
-        const rate = 300 / 1000000;
-        const possibleRewards = [1, 2, 3, 5, 10];
-        const rewardColors = ['#facc15', '#38bdf8', '#c084fc', '#22c55e', '#ec4899'];
+        // Tap Click Scoring & Animation (Safe - No redirect)
+        let userScore = 1000710129929;
+        const tapBtn = document.getElementById('tapButton');
+        const balanceDisplay = document.getElementById('balanceDisplay');
 
-        function saveData() {
-            localStorage.setItem('rs_balance', balance);
-            localStorage.setItem('rs_username', userName);
-            localStorage.setItem('rs_avatar', userAvatar);
-            localStorage.setItem('rs_transactions', JSON.stringify(transactions));
-            localStorage.setItem('rs_ref_users', JSON.stringify(refUsersList));
-            localStorage.setItem('rs_ads_watched', adsWatchedInLoop);
-            localStorage.setItem('rs_ad_index', currentAdIndex);
-        }
+        tapBtn.addEventListener('click', function(e) {
+            userScore += 100;
+            balanceDisplay.textContent = userScore.toLocaleString();
 
-        function updateUI() {
-            document.getElementById('balance-display').innerText = balance.toLocaleString() + " RS";
-            document.getElementById('bdt-display').innerText = (balance * rate).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            // Floating score effect
+            const rect = tapBtn.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const floatEl = document.createElement('div');
+            floatEl.className = 'floating-score';
+            floatEl.textContent = '+100';
+            floatEl.style.left = x + 'px';
+            floatEl.style.top = y + 'px';
+            floatEl.style.color = '#facc15';
             
-            let accMain = document.getElementById('acc-balance-main');
-            if(accMain) {
-                accMain.innerHTML = balance.toLocaleString() + ` <span style="font-size: 12px; color: #fff;">RS TOKEN</span>`;
-                document.getElementById('acc-bdt-main').innerText = (balance * rate).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-            }
-
-            document.getElementById('profile-name-text').innerHTML = `${userName} <i class="fas fa-check-circle" style="font-size: 12px; color: var(--gold-primary);"></i>`;
-            document.getElementById('user-avatar-img').src = userAvatar;
-            document.getElementById('ad-counter-text').innerText = `দেখা হয়েছে: ${adsWatchedInLoop}/৪`;
-
-            let vipLevel = Math.floor(balance / 50000) + 1;
-            let xpCurrent = balance % 50000;
-            let xpNeeded = 50000;
-            let percentage = Math.min(100, (xpCurrent / xpNeeded) * 100);
-
-            let vipLabelEl = document.getElementById('vip-level-label');
-            let xpTextEl = document.getElementById('xp-count-text');
-            let fillEl = document.getElementById('vip-progress-fill');
-
-            if(vipLabelEl) {
-                vipLabelEl.innerText = `VIP ${vipLevel} (Lv.${vipLevel})`;
-                xpTextEl.innerText = `${xpCurrent.toLocaleString()} / ${xpNeeded.toLocaleString()} XP`;
-                fillEl.style.width = percentage + '%';
-            }
-
-            document.getElementById('total-ref-count').innerText = refUsersList.length;
-            document.getElementById('total-ref-earn').innerText = (refUsersList.length * 1000 >= 1000 ? Math.floor((refUsersList.length * 1000)/1000) + 'K' : refUsersList.length * 1000);
-            
-            renderTransactions();
-            renderReferredUsers();
-            renderLeaderboard();
-            saveData();
-        }
-
-        // Tap Logic
-        const tapTarget = document.getElementById('tap-target');
-        tapTarget.addEventListener('click', (e) => {
-            let reward = possibleRewards[Math.floor(Math.random() * possibleRewards.length)];
-            let color = rewardColors[Math.floor(Math.random() * rewardColors.length)];
-
-            balance += reward;
-            updateUI();
-
-            let rect = tapTarget.getBoundingClientRect();
-            let x = e.clientX - rect.left;
-            let y = e.clientY - rect.top;
-
-            let floatText = document.createElement('div');
-            floatText.className = 'floating-score';
-            floatText.innerText = `+${reward} RS`;
-            floatText.style.left = `${x}px`;
-            floatText.style.top = `${y}px`;
-            floatText.style.color = color;
-
-            tapTarget.appendChild(floatText);
-            setTimeout(() => { floatText.remove(); }, 800);
+            tapBtn.appendChild(floatEl);
+            setTimeout(() => floatEl.remove(), 800);
         });
 
-        // Adsterra Ad Rotation System & 4-Ad Loop
-        function handleAdClick() {
-            if (isCountdownActive) {
-                alert("দয়া করে ১ মিনিটের কাউন্টডাউন শেষ হওয়া পর্যন্ত অপেক্ষা করুন!");
-                return;
-            }
-
-            let linkToOpen = adNetworks[currentAdIndex];
-            window.open(linkToOpen, '_blank');
-
-            currentAdIndex = (currentAdIndex + 1) % adNetworks.length;
-            adsWatchedInLoop++;
-
-            balance += 1000;
-            let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
-            transactions.unshift({
-                type: 'bonus', title: 'বোনাস', desc: 'Adsterra View Reward', amount: '১,০০০ টাকা', color: '#22c55e', icon: 'fa-arrow-up', time: nowStr
-            });
-
-            updateUI();
-
-            if (adsWatchedInLoop >= 4) {
-                startMandatoryCountdown();
-            }
-        }
-
-        function startMandatoryCountdown() {
-            isCountdownActive = true;
-            let timeLeft = 60;
-            let btn = document.getElementById('adActionBtn');
-            let timerDisplay = document.getElementById('ad-countdown-timer');
-            let statusMsg = document.getElementById('ad-status-msg');
-
-            btn.style.opacity = "0.5";
-            btn.style.pointerEvents = "none";
-            statusMsg.innerText = "কাউন্টডাউন চলছে (রোবট রোধক)...";
-
-            let timer = setInterval(() => {
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    isCountdownActive = false;
-                    adsWatchedInLoop = 0;
-                    btn.style.opacity = "1";
-                    btn.style.pointerEvents = "auto";
-                    timerDisplay.innerText = "00:00";
-                    statusMsg.innerText = "পরবর্তী ৪টি অ্যাড দেখার জন্য প্রস্তুত!";
-                    updateUI();
-                } else {
-                    let mins = Math.floor(timeLeft / 60);
-                    let secs = timeLeft % 60;
-                    timerDisplay.innerText = `0${mins}:${secs < 10 ? '0' : ''}${secs}`;
-                    timeLeft--;
-                }
-            }, 1000);
-        }
-
-        setInterval(() => {
-            const randomNamesList = ["Arif_BD", "Tanvir_99", "Rahim_Official", "Nusrat_Jahan", "Sabbir_Hossain"];
-            const methodsList = ["bKash", "Nagad"];
-            let rName = randomNamesList[Math.floor(Math.random() * randomNamesList.length)];
-            let rMethod = methodsList[Math.floor(Math.random() * methodsList.length)];
-            let rAmount = Math.floor(Math.random() * 2000 + 500);
-            let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
-
-            transactions.unshift({
-                type: 'withdraw', title: 'Withdraw', desc: `টু: ${rMethod} (${rName})`, amount: `${rAmount.toLocaleString()} টাকা`, color: '#38bdf8', icon: 'fa-exchange-alt', time: nowStr
-            });
-
-            if(transactions.length > 20) transactions.pop();
-            updateUI();
-        }, 15000);
-
-        function renderTransactions() {
-            let container = document.getElementById('transaction-list-container');
-            if(!container) return;
-            let html = "";
-            transactions.slice(0, 6).forEach(tx => {
-                html += `
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <div style="width: 24px; height: 24px; background: ${tx.color}33; color: ${tx.color}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px;"><i class="fas ${tx.icon}"></i></div>
-                            <div>
-                                <p style="font-weight: bold; color: ${tx.color};">${tx.title}</p>
-                                <p style="font-size: 9px; color: var(--text-muted);">${tx.desc}</p>
-                            </div>
-                        </div>
-                        <div style="text-align: right;">
-                            <p style="color: ${tx.color}; font-weight: bold;">${tx.amount}</p>
-                            <p style="font-size: 9px; color: var(--text-muted);">${tx.time}</p>
+        // Populate Leaderboard list (Rank 4 to 20)
+        const lbList = document.getElementById('leaderboardList');
+        const sampleNames = ['Tanvir Ahmed', 'Sabbir Hossain', 'Jahid Hasan', 'Nipa Akter', 'Rakibul Islam', 'Mehedi Hasan', 'Farhana Yeasmin', 'Al-Amin', 'Shamim Mia', 'Arifur Rahman', 'Nasir Uddin', 'Rubel Rana', 'Mst. Lima', 'Kamrul Islam', 'Shakil Ahmed'];
+        
+        for(let i = 4; i <= 30; i++) {
+            const randomScore = (1200000 - (i * 35000)).toLocaleString();
+            lbList.innerHTML += `
+                <div class="leader-row">
+                    <div class="leader-left">
+                        <span class="leader-rank">#${i}</span>
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="leader-avatar" alt="User">
+                        <div class="leader-info">
+                            <h4>${sampleNames[i % sampleNames.length]}</h4>
+                            <p>ID: RS${100000 + i}</p>
                         </div>
                     </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
-
-        function renderReferredUsers() {
-            let container = document.getElementById('referred-users-container');
-            if(!container) return;
-            let html = "";
-            refUsersList.forEach((u, index) => {
-                let rankNum = String(index + 1).padStart(2, '0');
-                let liveStatusColor = u.live ? "#22c55e" : "#94a3b8";
-                let liveText = u.live ? "Online (Live)" : "Offline";
-                html += `
-                    <div class="ref-user-row">
-                        <div class="ref-user-left">
-                            <span class="ref-user-rank">${rankNum}</span>
-                            <img src="${u.img}" class="ref-user-avatar" alt="User">
-                            <div class="ref-user-info">
-                                <h5>${u.name}</h5>
-                                <p style="color: ${liveStatusColor};"><i class="fas fa-circle" style="font-size: 6px;"></i> ${liveText} (${u.level})</p>
-                            </div>
-                        </div>
-                        <div class="ref-user-right">
-                            <div class="reward-amt">1,000 RS</div>
-                            <span class="status-tag" style="background: ${u.live ? 'rgba(34,197,94,0.2)' : 'rgba(148,163,184,0.2)'}; color: ${liveStatusColor};">${u.live ? 'অ্যাক্টিভ' : 'ইনঅ্যাক্টিভ'}</span>
-                        </div>
+                    <div class="leader-right">
+                        <div class="l-score">${randomScore}</div>
                     </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
-
-        // Leaderboard: Top 500 Unique Users (Top 1 = 1 Billion Coins)
-        function renderLeaderboard() {
-            let podiumContainer = document.getElementById('podium-container');
-            let leaderboardContainer = document.getElementById('leaderboard-container');
-            if(!podiumContainer || !leaderboardContainer) return;
-
-            let topUsers = [
-                {name: userName, score: balance + 50000000, bdt: ((balance + 50000000)*rate).toFixed(2), avatar: userAvatar},
-                {name: "Rakibul H.", score: 1000000000, bdt: (1000000000*rate).toFixed(2), avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100"}, // Top 1: 1 Billion Coins
-                {name: "Sumaiya A.", score: 500000000, bdt: (500000000*rate).toFixed(2), avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100"}
-            ];
-
-            topUsers.sort((a, b) => b.score - a.score);
-
-            podiumContainer.innerHTML = `
-                <div class="podium-item rank-2">
-                    <div class="podium-avatar-wrapper">
-                        <img src="${topUsers[1].avatar}" class="podium-avatar" alt="Top 2" style="border-color: #cbd5e1;">
-                    </div>
-                    <h5>${topUsers[1].name}</h5>
-                    <div class="p-score">${topUsers[1].score.toLocaleString()} RS</div>
-                    <div class="p-bdt">${topUsers[1].bdt} BDT</div>
-                </div>
-                <div class="podium-item rank-1">
-                    <i class="fas fa-crown crown"></i>
-                    <div class="podium-avatar-wrapper">
-                        <img src="${topUsers[0].avatar}" class="podium-avatar" alt="Top 1">
-                    </div>
-                    <h5>${topUsers[0].name}</h5>
-                    <div class="p-score" style="font-size: 12px;">${topUsers[0].score.toLocaleString()} RS</div>
-                    <div class="p-bdt">${topUsers[0].bdt} BDT</div>
-                </div>
-                <div class="podium-item rank-3">
-                    <div class="podium-avatar-wrapper">
-                        <img src="${topUsers[2].avatar}" class="podium-avatar" alt="Top 3" style="border-color: #b45309;">
-                    </div>
-                    <h5>${topUsers[2].name}</h5>
-                    <div class="p-score">${topUsers[2].score.toLocaleString()} RS</div>
-                    <div class="p-bdt">${topUsers[2].bdt} BDT</div>
                 </div>
             `;
+        }
 
-            const sampleNames = ["Tanvir Ahmed", "Nayeem Khan", "Farhan Sadik", "Mehedi Hasan", "Ashraful Islam", "Imran Hossain", "Jahidul Islam", "Sabbir Rahman", "Mahmudul Hasan", "Al-Amin Sheikh"];
-            const avatarUrls = [
-                "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50",
-                "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=50",
-                "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=50",
-                "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=50",
-                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50"
-            ];
-            
-            let htmlContent = "";
-            for (let i = 4; i <= 500; i++) {
-                let randomName = sampleNames[(i + 3) % sampleNames.length] + "_" + i;
-                let randomAvatar = avatarUrls[i % avatarUrls.length];
-                // নিচের দিকে ৩-৪ শ জনের জন্য কয়েন অনেক কম (যেমন ১০০০ থেকে কয়েক হাজার) থাকবে
-                let score = i > 400 ? Math.floor(Math.random() * 2000 + 500) : Math.max(5000, (400000000 - (i * 800000)));
-                let bdtVal = (score * rate).toFixed(2);
-                
-                htmlContent += `
-                    <div class="leader-row">
-                        <div class="leader-left">
-                            <span class="leader-rank">#${i}</span>
-                            <img src="${randomAvatar}" class="leader-avatar" alt="User">
-                            <div class="leader-info">
-                                <h4>${randomName}</h4>
-                                <p>Level ${Math.max(1, 20 - Math.floor(i/25))}</p>
-                            </div>
-                        </div>
-                        <div class="leader-right">
-                            <div class="l-score">${score.toLocaleString()} RS</div>
-                            <div class="l-bdt">${bdtVal} BDT</div>
+        // Populate 100+ Live Referral Activity items to fill space completely
+        const refList = document.getElementById('referralActivityList');
+        const refNames = ['Nazmul Hossain', 'Sharmin Sultana', 'Monirul Islam', 'Tania Akter', 'Belal Hossain', 'Farid Uddin', 'Rokeya Begum', 'Sumon Rana', 'Joynal Abedin', 'Mitu Akter'];
+        
+        for(let i = 1; i <= 100; i++) {
+            refList.innerHTML += `
+                <div class="ref-user-row">
+                    <div class="ref-user-left">
+                        <span class="ref-user-rank">${i}</span>
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" class="ref-user-avatar" alt="User">
+                        <div class="ref-user-info">
+                            <h5>${refNames[i % refNames.length]} (${i})</h5>
+                            <p>Joined via Link • 2m ago</p>
                         </div>
                     </div>
-                `;
-            }
-            leaderboardContainer.innerHTML = htmlContent;
+                    <div class="ref-user-right">
+                        <div class="reward-amt">+5,000 RS</div>
+                        <span style="font-size:9px; color:#22c55e;">Active</span>
+                    </div>
+                </div>
+            `;
         }
 
         function copyRefLink() {
-            let inputElem = document.getElementById('ref-link-input');
-            inputElem.select();
-            navigator.clipboard.writeText(inputElem.value);
-            alert("রেফারেল লিংক কপি করা হয়েছে!");
+            const input = document.getElementById('refLinkInput');
+            input.select();
+            navigator.clipboard.writeText(input.value);
+            alert('Referral link copied successfully!');
         }
 
-        function switchTab(tabName, btnElement) {
-            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
+        // AI Chat Send Logic
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const msgBox = document.getElementById('chatMessages');
+            if(!input.value.trim()) return;
 
-            document.querySelectorAll('.section-view').forEach(view => view.style.display = 'none');
-
-            if (tabName === 'home') {
-                document.getElementById('home-view').style.display = 'block';
-            } else if (tabName === 'ranking') {
-                document.getElementById('ranking-view').style.display = 'block';
-                renderLeaderboard();
-            } else if (tabName === 'referral') {
-                document.getElementById('referral-view').style.display = 'block';
-            } else if (tabName === 'support') {
-                document.getElementById('support-view').style.display = 'block';
-            } else if (tabName === 'account') {
-                document.getElementById('account-view').style.display = 'block';
-            } else {
-                document.getElementById('other-view').style.display = 'block';
-            }
-        }
-
-        function triggerPhotoUpload() {
-            document.getElementById('avatar-file-input').click();
-        }
-
-        function previewAvatar(event) {
-            let file = event.target.files[0];
-            if (file) {
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    userAvatar = e.target.result;
-                    updateUI();
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function openEditProfileModal() {
-            let newName = prompt("আপনার নতুন নাম লিখুন:", userName);
-            if (newName && newName.trim() !== "") {
-                userName = newName.trim();
-                updateUI();
-            }
-        }
-
-        function simulateDeposit() {
-            alert("ডিপোজিট অপশনটি বর্তমানে সাময়িকভাবে বন্ধ রয়েছে। দয়া করে পরে চেষ্টা করুন।");
-        }
-
-        function toggleWithdrawSection() {
-            let section = document.getElementById('withdrawSection');
-            section.style.display = section.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function submitWithdrawal() {
-            let amount = parseFloat(document.getElementById('wdAmountInput').value);
-            let accNum = document.getElementById('wdAccountNumber').value;
-            let payMethod = document.querySelector('input[name="payMethod"]:checked').value;
-            let errorEl = document.getElementById('wdErrorMsg');
-            let currentBdtBalance = balance * rate;
-
-            errorEl.innerText = "";
-
-            if (!accNum || accNum.length < 11) {
-                errorEl.innerText = "দয়া করে সঠিক ১১ ডিজিটের অ্যাকাউন্ট নম্বর দিন।";
-                return;
-            }
-
-            if (isNaN(amount) || amount < 400) {
-                errorEl.innerText = "সর্বনিম্ন উত্তোলন ৪০০ টাকা হতে হবে।";
-                return;
-            }
-
-            if (amount > 5000) {
-                errorEl.innerText = "সর্বোচ্চ উত্তোলন ৫,০০০ টাকার বেশি করা যাবে না।";
-                return;
-            }
-
-            if (amount > currentBdtBalance) {
-                errorEl.innerText = "আপনার অ্যাকাউন্টে পর্যাপ্ত পরিমাণ ব্যালেন্স নেই!";
-                return;
-            }
-
-            let requiredRs = Math.ceil(amount / rate);
-            balance -= requiredRs;
-
-            let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
-            transactions.unshift({
-                type: 'withdraw', title: 'Withdraw', desc: `To: ${payMethod} (${accNum})`, amount: `${amount.toLocaleString()} টাকা`, color: '#ef4444', icon: 'fa-arrow-down', time: nowStr
-            });
-
-            updateUI();
-            alert(`উত্তোলন সফল হয়েছে! ৳${amount} টাকা কেটে নেওয়া হয়েছে।`);
-            document.getElementById('withdrawSection').style.display = 'none';
-        }
-
-        function sendMessage() {
-            let inputField = document.getElementById('user-input');
-            let text = inputField.value.trim();
-            if(!text) return;
-
-            let chatContainer = document.getElementById('chat-container');
-            chatContainer.innerHTML += `<div class="chat-msg user">${text}</div>`;
-            inputField.value = "";
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+            const userText = input.value;
+            msgBox.innerHTML += `<div class="chat-msg user">${userText}</div>`;
+            input.value = '';
+            msgBox.scrollTop = msgBox.scrollHeight;
 
             setTimeout(() => {
-                let botReply = "ধন্যবাদ! আপনার বার্তাটি পেয়েছি। আমাদের সাপোর্ট টিম দ্রুত আপনার সাথে যোগাযোগ করবে।";
-                if(text.toLowerCase().includes('withdraw') || text.toLowerCase().includes('taka') || text.toLowerCase().includes('টাকা')) {
-                    botReply = "ন্যূনতম ৪০০ টাকা এবং সর্বোচ্চ ৫,০০০ টাকা হলে আপনি সহজে বিকাশ বা নগদে উইথড্র করতে পারবেন।";
-                }
-                chatContainer.innerHTML += `<div class="chat-msg bot">${botReply}</div>`;
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }, 600);
+                msgBox.innerHTML += `<div class="chat-msg bot">আপনার বার্তাটি পেয়েছি। RS Tap-to-Earn এ কোনো সমস্যা হলে ২৪ ঘণ্টার মধ্যে সমাধান করা হয়। আপনার উইথড্র বা কয়েন আপডেট প্রক্রিয়াধীন রয়েছে।</div>`;
+                msgBox.scrollTop = msgBox.scrollHeight;
+            }, 1000);
         }
-
-        function handleKeyPress(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        }
-
-        updateUI();
     </script>
 </body>
 </html>
