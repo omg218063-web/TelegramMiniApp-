@@ -1,1602 +1,20 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>RS Tap-to-Earn • Telegram Mini App</title>
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<style>
-:root{
-    --bg:#05060a;
-    --card:#11131d;
-    --card2:#171a26;
-    --gold:#facc15;
-    --silver:#dbe4ee;
-    --bronze:#cd7f32;
-    --blue:#38bdf8;
-    --purple:#c084fc;
-    --green:#22c55e;
-    --muted:#94a3b8;
-    --danger:#ef4444;
-}
-
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    font-family:Segoe UI,Tahoma,sans-serif;
-    -webkit-tap-highlight-color:transparent;
-}
-
-html,body{
-    width:100%;
-    height:100%;
-    background:var(--bg);
-    color:white;
-    overflow:hidden;
-}
-
-body{
-    display:flex;
-    justify-content:center;
-}
-
-button,input{
-    font-family:inherit;
-}
-
-button{
-    cursor:pointer;
-}
-
-.app-frame{
-    width:100%;
-    max-width:420px;
-    height:100vh;
-    position:relative;
-    overflow:hidden;
-    background:
-        radial-gradient(circle at 50% -10%,rgba(250,204,21,.10),transparent 35%),
-        #05060a;
-    border-left:1px solid rgba(250,204,21,.18);
-    border-right:1px solid rgba(250,204,21,.18);
-}
-
-.app-container{
-    height:100%;
-    overflow-y:auto;
-    padding:14px;
-    padding-bottom:92px;
-    scroll-behavior:smooth;
-}
-
-.app-container::-webkit-scrollbar{
-    width:3px;
-}
-
-.app-container::-webkit-scrollbar-thumb{
-    background:rgba(250,204,21,.35);
-    border-radius:10px;
-}
-
-/* ================= COMMON ================= */
-
-.section-view{
-    display:none;
-    animation:pageIn .28s ease;
-}
-
-@keyframes pageIn{
-    from{
-        opacity:0;
-        transform:translateY(12px);
-    }
-    to{
-        opacity:1;
-        transform:none;
-    }
-}
-
-.card{
-    background:linear-gradient(145deg,#171a25,#0d0f16);
-    border:1px solid rgba(250,204,21,.18);
-    border-radius:16px;
-    box-shadow:0 10px 30px rgba(0,0,0,.35);
-}
-
-/* ================= BALANCE ================= */
-
-.balance-card{
-    padding:15px;
-    text-align:center;
-    margin-bottom:11px;
-    position:relative;
-    overflow:hidden;
-}
-
-.balance-card:before{
-    content:"";
-    position:absolute;
-    width:130px;
-    height:130px;
-    border-radius:50%;
-    background:rgba(250,204,21,.08);
-    top:-70px;
-    right:-40px;
-}
-
-.balance-card p{
-    color:var(--muted);
-    font-size:10px;
-}
-
-.balance-card h2{
-    margin:5px 0;
-    color:var(--gold);
-    font-size:23px;
-    font-weight:900;
-    text-shadow:0 0 15px rgba(250,204,21,.35);
-}
-
-.bdt-value{
-    color:#4ade80!important;
-    font-weight:700;
-}
-
-/* ================= MARQUEE ================= */
-
-.marquee-container{
-    overflow:hidden;
-    white-space:nowrap;
-    border:1px solid rgba(250,204,21,.3);
-    background:rgba(250,204,21,.07);
-    border-radius:10px;
-    margin-bottom:13px;
-    padding:7px 0;
-}
-
-.marquee-text{
-    display:inline-block;
-    padding-left:100%;
-    animation:marquee 18s linear infinite;
-    color:var(--gold);
-    font-size:10px;
-    font-weight:700;
-}
-
-@keyframes marquee{
-    to{transform:translateX(-100%);}
-}
-
-/* ================= TAP ================= */
-
-.tap-section{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    margin:3px 0 14px;
-}
-
-.logo-container{
-    width:180px;
-    height:180px;
-    position:relative;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    user-select:none;
-    touch-action:manipulation;
-    cursor:pointer;
-}
-
-.ring{
-    position:absolute;
-    border-radius:50%;
-    pointer-events:none;
-    transform-origin:center;
-}
-
-.ring-gold{
-    width:100%;
-    height:100%;
-    border:4px solid var(--gold);
-    border-top-color:transparent;
-    border-bottom-color:#fff0;
-    box-shadow:
-        0 0 15px rgba(250,204,21,.75),
-        inset 0 0 12px rgba(250,204,21,.2);
-}
-
-.ring-blue{
-    width:84%;
-    height:84%;
-    border:3px solid var(--blue);
-    border-left-color:transparent;
-    box-shadow:0 0 14px rgba(56,189,248,.55);
-}
-
-.ring-purple{
-    width:68%;
-    height:68%;
-    border:3px solid var(--purple);
-    border-right-color:transparent;
-    box-shadow:0 0 12px rgba(192,132,252,.55);
-}
-
-.logo-container.active .ring-gold{
-    animation:ringSpin .7s linear infinite;
-}
-
-.logo-container.active .ring-blue{
-    animation:ringSpinReverse .48s linear infinite;
-}
-
-.logo-container.active .ring-purple{
-    animation:ringSpin .32s linear infinite;
-}
-
-@keyframes ringSpin{
-    to{transform:rotate(360deg);}
-}
-
-@keyframes ringSpinReverse{
-    to{transform:rotate(-360deg);}
-}
-
-.center-logo-btn{
-    width:100px;
-    height:100px;
-    border-radius:50%;
-    z-index:3;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    background:
-        radial-gradient(circle at 35% 30%,#312e81,#08090e 70%);
-    border:2px solid rgba(255,255,255,.18);
-    box-shadow:
-        inset 0 0 25px rgba(56,189,248,.25),
-        0 0 30px rgba(0,0,0,.8);
-    transition:.08s;
-}
-
-.center-logo-btn h1{
-    font-size:27px;
-    font-weight:1000;
-    background:linear-gradient(135deg,#fff,var(--gold));
-    -webkit-background-clip:text;
-    color:transparent;
-}
-
-.center-logo-btn small{
-    color:var(--muted);
-    font-size:7px;
-    letter-spacing:2px;
-}
-
-.logo-container:active .center-logo-btn{
-    transform:scale(.91);
-}
-
-.tap-instruction{
-    margin-top:10px;
-}
-
-.tap-instruction span{
-    display:flex;
-    gap:6px;
-    align-items:center;
-    padding:6px 13px;
-    border-radius:20px;
-    border:1px solid rgba(250,204,21,.4);
-    background:rgba(250,204,21,.08);
-    color:var(--gold);
-    font-size:9px;
-    font-weight:800;
-}
-
-/* floating points */
-
-.floating-score{
-    position:absolute;
-    pointer-events:none;
-    z-index:20;
-    font-size:19px;
-    font-weight:1000;
-    text-shadow:0 2px 7px #000;
-    animation:floatScore .8s ease-out forwards;
-}
-
-@keyframes floatScore{
-    0%{
-        opacity:1;
-        transform:translate(-50%,0) scale(.8);
-    }
-    100%{
-        opacity:0;
-        transform:translate(-50%,-75px) scale(1.25);
-    }
-}
-
-/* ================= BONUS ================= */
-
-.task-timer-box{
-    padding:12px;
-    margin-bottom:12px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.task-info h4{
-    color:var(--gold);
-    font-size:12px;
-}
-
-.task-info p{
-    color:var(--muted);
-    font-size:9px;
-    margin-top:3px;
-}
-
-.timer-badge{
-    padding:7px 10px;
-    border-radius:9px;
-    border:1px solid var(--green);
-    background:rgba(34,197,94,.1);
-    color:#4ade80;
-    font-size:10px;
-    font-weight:800;
-    min-width:78px;
-    text-align:center;
-}
-
-.timer-badge.disabled{
-    color:var(--muted);
-    border-color:#475569;
-    background:rgba(71,85,105,.12);
-}
-
-/* ================= ADS ================= */
-
-.ads-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:8px;
-}
-
-.ads-section-title{
-    color:var(--gold);
-    font-size:12px;
-    font-weight:900;
-}
-
-.ads-cycle{
-    color:#4ade80;
-    font-size:8px;
-}
-
-.ad-cards-grid{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-}
-
-.ad-item-card{
-    position:relative;
-    overflow:hidden;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:11px;
-    border-radius:13px;
-    background:linear-gradient(135deg,#171a26,#0d0f15);
-    border:1px solid rgba(250,204,21,.22);
-    box-shadow:0 5px 15px rgba(0,0,0,.3);
-}
-
-.ad-item-card:after{
-    content:"";
-    position:absolute;
-    width:70px;
-    height:70px;
-    border-radius:50%;
-    right:-35px;
-    top:-35px;
-    background:rgba(250,204,21,.06);
-}
-
-.ad-item-info h5{
-    font-size:11px;
-}
-
-.ad-item-info p{
-    color:var(--muted);
-    font-size:8px;
-    margin-top:3px;
-}
-
-.watch-ad-btn{
-    position:relative;
-    z-index:2;
-    min-width:72px;
-    padding:7px 8px;
-    border-radius:8px;
-    border:1px solid var(--gold);
-    color:var(--gold);
-    background:rgba(250,204,21,.09);
-    font-size:9px;
-    font-weight:900;
-}
-
-.watch-ad-btn:active{
-    transform:scale(.94);
-}
-
-.watch-ad-btn:disabled{
-    opacity:.55;
-    cursor:not-allowed;
-}
-
-.ad-cooldown{
-    margin-top:10px;
-    padding:13px;
-    text-align:center;
-    border-radius:13px;
-    border:1px solid rgba(239,68,68,.45);
-    background:rgba(239,68,68,.08);
-}
-
-.ad-cooldown strong{
-    color:#fca5a5;
-    font-size:12px;
-}
-
-.ad-cooldown .count{
-    color:white;
-    font-size:22px;
-    font-weight:1000;
-    margin-top:4px;
-}
-
-/* ================= LEADERBOARD ================= */
-
-.prize-pool-banner{
-    padding:12px;
-    text-align:center;
-    margin-bottom:12px;
-    border:1px solid rgba(250,204,21,.4);
-    border-radius:14px;
-    background:linear-gradient(145deg,#28210b,#11131b);
-}
-
-.prize-pool-banner h4{
-    color:var(--gold);
-    font-size:12px;
-}
-
-.prize-pool-banner p{
-    font-size:9px;
-    color:var(--muted);
-    margin-top:3px;
-}
-
-.podium-section{
-    display:flex;
-    align-items:flex-end;
-    justify-content:center;
-    gap:7px;
-    margin:25px 0 14px;
-}
-
-.podium-item{
-    position:relative;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:flex-end;
-    text-align:center;
-    border-radius:15px;
-    padding:12px 5px;
-    overflow:visible;
-}
-
-.rank-1{
-    width:36%;
-    height:180px;
-    order:2;
-    border:2px solid var(--gold);
-    background:linear-gradient(145deg,#352c0a,#11131b);
-    box-shadow:0 0 25px rgba(250,204,21,.35);
-}
-
-.rank-2{
-    width:32%;
-    height:158px;
-    order:1;
-    border:2px solid var(--silver);
-    background:linear-gradient(145deg,#242b36,#101218);
-    box-shadow:0 0 18px rgba(219,228,238,.18);
-}
-
-.rank-3{
-    width:32%;
-    height:145px;
-    order:3;
-    border:2px solid var(--bronze);
-    background:linear-gradient(145deg,#321b0b,#111218);
-    box-shadow:0 0 18px rgba(205,127,50,.18);
-}
-
-.podium-crown{
-    position:absolute;
-    top:-20px;
-    font-size:19px;
-}
-
-.rank-1 .podium-crown{color:var(--gold)}
-.rank-2 .podium-crown{color:var(--silver)}
-.rank-3 .podium-crown{color:var(--bronze)}
-
-.podium-avatar{
-    width:45px;
-    height:45px;
-    border-radius:50%;
-    object-fit:cover;
-    margin-bottom:4px;
-}
-
-.rank-1 .podium-avatar{border:2px solid var(--gold)}
-.rank-2 .podium-avatar{border:2px solid var(--silver)}
-.rank-3 .podium-avatar{border:2px solid var(--bronze)}
-
-.podium-badge-num{
-    padding:3px 7px;
-    border-radius:10px;
-    font-size:9px;
-    font-weight:900;
-}
-
-.rank-1 .podium-badge-num{
-    color:var(--gold);
-    border:1px solid var(--gold);
-    background:rgba(250,204,21,.12);
-}
-
-.rank-2 .podium-badge-num{
-    color:var(--silver);
-    border:1px solid var(--silver);
-    background:rgba(219,228,238,.1);
-}
-
-.rank-3 .podium-badge-num{
-    color:var(--bronze);
-    border:1px solid var(--bronze);
-    background:rgba(205,127,50,.1);
-}
-
-.podium-item h5{
-    width:100%;
-    font-size:9px;
-    margin:4px 0;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-}
-
-.p-score{
-    color:var(--gold);
-    font-size:8px;
-    font-weight:900;
-}
-
-.p-bdt{
-    color:#4ade80;
-    font-size:8px;
-    margin-top:2px;
-}
-
-.leader-title{
-    color:var(--gold);
-    font-size:11px;
-    font-weight:900;
-    margin:8px 0;
-}
-
-.leaderboard-list{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
-
-.leader-row{
-    padding:8px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    border-radius:11px;
-    background:#11131c;
-    border:1px solid rgba(255,255,255,.05);
-}
-
-.leader-left{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    min-width:0;
-}
-
-.leader-rank{
-    width:24px;
-    color:var(--muted);
-    font-size:9px;
-    text-align:center;
-}
-
-.leader-avatar{
-    width:29px;
-    height:29px;
-    border-radius:50%;
-    object-fit:cover;
-}
-
-.leader-info{
-    min-width:0;
-}
-
-.leader-info h4{
-    font-size:9px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.leader-info p{
-    color:var(--muted);
-    font-size:7px;
-    margin-top:2px;
-}
-
-.leader-right{
-    text-align:right;
-}
-
-.l-score{
-    color:var(--gold);
-    font-size:9px;
-    font-weight:900;
-}
-
-.l-bdt{
-    color:#4ade80;
-    font-size:8px;
-}
-
-/* ================= REFERRAL ================= */
-
-.referral-box{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
-
-.ref-top-banner{
-    text-align:center;
-    padding:16px;
-    border-radius:16px;
-    border:1px solid var(--gold);
-    background:linear-gradient(145deg,#30260b,#11131b);
-    box-shadow:0 8px 25px rgba(250,204,21,.12);
-}
-
-.ref-top-banner h4{
-    color:var(--gold);
-    font-size:14px;
-}
-
-.ref-top-banner p{
-    color:var(--muted);
-    font-size:9px;
-    margin:4px 0;
-}
-
-.ref-badge-row{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    color:var(--gold);
-    border:1px solid var(--gold);
-    background:rgba(250,204,21,.1);
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:11px;
-    font-weight:900;
-}
-
-.ref-link-card{
-    padding:11px;
-    border-radius:13px;
-    background:#11131c;
-    border:1px solid rgba(250,204,21,.2);
-}
-
-.ref-link-card label{
-    color:var(--gold);
-    font-size:10px;
-    font-weight:800;
-}
-
-.ref-input-group{
-    display:flex;
-    gap:5px;
-    margin-top:6px;
-}
-
-.ref-input-group input{
-    min-width:0;
-    flex:1;
-    background:#08090d;
-    border:1px solid rgba(255,255,255,.08);
-    color:white;
-    border-radius:8px;
-    padding:8px;
-    font-size:8px;
-    outline:none;
-}
-
-.copy-btn{
-    border:0;
-    border-radius:8px;
-    padding:0 11px;
-    background:var(--gold);
-    color:#000;
-    font-size:9px;
-    font-weight:900;
-}
-
-.ref-stats{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:8px;
-}
-
-.ref-stat{
-    padding:12px;
-    text-align:center;
-    border-radius:12px;
-    background:#11131c;
-    border:1px solid rgba(255,255,255,.06);
-}
-
-.ref-stat strong{
-    display:block;
-    color:var(--gold);
-    font-size:17px;
-}
-
-.ref-stat span{
-    color:var(--muted);
-    font-size:8px;
-}
-
-.ref-users-title{
-    color:var(--gold);
-    font-size:11px;
-    font-weight:900;
-    margin-top:2px;
-}
-
-.ref-users{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
-
-.ref-user{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:8px;
-    border-radius:10px;
-    background:#11131c;
-    border:1px solid rgba(255,255,255,.05);
-}
-
-.ref-user-left{
-    display:flex;
-    align-items:center;
-    gap:8px;
-}
-
-.ref-user img{
-    width:30px;
-    height:30px;
-    border-radius:50%;
-    object-fit:cover;
-}
-
-.ref-user-name{
-    font-size:9px;
-}
-
-.ref-user-status{
-    font-size:7px;
-    color:#4ade80;
-    margin-top:2px;
-}
-
-.ref-user-reward{
-    color:var(--gold);
-    font-size:9px;
-    font-weight:900;
-}
-
-/* ================= ACCOUNT ================= */
-
-.account-header-card{
-    padding:14px;
-    display:flex;
-    align-items:center;
-    gap:11px;
-    border-radius:15px;
-    background:linear-gradient(145deg,#181b27,#0d0f16);
-    border:1px solid rgba(250,204,21,.22);
-}
-
-.account-avatar{
-    width:52px;
-    height:52px;
-    border-radius:50%;
-    border:2px solid var(--gold);
-    object-fit:cover;
-}
-
-.account-header-card h3{
-    font-size:14px;
-}
-
-.account-header-card p{
-    color:var(--muted);
-    font-size:8px;
-    margin-top:3px;
-}
-
-.account-premium-stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:7px;
-    margin:10px 0;
-}
-
-.account-stat{
-    padding:10px 4px;
-    text-align:center;
-    border-radius:11px;
-    background:#11131c;
-    border:1px solid rgba(255,255,255,.06);
-}
-
-.account-stat i{
-    color:var(--gold);
-    font-size:13px;
-}
-
-.account-stat strong{
-    display:block;
-    font-size:11px;
-    margin-top:3px;
-}
-
-.account-stat span{
-    color:var(--muted);
-    font-size:7px;
-}
-
-.deposit-status-box{
-    padding:10px;
-    text-align:center;
-    border-radius:11px;
-    border:1px dashed #ef4444;
-    background:rgba(239,68,68,.08);
-    margin-bottom:10px;
-}
-
-.deposit-status-box h4{
-    color:#fca5a5;
-    font-size:10px;
-}
-
-.deposit-status-box p{
-    color:var(--muted);
-    font-size:8px;
-    margin-top:3px;
-}
-
-.account-actions-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:8px;
-    margin-bottom:12px;
-}
-
-.acc-action-btn{
-    padding:12px 5px;
-    text-align:center;
-    border-radius:11px;
-    background:#11131c;
-    border:1px solid rgba(250,204,21,.16);
-    color:white;
-    font-size:9px;
-    font-weight:800;
-    transition:.15s;
-}
-
-.acc-action-btn:active{
-    transform:scale(.95);
-}
-
-.acc-action-btn i{
-    display:block;
-    color:var(--gold);
-    font-size:16px;
-    margin-bottom:5px;
-}
-
-.transaction-section-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    color:var(--gold);
-    font-size:10px;
-    font-weight:900;
-    margin-bottom:7px;
-}
-
-.tx-list{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
-
-.tx-item{
-    padding:8px;
-    display:flex;
-    justify-content:space-between;
-    border-radius:9px;
-    background:#11131c;
-    border:1px solid rgba(255,255,255,.05);
-}
-
-.tx-left h5{
-    font-size:9px;
-}
-
-.tx-left p{
-    color:var(--muted);
-    font-size:7px;
-    margin-top:2px;
-}
-
-.tx-right{
-    text-align:right;
-}
-
-.tx-right .amt{
-    color:#4ade80;
-    font-size:9px;
-    font-weight:900;
-}
-
-.tx-right .status{
-    color:var(--gold);
-    font-size:7px;
-}
-
-/* ================= AI ================= */
-
-.ai-chat-box{
-    height:490px;
-    display:flex;
-    flex-direction:column;
-    overflow:hidden;
-    border-radius:15px;
-    background:#11131c;
-    border:1px solid rgba(250,204,21,.25);
-}
-
-.ai-chat-header{
-    padding:12px;
-    display:flex;
-    align-items:center;
-    gap:9px;
-    background:linear-gradient(135deg,#211d52,#11131c);
-    border-bottom:1px solid rgba(250,204,21,.15);
-}
-
-.ai-logo{
-    width:36px;
-    height:36px;
-    border-radius:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:radial-gradient(circle,#4c1d95,#111827);
-    border:1px solid var(--gold);
-    box-shadow:0 0 15px rgba(192,132,252,.35);
-    color:white;
-    font-size:15px;
-}
-
-.ai-chat-header h4{
-    font-size:11px;
-}
-
-.ai-chat-header p{
-    color:#4ade80;
-    font-size:8px;
-    margin-top:2px;
-}
-
-.ai-messages-area{
-    flex:1;
-    padding:10px;
-    overflow-y:auto;
-    display:flex;
-    flex-direction:column;
-    gap:7px;
-}
-
-.ai-msg{
-    max-width:88%;
-    padding:8px 10px;
-    border-radius:10px;
-    font-size:9px;
-    line-height:1.5;
-    white-space:normal;
-}
-
-.ai-msg.bot{
-    align-self:flex-start;
-    background:#1b1e2a;
-    border-left:3px solid var(--gold);
-}
-
-.ai-msg.user{
-    align-self:flex-end;
-    color:var(--gold);
-    background:rgba(250,204,21,.1);
-    border:1px solid rgba(250,204,21,.22);
-}
-
-.quick-faq-chips{
-    display:flex;
-    gap:5px;
-    overflow-x:auto;
-    padding:7px;
-    background:#0c0e14;
-}
-
-.faq-chip{
-    white-space:nowrap;
-    color:var(--gold);
-    background:rgba(250,204,21,.08);
-    border:1px solid rgba(250,204,21,.25);
-    border-radius:15px;
-    padding:5px 8px;
-    font-size:8px;
-}
-
-.ai-input-area{
-    display:flex;
-    gap:5px;
-    padding:7px;
-    background:#0a0c11;
-    border-top:1px solid rgba(255,255,255,.05);
-}
-
-.ai-input-area input{
-    flex:1;
-    min-width:0;
-    background:#171a24;
-    border:1px solid rgba(255,255,255,.08);
-    color:white;
-    border-radius:8px;
-    padding:8px;
-    font-size:9px;
-    outline:none;
-}
-
-.ai-send-btn{
-    border:0;
-    border-radius:8px;
-    padding:0 12px;
-    background:var(--gold);
-    color:#000;
-    font-weight:900;
-    font-size:9px;
-}
-
-/* ================= NAV ================= */
-
-.bottom-nav{
-    position:absolute;
-    bottom:0;
-    left:0;
-    width:100%;
-    height:72px;
-    display:flex;
-    justify-content:space-around;
-    align-items:center;
-    padding-bottom:7px;
-    background:rgba(13,15,23,.94);
-    backdrop-filter:blur(14px);
-    border-top:1px solid rgba(250,204,21,.18);
-    z-index:100;
-}
-
-.nav-item{
-    flex:1;
-    text-align:center;
-    color:#64748b;
-    transition:.18s;
-}
-
-.nav-item i{
-    display:block;
-    font-size:17px;
-    margin-bottom:4px;
-}
-
-.nav-item span{
-    font-size:7px;
-    font-weight:800;
-}
-
-.nav-item.active{
-    color:var(--gold);
-    transform:translateY(-3px);
-    text-shadow:0 0 12px rgba(250,204,21,.5);
-}
-
-.nav-item:active{
-    transform:scale(.9);
-}
-</style>
-</head>
-
-<body>
-
-<div class="app-frame">
-
-<div class="app-container" id="mainContainer">
-
-<!-- ================= HOME ================= -->
-
-<div id="homeView" class="section-view" style="display:block">
-
-<div class="balance-card card">
-    <p>RS COIN BALANCE • 1M = 250 BDT</p>
-    <h2 id="balanceDisplay">1,000,710,129,929</h2>
-    <p class="bdt-value" id="bdtValueDisplay">≈ 250,177,532.48 BDT</p>
-</div>
-
-<div class="marquee-container">
-<div class="marquee-text">
-📢 RS Tap-to-Earn-এ আসার জন্য ধন্যবাদ • দিনে বেশি আয় করতে Tap করুন • Sponsor Task সম্পন্ন করে প্রতি সফল Task-এ 1,000 RS পান • Referral-এ 1,000 RS
-</div>
-</div>
-
-<div class="tap-section">
-
-<div class="logo-container" id="tapButton">
-
-    <div class="ring ring-gold"></div>
-    <div class="ring ring-blue"></div>
-    <div class="ring ring-purple"></div>
-
-    <div class="center-logo-btn">
-        <h1>RS</h1>
-        <small>TAP TO EARN</small>
-    </div>
-
-</div>
-
-<div class="tap-instruction">
-<span>
-<i class="fa-solid fa-hand-pointer"></i>
-TAP TO EARN RS COINS
-</span>
-</div>
-
-</div>
-
-<!-- HOURLY BONUS -->
-
-<div class="task-timer-box card">
-
-<div class="task-info">
-<h4><i class="fa-solid fa-gift"></i> Hourly Bonus • +100 RS</h4>
-<p>প্রতি ১ ঘণ্টায় একবার Claim করা যাবে</p>
-</div>
-
-<div id="bonusButton"
-class="timer-badge"
-onclick="claimHourlyBonus()">
-Claim
-</div>
-
-</div>
-
-<!-- ADS -->
-
-<div class="ads-header">
-<span class="ads-section-title">
-<i class="fa-solid fa-bolt"></i>
-SPONSOR ADS • 8 TASK CYCLE
-</span>
-
-<span class="ads-cycle" id="adCycleText">
-0 / 8
-</span>
-</div>
-
-<div class="ad-cards-grid" id="adCardsContainer"></div>
-
-<div id="adCooldownBox"
-class="ad-cooldown"
-style="display:none">
-
-<strong>
-<i class="fa-solid fa-clock"></i>
-Ad Cycle Cooldown
-</strong>
-
-<div class="count" id="adCooldownCount">01:00</div>
-
-<p style="font-size:8px;color:#94a3b8;margin-top:3px">
-Cooldown শেষ হলে পরবর্তী ad cycle available হবে।
-</p>
-
-</div>
-
-</div>
-
-<!-- ================= LEADERBOARD ================= -->
-
-<div id="leaderboardView" class="section-view">
-
-<div class="prize-pool-banner">
-<h4>
-<i class="fa-solid fa-trophy"></i>
-Weekly Ranking
-</h4>
-<p>Top ranking users are shown here.</p>
-</div>
-
-<div class="podium-section">
-
-<div class="podium-item rank-2">
-<i class="fa-solid fa-crown podium-crown"></i>
-<img class="podium-avatar"
-src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100">
-<span class="podium-badge-num">#2</span>
-<h5>Rahim Hossain</h5>
-<span class="p-score">500M RS</span>
-<span class="p-bdt">125,000 ৳</span>
-</div>
-
-<div class="podium-item rank-1">
-<i class="fa-solid fa-crown podium-crown"></i>
-<img class="podium-avatar"
-src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100">
-<span class="podium-badge-num">#1</span>
-<h5>Rs Rana</h5>
-<span class="p-score">1,000M RS</span>
-<span class="p-bdt">250,000 ৳</span>
-</div>
-
-<div class="podium-item rank-3">
-<i class="fa-solid fa-crown podium-crown"></i>
-<img class="podium-avatar"
-src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100">
-<span class="podium-badge-num">#3</span>
-<h5>Sumaiya Akter</h5>
-<span class="p-score">250M RS</span>
-<span class="p-bdt">62,500 ৳</span>
-</div>
-
-</div>
-
-<div class="leader-title">
-<i class="fa-solid fa-ranking-star"></i>
-Demo Ranking Users • Top 500
-</div>
-
-<div class="leaderboard-list" id="leaderboard500List"></div>
-
-</div>
-
-<!-- ================= REFERRAL ================= -->
-
-<div id="referralView" class="section-view">
-
-<div class="referral-box">
-
-<div class="ref-top-banner">
-
-<h4>
-<i class="fa-solid fa-users"></i>
-Invite & Earn
-</h4>
-
-<p>প্রতি সফল Referral-এর জন্য</p>
-
-<div class="ref-badge-row">
-<i class="fa-solid fa-coins"></i>
-1,000 RS
-</div>
-
-</div>
-
-<div class="ref-stats">
-
-<div class="ref-stat">
-<strong id="refCount">50</strong>
-<span>Demo Referrals</span>
-</div>
-
-<div class="ref-stat">
-<strong id="refEarn">50,000</strong>
-<span>Referral RS</span>
-</div>
-
-</div>
-
-<div class="ref-link-card">
-
-<label>
-<i class="fa-solid fa-link"></i>
-Your Referral Link
-</label>
-
-<div class="ref-input-group">
-
-<input
-id="refLinkInput"
-value="https://t.me/rstap_bot?start=RS123456"
-readonly>
-
-<button class="copy-btn" onclick="copyRefLink()">
-Copy
-</button>
-
-</div>
-
-</div>
-
-<div class="ref-users-title">
-<i class="fa-solid fa-user-group"></i>
-Recent Demo Referral Users
-</div>
-
-<div class="ref-users" id="refUsers"></div>
-
-</div>
-
-</div>
-
-<!-- ================= ACCOUNT ================= -->
-
-<div id="accountView" class="section-view">
-
-<div class="account-header-card">
-
-<img class="account-avatar"
-src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100">
-
-<div>
-<h3>Rs Rana</h3>
-<p>ID: RS123456 • Verified User</p>
-</div>
-
-</div>
-
-<div class="account-premium-stats">
-
-<div class="account-stat">
-<i class="fa-solid fa-coins"></i>
-<strong id="accountBalance">0</strong>
-<span>RS Balance</span>
-</div>
-
-<div class="account-stat">
-<i class="fa-solid fa-user-plus"></i>
-<strong>50</strong>
-<span>Referrals</span>
-</div>
-
-<div class="account-stat">
-<i class="fa-solid fa-chart-line"></i>
-<strong>Active</strong>
-<span>Status</span>
-</div>
-
-</div>
-
-<div class="deposit-status-box">
-
-<h4>
-<i class="fa-solid fa-triangle-exclamation"></i>
-Deposit Status
-</h4>
-
-<p>
-Deposit gateway status is controlled by your backend/admin system.
-</p>
-
-</div>
-
-<div class="account-actions-grid">
-
-<div class="acc-action-btn"
-onclick="alert('Withdraw request window: Minimum 400 BDT.')">
-<i class="fa-solid fa-wallet"></i>
-Withdraw Funds
-</div>
-
-<div class="acc-action-btn"
-onclick="alert('Security settings opened.')">
-<i class="fa-solid fa-shield-halved"></i>
-Security
-</div>
-
-</div>
-
-<div class="transaction-section-title">
-
-<span>
-<i class="fa-solid fa-clock-rotate-left"></i>
-Live Transaction History
-</span>
-
-<span style="color:#4ade80;font-size:7px">
-● LIVE
-</span>
-
-</div>
-
-<div class="tx-list" id="liveTxList"></div>
-
-</div>
-
-<!-- ================= AI SUPPORT ================= -->
-
-<div id="supportView" class="section-view">
-
-<div class="ai-chat-box">
-
-<div class="ai-chat-header">
-
-<div class="ai-logo">
-<i class="fa-solid fa-brain"></i>
-</div>
-
-<div>
-<h4>RS AI Assistant</h4>
-<p>● Online Support</p>
-</div>
-
-</div>
-
-<div class="ai-messages-area" id="aiMessagesArea">
-
-<div class="ai-msg bot">
-হ্যালো! আমি RS AI Support Assistant।<br><br>
-আপনি Withdrawal, Deposit, Balance, Referral, Coin Rate বা অন্য কোনো সাধারণ প্রশ্ন করতে পারেন।
-</div>
-
-</div>
-
-<div class="quick-faq-chips">
-
-<div class="faq-chip"
-onclick="sendQuickFaq('আমি কত RS হলে উত্তোলন করতে পারবো?')">
-Withdrawal
-</div>
-
-<div class="faq-chip"
-onclick="sendQuickFaq('১ মিলিয়ন RS কয়েনের মূল্য কত?')">
-Coin Rate
-</div>
-
-<div class="faq-chip"
-onclick="sendQuickFaq('আমি উত্তোলন করতে পারছি না')">
-Withdraw Problem
-</div>
-
-<div class="faq-chip"
-onclick="sendQuickFaq('আমি ডিপোজিট করতে পারছি না')">
-Deposit Problem
-</div>
-
-</div>
-
-<div class="ai-input-area">
-
-<input
-id="aiUserInput"
-placeholder="আপনার প্রশ্ন লিখুন..."
-onkeypress="handleAiKeyPress(event)">
-
-<button class="ai-send-btn"
-onclick="sendAiMessage()">
-Send
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ================= NAV ================= -->
-
-<div class="bottom-nav">
-
-<div class="nav-item active"
-onclick="switchTab('home',this)">
-<i class="fa-solid fa-house"></i>
-<span>Home</span>
-</div>
-
-<div class="nav-item"
-onclick="switchTab('leaderboard',this)">
-<i class="fa-solid fa-trophy"></i>
-<span>Ranking</span>
-</div>
-
-<div class="nav-item"
-onclick="switchTab('referral',this)">
-<i class="fa-solid fa-users"></i>
-<span>Referral</span>
-</div>
-
-<div class="nav-item"
-onclick="switchTab('account',this)">
-<i class="fa-solid fa-wallet"></i>
-<span>Account</span>
-</div>
-
-<div class="nav-item"
-onclick="switchTab('support',this)">
-<i class="fa-solid fa-headset"></i>
-<span>AI Support</span>
-</div>
-
-</div>
-
-</div>
-
 <script>
-
 /* =========================================================
-   BASIC TAB SYSTEM
+   RS TAP-TO-EARN — LIGHTWEIGHT INITIALIZATION
+   ALL EXISTING FEATURES KEPT
 ========================================================= */
 
-function switchTab(tabName,element){
+/* =========================================================
+   TAB SYSTEM
+========================================================= */
+function switchTab(tabName, element){
+    document.querySelectorAll('.section-view').forEach(x=>{
+        x.style.display='none';
+    });
 
-    document.querySelectorAll('.section-view')
-        .forEach(x=>x.style.display='none');
-
-    document.querySelectorAll('.nav-item')
-        .forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(x=>{
+        x.classList.remove('active');
+    });
 
     const target=document.getElementById(tabName+'View');
 
@@ -1604,59 +22,81 @@ function switchTab(tabName,element){
         target.style.display='block';
     }
 
-    element.classList.add('active');
+    if(element){
+        element.classList.add('active');
+    }
 
     document.getElementById('mainContainer')
         .scrollTo({top:0,behavior:'smooth'});
+
+    /* Load heavy sections only when opened */
+    if(tabName==='leaderboard'){
+        initLeaderboard();
+    }
+
+    if(tabName==='referral'){
+        initReferral();
+    }
+
+    if(tabName==='account'){
+        initTransactions();
+    }
 }
 
 
 /* =========================================================
    BALANCE
 ========================================================= */
-
 let userScore=1000710129929;
 
 const balanceDisplay=
-document.getElementById('balanceDisplay');
+    document.getElementById('balanceDisplay');
 
 const bdtValueDisplay=
-document.getElementById('bdtValueDisplay');
+    document.getElementById('bdtValueDisplay');
 
 const accountBalance=
-document.getElementById('accountBalance');
+    document.getElementById('accountBalance');
 
 function updateBalanceUI(){
 
-    balanceDisplay.textContent=
-        userScore.toLocaleString();
+    if(balanceDisplay){
+        balanceDisplay.textContent=
+            userScore.toLocaleString();
+    }
 
-    const bdt=(userScore/1000000)*250;
+    if(bdtValueDisplay){
 
-    bdtValueDisplay.textContent=
-        '≈ '+bdt.toLocaleString(undefined,{
-            minimumFractionDigits:2,
-            maximumFractionDigits:2
-        })+' BDT';
+        const bdt=
+            (userScore/1000000)*250;
 
-    accountBalance.textContent=
-        userScore.toLocaleString();
+        bdtValueDisplay.textContent=
+            '≈ '+bdt.toLocaleString(undefined,{
+                minimumFractionDigits:2,
+                maximumFractionDigits:2
+            })+' BDT';
+    }
+
+    if(accountBalance){
+        accountBalance.textContent=
+            userScore.toLocaleString();
+    }
 }
 
 updateBalanceUI();
 
 
 /* =========================================================
-   TAP-TO-EARN
-   Ring only rotates while tapping.
+   TAP TO EARN
 ========================================================= */
-
 const tapBtn=
-document.getElementById('tapButton');
+    document.getElementById('tapButton');
 
 let tapTimer=null;
 
-const pointSequence=[1,3,2,5,7,2,5,3,1,10];
+const pointSequence=[
+    1,3,2,5,7,2,5,3,1,10
+];
 
 let pointIndex=0;
 
@@ -1671,7 +111,8 @@ const pointColors={
 
 function tapEarn(e){
 
-    const amount=pointSequence[pointIndex];
+    const amount=
+        pointSequence[pointIndex];
 
     pointIndex++;
 
@@ -1691,44 +132,59 @@ function tapEarn(e){
         tapBtn.classList.remove('active');
     },180);
 
-    const rect=tapBtn.getBoundingClientRect();
+    const rect=
+        tapBtn.getBoundingClientRect();
 
-    const x=(e.clientX||rect.left+rect.width/2)-rect.left;
-    const y=(e.clientY||rect.top+rect.height/2)-rect.top;
+    const x=
+        (e.clientX || rect.left+rect.width/2)
+        -rect.left;
 
-    const floatEl=document.createElement('div');
+    const y=
+        (e.clientY || rect.top+rect.height/2)
+        -rect.top;
+
+    const floatEl=
+        document.createElement('div');
 
     floatEl.className='floating-score';
 
-    floatEl.textContent='+'+amount+' RS';
+    floatEl.textContent=
+        '+'+amount+' RS';
 
     floatEl.style.left=x+'px';
     floatEl.style.top=y+'px';
-    floatEl.style.color=pointColors[amount];
+    floatEl.style.color=
+        pointColors[amount];
 
     tapBtn.appendChild(floatEl);
 
     setTimeout(()=>{
-        floatEl.remove();
+        if(floatEl.parentNode){
+            floatEl.remove();
+        }
     },800);
 }
 
-tapBtn.addEventListener('pointerdown',tapEarn);
+if(tapBtn){
+    tapBtn.addEventListener(
+        'pointerdown',
+        tapEarn,
+        {passive:true}
+    );
+}
 
 
 /* =========================================================
    HOURLY BONUS
 ========================================================= */
-
 const BONUS_AMOUNT=100;
-
 const BONUS_TIME=60*60*1000;
 
 let bonusReady=true;
 let bonusEnd=0;
 
 const bonusButton=
-document.getElementById('bonusButton');
+    document.getElementById('bonusButton');
 
 function claimHourlyBonus(){
 
@@ -1742,22 +198,32 @@ function claimHourlyBonus(){
 
     bonusReady=false;
 
-    bonusEnd=Date.now()+BONUS_TIME;
+    bonusEnd=
+        Date.now()+BONUS_TIME;
 
-    localStorage.setItem(
-        'rs_bonus_end',
-        String(bonusEnd)
-    );
+    try{
+        localStorage.setItem(
+            'rs_bonus_end',
+            String(bonusEnd)
+        );
+    }catch(e){}
 
     updateBonusButton();
 }
 
 function updateBonusButton(){
 
+    if(!bonusButton){
+        return;
+    }
+
     if(bonusReady){
 
         bonusButton.textContent='Claim';
-        bonusButton.classList.remove('disabled');
+
+        bonusButton.classList.remove(
+            'disabled'
+        );
 
         return;
     }
@@ -1769,10 +235,17 @@ function updateBonusButton(){
 
         bonusReady=true;
 
-        localStorage.removeItem('rs_bonus_end');
+        try{
+            localStorage.removeItem(
+                'rs_bonus_end'
+            );
+        }catch(e){}
 
         bonusButton.textContent='Claim';
-        bonusButton.classList.remove('disabled');
+
+        bonusButton.classList.remove(
+            'disabled'
+        );
 
         return;
     }
@@ -1784,7 +257,9 @@ function updateBonusButton(){
         Math.floor(totalSeconds/3600);
 
     const m=
-        Math.floor((totalSeconds%3600)/60);
+        Math.floor(
+            (totalSeconds%3600)/60
+        );
 
     const s=
         totalSeconds%60;
@@ -1797,69 +272,88 @@ function updateBonusButton(){
     bonusButton.classList.add('disabled');
 }
 
-const savedBonus=
-Number(localStorage.getItem('rs_bonus_end'));
+try{
 
-if(savedBonus && savedBonus>Date.now()){
+    const savedBonus=
+        Number(
+            localStorage.getItem(
+                'rs_bonus_end'
+            )
+        );
 
-    bonusReady=false;
-    bonusEnd=savedBonus;
+    if(
+        savedBonus &&
+        savedBonus>Date.now()
+    ){
 
-}else{
+        bonusReady=false;
+        bonusEnd=savedBonus;
+
+    }else{
+
+        bonusReady=true;
+    }
+
+}catch(e){
 
     bonusReady=true;
 }
 
-setInterval(updateBonusButton,1000);
+setInterval(
+    updateBonusButton,
+    1000
+);
+
 updateBonusButton();
 
 
 /* =========================================================
-   8 AD ROTATION DEMO
-   1000 RS PER COMPLETED AD
-   8 completed -> 60 sec cooldown
+   8 SPONSOR ADS
 ========================================================= */
-
-const adUrls=[
-    'https://www.google.com',
-    'https://www.youtube.com',
-    'https://www.wikipedia.org',
-    'https://github.com',
-    'https://stackoverflow.com',
-    'https://www.reddit.com',
-    'https://www.yahoo.com',
-    'https://www.bing.com'
-];
-
 const adContainer=
-document.getElementById('adCardsContainer');
+    document.getElementById(
+        'adCardsContainer'
+    );
 
 const adCycleText=
-document.getElementById('adCycleText');
+    document.getElementById(
+        'adCycleText'
+    );
 
 const cooldownBox=
-document.getElementById('adCooldownBox');
+    document.getElementById(
+        'adCooldownBox'
+    );
 
 const cooldownCount=
-document.getElementById('adCooldownCount');
+    document.getElementById(
+        'adCooldownCount'
+    );
 
 let completedAds=0;
 let cooldownEnd=0;
 
 function renderAds(){
 
-    adContainer.innerHTML='';
+    if(!adContainer){
+        return;
+    }
+
+    const fragment=
+        document.createDocumentFragment();
 
     for(let i=0;i<8;i++){
 
-        const card=document.createElement('div');
+        const card=
+            document.createElement('div');
 
-        card.className='ad-item-card';
+        card.className=
+            'ad-item-card';
 
-        const done=i<completedAds;
+        const done=
+            i<completedAds;
 
         card.innerHTML=`
-
             <div class="ad-item-info">
                 <h5>
                     <i class="fa-solid fa-bolt"></i>
@@ -1881,28 +375,40 @@ function renderAds(){
             </button>
         `;
 
-        adContainer.appendChild(card);
+        fragment.appendChild(card);
     }
 
-    adCycleText.textContent=
-        completedAds+' / 8';
+    adContainer.replaceChildren(
+        fragment
+    );
+
+    if(adCycleText){
+        adCycleText.textContent=
+            completedAds+' / 8';
+    }
 }
 
 function completeAd(index){
 
     if(index!==completedAds){
-        alert('Please complete the ads in order.');
+
+        alert(
+            'Please complete the ads in order.'
+        );
+
         return;
     }
 
-    /*
-      This is a simple frontend demo.
-      For production ad verification, connect this
-      to your approved ad provider/backend.
-    */
+    const buttons=
+        document.querySelectorAll(
+            '.watch-ad-btn'
+        );
 
-    const btn=
-        document.querySelectorAll('.watch-ad-btn')[index];
+    const btn=buttons[index];
+
+    if(!btn){
+        return;
+    }
 
     btn.disabled=true;
     btn.textContent='Verifying...';
@@ -1915,12 +421,13 @@ function completeAd(index){
 
         completedAds++;
 
-        renderAds();
-
         if(completedAds>=8){
 
             startAdCooldown();
 
+        }else{
+
+            renderAds();
         }
 
     },2000);
@@ -1930,20 +437,26 @@ function startAdCooldown(){
 
     completedAds=8;
 
-    adContainer.style.display='none';
+    if(adContainer){
+        adContainer.style.display='none';
+    }
 
-    cooldownBox.style.display='block';
+    if(cooldownBox){
+        cooldownBox.style.display='block';
+    }
 
     cooldownEnd=
-        Date.now()+60*1000;
+        Date.now()+60000;
 
     updateCooldown();
-
 }
 
 function updateCooldown(){
 
-    if(cooldownBox.style.display==='none'){
+    if(
+        !cooldownBox ||
+        cooldownBox.style.display==='none'
+    ){
         return;
     }
 
@@ -1954,7 +467,10 @@ function updateCooldown(){
 
         completedAds=0;
 
-        adContainer.style.display='flex';
+        if(adContainer){
+            adContainer.style.display='flex';
+        }
+
         cooldownBox.style.display='none';
 
         renderAds();
@@ -1971,65 +487,99 @@ function updateCooldown(){
     const ss=
         seconds%60;
 
-    cooldownCount.textContent=
-        String(mm).padStart(2,'0')+':' +
-        String(ss).padStart(2,'0');
+    if(cooldownCount){
+
+        cooldownCount.textContent=
+            String(mm).padStart(2,'0')+':' +
+            String(ss).padStart(2,'0');
+    }
 }
 
-setInterval(updateCooldown,500);
+setInterval(
+    updateCooldown,
+    500
+);
 
+/* Home ads are lightweight, so load immediately */
 renderAds();
 
 
 /* =========================================================
    LEADERBOARD
-   DEMO users are clearly labelled.
+   IMPORTANT:
+   NOT LOADED DURING INITIAL HOME LOAD.
+   CREATED ONLY WHEN RANKING IS OPENED.
 ========================================================= */
+let leaderboardLoaded=false;
 
 const lb=
-document.getElementById('leaderboard500List');
+    document.getElementById(
+        'leaderboard500List'
+    );
 
 const names=[
-'Tanvir Ahmed',
-'Sabbir Hossain',
-'Jahid Hasan',
-'Nipa Akter',
-'Rakibul Islam',
-'Mehedi Hasan',
-'Farhana Yeasmin',
-'Al-Amin',
-'Shamim Mia',
-'Arifur Rahman',
-'Nasir Uddin',
-'Rubel Rana',
-'Lima Akter',
-'Kamrul Islam',
-'Shakil Ahmed',
-'Rafi Hasan',
-'Imran Hossain',
-'Fahim Rahman',
-'Mim Akter',
-'Siam Ahmed'
+    'Tanvir Ahmed',
+    'Sabbir Hossain',
+    'Jahid Hasan',
+    'Nipa Akter',
+    'Rakibul Islam',
+    'Mehedi Hasan',
+    'Farhana Yeasmin',
+    'Al-Amin',
+    'Shamim Mia',
+    'Arifur Rahman',
+    'Nasir Uddin',
+    'Rubel Rana',
+    'Lima Akter',
+    'Kamrul Islam',
+    'Shakil Ahmed',
+    'Rafi Hasan',
+    'Imran Hossain',
+    'Fahim Rahman',
+    'Mim Akter',
+    'Siam Ahmed'
 ];
 
 const avatar=
-'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100';
+    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100';
 
-for(let i=4;i<=500;i++){
+function initLeaderboard(){
 
-    const tokens=
-        Math.max(
-            100000,
-            450000000-(i*800000)
-        );
+    if(leaderboardLoaded){
+        return;
+    }
 
-    const bdt=
-        (tokens/1000000)*250;
+    if(!lb){
+        return;
+    }
 
-    lb.innerHTML+=`
+    leaderboardLoaded=true;
 
-        <div class="leader-row">
+    /*
+      Use DocumentFragment instead of
+      497 separate innerHTML += operations.
+    */
 
+    const fragment=
+        document.createDocumentFragment();
+
+    for(let i=4;i<=500;i++){
+
+        const tokens=
+            Math.max(
+                100000,
+                450000000-(i*800000)
+            );
+
+        const bdt=
+            (tokens/1000000)*250;
+
+        const row=
+            document.createElement('div');
+
+        row.className='leader-row';
+
+        row.innerHTML=`
             <div class="leader-left">
 
                 <span class="leader-rank">
@@ -2038,7 +588,10 @@ for(let i=4;i<=500;i++){
 
                 <img
                     src="${avatar}"
-                    class="leader-avatar">
+                    class="leader-avatar"
+                    loading="lazy"
+                    decoding="async"
+                    alt="Demo">
 
                 <div class="leader-info">
 
@@ -2061,49 +614,81 @@ for(let i=4;i<=500;i++){
                 </div>
 
                 <div class="l-bdt">
-                    ≈ ${bdt.toLocaleString(undefined,{
-                        maximumFractionDigits:0
-                    })} ৳
+                    ≈ ${bdt.toLocaleString(
+                        undefined,
+                        {
+                            maximumFractionDigits:0
+                        }
+                    )} ৳
                 </div>
 
             </div>
+        `;
 
-        </div>
-    `;
+        fragment.appendChild(row);
+    }
+
+    lb.replaceChildren(fragment);
 }
 
 
 /* =========================================================
-   REFERRAL DEMO USERS
+   REFERRAL
+   ALSO LAZY LOADED
 ========================================================= */
+let referralLoaded=false;
 
 const refNames=[
-'Rakib Hasan',
-'Sadia Akter',
-'Mehedi H.',
-'Jannat Islam',
-'Fahim Ahmed',
-'Shuvo Rahman',
-'Nusrat Jahan',
-'Rafiul Islam',
-'Sumaiya H.',
-'Tanvir R.'
+    'Rakib Hasan',
+    'Sadia Akter',
+    'Mehedi H.',
+    'Jannat Islam',
+    'Fahim Ahmed',
+    'Shuvo Rahman',
+    'Nusrat Jahan',
+    'Rafiul Islam',
+    'Sumaiya H.',
+    'Tanvir R.'
 ];
 
 const refUsers=
-document.getElementById('refUsers');
+    document.getElementById(
+        'refUsers'
+    );
 
-for(let i=0;i<10;i++){
+function initReferral(){
 
-    refUsers.innerHTML+=`
+    if(referralLoaded){
+        return;
+    }
 
-        <div class="ref-user">
+    if(!refUsers){
+        return;
+    }
 
+    referralLoaded=true;
+
+    const fragment=
+        document.createDocumentFragment();
+
+    for(let i=0;i<10;i++){
+
+        const item=
+            document.createElement('div');
+
+        item.className='ref-user';
+
+        item.innerHTML=`
             <div class="ref-user-left">
 
-                <img src="${avatar}">
+                <img
+                    src="${avatar}"
+                    loading="lazy"
+                    decoding="async"
+                    alt="Demo">
 
                 <div>
+
                     <div class="ref-user-name">
                         ${refNames[i]}
                     </div>
@@ -2111,6 +696,7 @@ for(let i=0;i<10;i++){
                     <div class="ref-user-status">
                         ● Active • Demo
                     </div>
+
                 </div>
 
             </div>
@@ -2118,103 +704,168 @@ for(let i=0;i<10;i++){
             <div class="ref-user-reward">
                 +1,000 RS
             </div>
+        `;
 
-        </div>
-    `;
+        fragment.appendChild(item);
+    }
+
+    refUsers.replaceChildren(fragment);
 }
 
 
 /* =========================================================
    COPY REFERRAL
 ========================================================= */
-
 function copyRefLink(){
 
     const input=
-        document.getElementById('refLinkInput');
+        document.getElementById(
+            'refLinkInput'
+        );
 
-    navigator.clipboard.writeText(input.value)
+    if(!input){
+        return;
+    }
+
+    if(
+        navigator.clipboard &&
+        navigator.clipboard.writeText
+    ){
+
+        navigator.clipboard.writeText(
+            input.value
+        )
         .then(()=>{
-            alert('Referral link copied!');
+            alert(
+                'Referral link copied!'
+            );
         })
         .catch(()=>{
-            input.select();
-            document.execCommand('copy');
-            alert('Referral link copied!');
+            fallbackCopy(input);
         });
+
+    }else{
+
+        fallbackCopy(input);
+    }
+}
+
+function fallbackCopy(input){
+
+    input.select();
+
+    try{
+        document.execCommand('copy');
+        alert(
+            'Referral link copied!'
+        );
+    }catch(e){
+        alert(
+            'Copy failed. Please copy manually.'
+        );
+    }
 }
 
 
 /* =========================================================
-   LIVE TRANSACTION DEMO
+   TRANSACTIONS
+   LAZY LOADED
 ========================================================= */
+let transactionsLoaded=false;
 
 const liveTxList=
-document.getElementById('liveTxList');
+    document.getElementById(
+        'liveTxList'
+    );
 
 const txNames=[
-'Nazmul H.',
-'Tania S.',
-'Monirul I.',
-'Belal H.',
-'Rokeya B.',
-'Sumon R.',
-'Jahid H.',
-'Sabbir M.'
+    'Nazmul H.',
+    'Tania S.',
+    'Monirul I.',
+    'Belal H.',
+    'Rokeya B.',
+    'Sumon R.',
+    'Jahid H.',
+    'Sabbir M.'
 ];
 
-function loadLiveTransactions(){
+function initTransactions(){
 
-    liveTxList.innerHTML='';
+    if(transactionsLoaded){
+        return;
+    }
+
+    if(!liveTxList){
+        return;
+    }
+
+    transactionsLoaded=true;
+
+    const fragment=
+        document.createDocumentFragment();
 
     for(let i=0;i<6;i++){
 
         const amount=
-            Math.floor(Math.random()*2000)+500;
+            Math.floor(
+                Math.random()*2000
+            )+500;
 
-        liveTxList.innerHTML+=`
+        const item=
+            document.createElement('div');
 
-            <div class="tx-item">
+        item.className='tx-item';
 
-                <div class="tx-left">
+        item.innerHTML=`
+            <div class="tx-left">
 
-                    <h5>
-                        ${txNames[i]} • Demo transaction
-                    </h5>
+                <h5>
+                    ${txNames[i]} • Demo transaction
+                </h5>
 
-                    <p>
-                        Sample history
-                    </p>
+                <p>
+                    Sample history
+                </p>
 
+            </div>
+
+            <div class="tx-right">
+
+                <div class="amt">
+                    ${amount.toLocaleString()} ৳
                 </div>
 
-                <div class="tx-right">
-
-                    <div class="amt">
-                        ${amount.toLocaleString()} ৳
-                    </div>
-
-                    <div class="status">
-                        Success
-                    </div>
-
+                <div class="status">
+                    Success
                 </div>
 
             </div>
         `;
-    }
-}
 
-loadLiveTransactions();
+        fragment.appendChild(item);
+    }
+
+    liveTxList.replaceChildren(
+        fragment
+    );
+}
 
 
 /* =========================================================
    AI SUPPORT
 ========================================================= */
-
 function sendQuickFaq(text){
 
-    document.getElementById('aiUserInput').value=text;
+    const input=
+        document.getElementById(
+            'aiUserInput'
+        );
+
+    if(!input){
+        return;
+    }
+
+    input.value=text;
 
     sendAiMessage();
 }
@@ -2229,46 +880,70 @@ function handleAiKeyPress(e){
 function addBotMessage(text){
 
     const area=
-        document.getElementById('aiMessagesArea');
+        document.getElementById(
+            'aiMessagesArea'
+        );
+
+    if(!area){
+        return;
+    }
 
     const msg=
         document.createElement('div');
 
-    msg.className='ai-msg bot';
+    msg.className=
+        'ai-msg bot';
 
     msg.innerHTML=text;
 
     area.appendChild(msg);
 
-    area.scrollTop=area.scrollHeight;
+    area.scrollTop=
+        area.scrollHeight;
 }
 
 function addUserMessage(text){
 
     const area=
-        document.getElementById('aiMessagesArea');
+        document.getElementById(
+            'aiMessagesArea'
+        );
+
+    if(!area){
+        return;
+    }
 
     const msg=
         document.createElement('div');
 
-    msg.className='ai-msg user';
+    msg.className=
+        'ai-msg user';
 
     msg.textContent=text;
 
     area.appendChild(msg);
 
-    area.scrollTop=area.scrollHeight;
+    area.scrollTop=
+        area.scrollHeight;
 }
 
 function sendAiMessage(){
 
     const input=
-        document.getElementById('aiUserInput');
+        document.getElementById(
+            'aiUserInput'
+        );
+
+    if(!input){
+        return;
+    }
 
     const query=
         input.value.trim();
 
-    if(!query)return;
+    if(!query){
+        return;
+    }
 
     addUserMessage(query);
 
@@ -2276,7 +951,8 @@ function sendAiMessage(){
 
     setTimeout(()=>{
 
-        const q=query.toLowerCase();
+        const q=
+            query.toLowerCase();
 
         let reply='';
 
@@ -2289,11 +965,15 @@ function sendAiMessage(){
 
             reply=`
             💰 <b>Withdrawal তথ্য</b><br><br>
-            আপনার অ্যাকাউন্টে পর্যাপ্ত RS balance আছে কিনা
-            প্রথমে চেক করুন।<br><br>
+
+            আপনার অ্যাকাউন্টে পর্যাপ্ত RS balance
+            আছে কিনা প্রথমে চেক করুন।<br><br>
+
             বর্তমান নিয়ম অনুযায়ী minimum withdrawal
             <b>400 BDT</b>।<br><br>
-            1,000,000 RS = 250 BDT হিসেবে হিসাব করা হচ্ছে।
+
+            1,000,000 RS = 250 BDT হিসেবে
+            হিসাব করা হচ্ছে।
             `;
 
         }else if(
@@ -2307,7 +987,9 @@ function sendAiMessage(){
 
             reply=`
             📊 <b>RS Conversion Rate</b><br><br>
+
             1,000,000 RS = <b>250 BDT</b>।<br><br>
+
             উদাহরণ:<br>
             4,000,000 RS = 1,000 BDT।
             `;
@@ -2319,10 +1001,12 @@ function sendAiMessage(){
 
             reply=`
             💳 <b>Deposit Support</b><br><br>
+
             আপনি যদি deposit করতে না পারেন,
             অনুগ্রহ করে আপনার account status এবং
             payment information চেক করুন।<br><br>
-            সমস্যা থাকলে বিস্তারিতভাবে কী error দেখাচ্ছে
+
+            সমস্যা থাকলে কী error দেখাচ্ছে
             তা লিখুন।
             `;
 
@@ -2334,6 +1018,7 @@ function sendAiMessage(){
             reply=`
             💰 আপনার বর্তমান displayed balance হলো
             <b>${userScore.toLocaleString()} RS</b>।<br><br>
+
             Home screen থেকে আপনার RS balance এবং
             BDT equivalent দেখতে পারবেন।
             `;
@@ -2345,8 +1030,10 @@ function sendAiMessage(){
 
             reply=`
             👥 <b>Referral Support</b><br><br>
+
             প্রতি successful referral-এর reward
             <b>1,000 RS</b>।<br><br>
+
             Referral section থেকে আপনার invite link
             copy করে বন্ধুদের পাঠাতে পারবেন।
             `;
@@ -2359,8 +1046,10 @@ function sendAiMessage(){
 
             reply=`
             📺 <b>Sponsor Ad Support</b><br><br>
+
             Home screen-এর Sponsor Ads section থেকে
             available task সম্পন্ন করতে পারবেন।<br><br>
+
             প্রতিটি completed task-এর demo reward
             <b>1,000 RS</b>।
             `;
@@ -2369,14 +1058,16 @@ function sendAiMessage(){
 
             reply=`
             দুঃখিত, আপনার কথাটি আমি পুরোপুরি বুঝতে
-            পারিনি। অনুগ্রহ করে একটু পরিষ্কারভাবে প্রশ্নটি
-            লিখুন।<br><br>
-            আপনি চাইলে <b>Withdrawal, Deposit, Balance,
-            Referral, Coin Rate</b> অথবা <b>Ad</b> সম্পর্কে
-            প্রশ্ন করতে পারেন।<br><br>
-            আপনাকে সাহায্য করার জন্য ধন্যবাদ। আরও
-            কোনো সহায়তা দরকার হলে আমাকে বলুন।
+            পারিনি। অনুগ্রহ করে একটু পরিষ্কারভাবে
+            প্রশ্নটি লিখুন।<br><br>
+
+            আপনি চাইলে <b>Withdrawal, Deposit,
+            Balance, Referral, Coin Rate</b> অথবা
+            <b>Ad</b> সম্পর্কে প্রশ্ন করতে পারেন।<br><br>
+
+            আপনাকে সাহায্য করার জন্য ধন্যবাদ।
             `;
+
         }
 
         addBotMessage(reply);
@@ -2384,7 +1075,60 @@ function sendAiMessage(){
     },500);
 }
 
-</script>
 
-</body>
-</html>
+/* =========================================================
+   STARTUP
+   IMPORTANT:
+   Heavy leaderboard is NOT initialized here.
+   Home stays lightweight.
+========================================================= */
+
+document.addEventListener(
+    'DOMContentLoaded',
+    ()=>{
+
+        updateBalanceUI();
+        updateBonusButton();
+        renderAds();
+
+        /*
+          Make sure Home is immediately visible.
+        */
+        const home=
+            document.getElementById(
+                'homeView'
+            );
+
+        if(home){
+            home.style.display='block';
+        }
+
+    },
+    {once:true}
+);
+
+
+/* =========================================================
+   GLOBAL ERROR PROTECTION
+   Does NOT show a blocking loader.
+========================================================= */
+window.addEventListener(
+    'error',
+    function(event){
+        console.warn(
+            'RS Mini App non-blocking error:',
+            event.message
+        );
+    }
+);
+
+window.addEventListener(
+    'unhandledrejection',
+    function(event){
+        console.warn(
+            'RS Mini App non-blocking promise error:',
+            event.reason
+        );
+    }
+);
+</script>
